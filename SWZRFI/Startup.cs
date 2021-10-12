@@ -7,11 +7,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SWZRFI.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SWZRFI.DAL.Contexts;
+using SWZRFI.DAL.Models.IdentityModels;
 
 namespace SWZRFI
 {
@@ -24,21 +25,55 @@ namespace SWZRFI
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDatabaseDeveloperPageExceptionFilter();
+            AddContext(services);
+            AddIdentityAccounts(services);
+            ConfigurePasswordRequirements(services);
+            ConfigureMvc(services);
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddRazorPages().AddRazorRuntimeCompilation();
+        }
+
+        private void ConfigureMvc(IServiceCollection services)
+        {
             services.AddControllersWithViews();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        private void AddIdentityAccounts(IServiceCollection services)
+        {
+            services.AddDefaultIdentity<PersonalAccount>(options =>
+                options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ContextEf>();
+            services.AddDefaultIdentity<CorporateAccount>(options =>
+                options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ContextEf>();
+        }
+
+        private void ConfigurePasswordRequirements(IServiceCollection services)
+        {
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+            });
+        }
+
+        private void AddContext(IServiceCollection services)
+        {
+            services.AddDbContext<ContextEf>(options => 
+                options.UseSqlServer(Configuration.GetConnectionString("SWZRFI")));
+        }
+
+        
+        public void Configure(
+            IApplicationBuilder app, 
+            IWebHostEnvironment env,
+            UserManager<PersonalAccount> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -48,7 +83,6 @@ namespace SWZRFI
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
