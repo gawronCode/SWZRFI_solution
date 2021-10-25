@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace SWZRFI.DAL.Models.IdentityModels
 {
-    public class PersonalAccount : IdentityUser
+    public class UserAccount : IdentityUser
     {
         [Required]
         public string FirstName { get; set; }

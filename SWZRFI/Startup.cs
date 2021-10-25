@@ -13,6 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using SWZRFI.DAL.Contexts;
 using SWZRFI.DAL.Models.IdentityModels;
+using SWZRFI_Utils.EmailHelper;
+using SWZRFI_Utils.EmailHelper.Models;
 
 namespace SWZRFI
 {
@@ -28,26 +30,23 @@ namespace SWZRFI
         
         public void ConfigureServices(IServiceCollection services)
         {
-            AddContext(services);
-            AddIdentityAccounts(services);
+            AddContexts(services);
+
+            services.AddDefaultIdentity<UserAccount>(options =>
+                    options.SignIn.RequireConfirmedAccount = false).AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ContextAccounts>();
+
             ConfigurePasswordRequirements(services);
-            ConfigureMvc(services);
+            services.AddControllersWithViews();
+
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<EmailMessage>(Configuration);
 
             services.AddRazorPages().AddRazorRuntimeCompilation();
         }
 
-        private void ConfigureMvc(IServiceCollection services)
-        {
-            services.AddControllersWithViews();
-        }
 
-        private void AddIdentityAccounts(IServiceCollection services)
-        {
-            services.AddDefaultIdentity<PersonalAccount>(options =>
-                options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ContextEf>();
-            services.AddDefaultIdentity<CorporateAccount>(options =>
-                options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ContextEf>();
-        }
+
 
         private void ConfigurePasswordRequirements(IServiceCollection services)
         {
@@ -62,19 +61,18 @@ namespace SWZRFI
             });
         }
 
-        private void AddContext(IServiceCollection services)
+        private void AddContexts(IServiceCollection services)
         {
-            services.AddDbContext<ContextEf>(options => 
+            services.AddDbContext<ContextAccounts>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("SWZRFI")));
         }
 
         
         public void Configure(
             IApplicationBuilder app, 
-            IWebHostEnvironment env,
-            UserManager<PersonalAccount> userManager,
-            RoleManager<IdentityRole> roleManager)
+            IWebHostEnvironment env)
         {
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

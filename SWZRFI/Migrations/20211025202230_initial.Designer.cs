@@ -9,9 +9,9 @@ using SWZRFI.DAL.Contexts;
 
 namespace SWZRFI.Migrations
 {
-    [DbContext(typeof(ContextEf))]
-    [Migration("20211012191011_InitialMigration")]
-    partial class InitialMigration
+    [DbContext(typeof(ContextAccounts))]
+    [Migration("20211025202230_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -227,32 +227,7 @@ namespace SWZRFI.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("SWZRFI.DAL.Models.IdentityModels.CorporateAccount", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("ContactEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ContactPhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DateOfCreation")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("NumberOfEmployees")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue("CorporateAccount");
-                });
-
-            modelBuilder.Entity("SWZRFI.DAL.Models.IdentityModels.PersonalAccount", b =>
+            modelBuilder.Entity("SWZRFI.DAL.Models.IdentityModels.UserAccount", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -268,7 +243,7 @@ namespace SWZRFI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasDiscriminator().HasValue("PersonalAccount");
+                    b.HasDiscriminator().HasValue("UserAccount");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
