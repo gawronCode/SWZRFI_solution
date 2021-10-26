@@ -10,7 +10,7 @@ using SWZRFI.DAL.Contexts;
 namespace SWZRFI.Migrations
 {
     [DbContext(typeof(ContextAccounts))]
-    [Migration("20211025202230_initial")]
+    [Migration("20211026190851_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SWZRFI.ConfigData;
 using SWZRFI.DAL.Contexts;
 using SWZRFI.DAL.Models.IdentityModels;
 using SWZRFI_Utils.EmailHelper;
@@ -31,25 +32,27 @@ namespace SWZRFI
         public void ConfigureServices(IServiceCollection services)
         {
             AddContexts(services);
+            SetIdentity(services);
+            AddScopedServices(services);
 
-            services.AddDefaultIdentity<UserAccount>(options =>
-                    options.SignIn.RequireConfirmedAccount = false).AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ContextAccounts>();
-
-            ConfigurePasswordRequirements(services);
             services.AddControllersWithViews();
-
-            services.AddTransient<IEmailSender, EmailSender>();
-            services.Configure<EmailMessage>(Configuration);
-
             services.AddRazorPages().AddRazorRuntimeCompilation();
         }
 
 
-
-
-        private void ConfigurePasswordRequirements(IServiceCollection services)
+        private void AddScopedServices(IServiceCollection services)
         {
+            services.AddScoped<IConfigGetter, ConfigGetter>();
+            services.AddScoped<IEmailSender, EmailSender>();
+        }
+
+
+        private void SetIdentity(IServiceCollection services)
+        {
+            services.AddDefaultIdentity<UserAccount>(options =>
+                    options.SignIn.RequireConfirmedAccount = true).AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ContextAccounts>();
+
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = false;
