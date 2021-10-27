@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-//using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
@@ -52,20 +51,29 @@ namespace SWZRFI.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+
+            [Required(ErrorMessage = "Podanie imienia jest wymagane")]
+            [DataType(DataType.Text)]
+            [Display(Name = "Imię")]
+            public string FirstName { get; set; }
+            [Required(ErrorMessage = "Podanie nazwiska jest wymagane")]
+            [DataType(DataType.Text)]
+            [Display(Name = "Nazwisko")]
+            public string LastName { get; set; }
+            [Required(ErrorMessage = "Proszę podać adres email")]
             [EmailAddress]
             [Display(Name = "Adres email")]
             public string Email { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
+            [Required(ErrorMessage = "Proszę podać hasło")]
+            [StringLength(50, ErrorMessage = "Hasło musi zawierać przynajmniej 6 znaków i być niedłuższe niż 50 znaków", MinimumLength = 6)]
+            [DataType(DataType.Password, ErrorMessage = "Hasło musi zawierać przynajmniej jedną wielką literę, znak specjalny, oraz cyfrę")]
             [Display(Name = "Hasło")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
             [Display(Name = "Potwierdzenie hasła")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = "Błędne hasło")]
             public string ConfirmPassword { get; set; }
         }
 

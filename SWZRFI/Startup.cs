@@ -9,9 +9,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
 using SWZRFI.ConfigData;
+using SWZRFI.ConfigData.Locales;
 using SWZRFI.DAL.Contexts;
 using SWZRFI.DAL.Models.IdentityModels;
 using SWZRFI_Utils.EmailHelper;
@@ -35,10 +41,12 @@ namespace SWZRFI
             SetIdentity(services);
             AddScopedServices(services);
 
+
             services.AddControllersWithViews();
             services.AddRazorPages().AddRazorRuntimeCompilation();
         }
 
+        
 
         private void AddScopedServices(IServiceCollection services)
         {
@@ -51,14 +59,15 @@ namespace SWZRFI
         {
             services.AddDefaultIdentity<UserAccount>(options =>
                     options.SignIn.RequireConfirmedAccount = true).AddRoles<IdentityRole>()
+                .AddErrorDescriber<PolishIdentityLocales>()
                 .AddEntityFrameworkStores<ContextAccounts>();
 
             services.Configure<IdentityOptions>(options =>
             {
-                options.Password.RequireDigit = false;
+                options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
                 options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 1;
             });
