@@ -13,16 +13,18 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(DuplicateEmail),
-                Description = "xD"
+                Description = $"Adres email {email} jest niedostępny."
             };
         }
+
+        
 
         public override IdentityError DuplicateUserName(string userName)
         {
             return new IdentityError
             {
                 Code = nameof(DuplicateUserName),
-                Description = "xD"
+                Description = $"Nazwa użytkownika {userName} jest niedostępna."
             };
         }
 
@@ -31,7 +33,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(InvalidEmail),
-                Description = "xD"
+                Description = "Podany adres email jest niepoprawny"
             };
         }
 
@@ -40,7 +42,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(DuplicateRoleName),
-                Description = "xD"
+                Description = $"Rola {role} jest już obecna w systemie."
             };
         }
 
@@ -49,7 +51,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(InvalidRoleName),
-                Description = "xD"
+                Description = $"Nazwa roli {role} jest niepoprawna."
             };
         }
 
@@ -58,7 +60,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(InvalidToken),
-                Description = "xD"
+                Description = $"Brak autoryzacji"
             };
         }
 
@@ -67,7 +69,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(InvalidUserName),
-                Description = "xD"
+                Description = $"Nazwa użytkownika {userName} jest niepoprawna."
             };
         }
 
@@ -76,7 +78,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(LoginAlreadyAssociated),
-                Description = "xD"
+                Description = "todo"
             };
         }
 
@@ -85,7 +87,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(PasswordMismatch),
-                Description = "xD"
+                Description = "Podane hasło nie jest poprawne."
             };
         }
 
@@ -94,7 +96,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(PasswordRequiresDigit),
-                Description = "xD"
+                Description = "Hasło musi zawierać przynajmniej jedną cyfrę."
             };
         }
 
@@ -103,7 +105,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(PasswordRequiresLower),
-                Description = "xD"
+                Description = "Hasło musi zawierać przynajmniej jedną małą literę."
             };
         }
 
@@ -112,7 +114,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(PasswordRequiresNonAlphanumeric),
-                Description = "xD"
+                Description = "Hasło musi zawierać przynajmniej jeden znak specjalny."
             };
         }
 
@@ -121,7 +123,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(PasswordRequiresUniqueChars),
-                Description = "xD"
+                Description = $"Minimalna liczba unikalnych znaków w haśle to {uniqueChars}."
             };
         }
 
@@ -130,7 +132,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(PasswordRequiresUpper),
-                Description = "xD"
+                Description = "Hasło musi zawierać przynajmniej jedną wielką literę."
             };
         }
 
@@ -139,7 +141,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(PasswordTooShort),
-                Description = "xD"
+                Description = $"Minimalna długość hasła to {length}."
             };
         }
 
@@ -148,7 +150,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(UserAlreadyHasPassword),
-                Description = "xD"
+                Description = "Podane hasło jest takie samo."
             };
         }
 
@@ -157,7 +159,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(UserAlreadyInRole),
-                Description = "xD"
+                Description = $"Użytkownik posiada już rolę {role}."
             };
         }
 
@@ -166,7 +168,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(UserNotInRole),
-                Description = "xD"
+                Description = "Użytkownik nie posiada odpowiedniej roli w systemie."
             };
         }
 
@@ -175,7 +177,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(UserLockoutNotEnabled),
-                Description = "xD"
+                Description = "todo"
             };
         }
 
@@ -184,7 +186,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(RecoveryCodeRedemptionFailed),
-                Description = "xD"
+                Description = "todo"
             };
         }
 
@@ -193,7 +195,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(ConcurrencyFailure),
-                Description = "xD"
+                Description = "todo"
             };
         }
 
@@ -202,7 +204,7 @@ namespace SWZRFI.ConfigData.Locales
             return new IdentityError
             {
                 Code = nameof(DefaultError),
-                Description = "xD"
+                Description = "Błąd systemu."
             };
         }
     }

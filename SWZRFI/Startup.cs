@@ -1,27 +1,16 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Razor;
 using SWZRFI.ConfigData;
 using SWZRFI.ConfigData.Locales;
 using SWZRFI.DAL.Contexts;
 using SWZRFI.DAL.Models.IdentityModels;
 using SWZRFI_Utils.EmailHelper;
-using SWZRFI_Utils.EmailHelper.Models;
+
 
 namespace SWZRFI
 {
@@ -87,6 +76,7 @@ namespace SWZRFI
             
             if (env.IsDevelopment())
             {
+                //app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
             }
