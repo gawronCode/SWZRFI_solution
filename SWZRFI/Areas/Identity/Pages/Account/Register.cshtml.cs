@@ -87,60 +87,56 @@ namespace SWZRFI.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return Page();
+            var user = new UserAccount { UserName = Input.Email, Email = Input.Email, RegistrationDate = DateTime.Now};
+            var result = await _userManager.CreateAsync(user, Input.Password);
+            if (result.Succeeded)
             {
-                var user = new UserAccount { UserName = Input.Email, Email = Input.Email };
-                var result = await _userManager.CreateAsync(user, Input.Password);
-                if (result.Succeeded)
-                {
                     
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                var callbackUrl = Url.Page(
+                    "/Account/ConfirmEmail",
+                    pageHandler: null,
+                    values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                    protocol: Request.Scheme);
 
 
-                    var identityEmail = _configGetter.GetIdentityEmail();
-                    var emailCredentials = new EmailCredentials
-                    {
-                        EmailAddress = identityEmail.Email,
-                        Password = identityEmail.Password,
-                        Port = identityEmail.Port,
-                        SmtpHost = identityEmail.Smtp
-                    };
-
-                    var emailMessage = new EmailMessage
-                    {
-                        Recipients = new List<string>() {Input.Email},
-                        Subject = "Potwierdzenie adresu email SWZRFI",
-                        Content =
-                            $"Aby potwierdzić podany adres email kliknij załączony link <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>kliknij tutaj</a>."
-                    };
-
-
-                    await _emailSender.Send(emailCredentials, emailMessage);
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
-                }
-                foreach (var error in result.Errors)
+                var identityEmail = _configGetter.GetIdentityEmail();
+                var emailCredentials = new EmailCredentials
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    EmailAddress = identityEmail.Email,
+                    Password = identityEmail.Password,
+                    Port = identityEmail.Port,
+                    SmtpHost = identityEmail.Smtp
+                };
+
+                var emailMessage = new EmailMessage
+                {
+                    Recipients = new List<string>() {Input.Email},
+                    Subject = "Potwierdzenie adresu email SWZRFI",
+                    Content =
+                        $"Aby potwierdzić podany adres email kliknij załączony link <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>kliknij tutaj</a>."
+                };
+
+
+                await _emailSender.Send(emailCredentials, emailMessage);
+
+                if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                {
+                    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                 }
+
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return LocalRedirect(returnUrl);
+            }
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
             }
 
-            // If we got this far, something failed, redisplay form
+            
             return Page();
         }
     }

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SWZRFI", "SWZRFI\SWZRFI.csproj", "{0E99598C-598A-482B-851D-DD4978F50D66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SWZRFI_Utils", "SWZRFI_Utils\SWZRFI_Utils.csproj", "{DF592EC7-7528-42C1-A8C9-A849B23E6ADD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SWZRFI_Utils", "SWZRFI_Utils\SWZRFI_Utils.csproj", "{DF592EC7-7528-42C1-A8C9-A849B23E6ADD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

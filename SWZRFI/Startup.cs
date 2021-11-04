@@ -5,10 +5,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SWZRFI.BackgroundServices.Schedulers.Implementations;
+using SWZRFI.BackgroundServices.Services.Abstract;
+using SWZRFI.BackgroundServices.Services.Implementations;
 using SWZRFI.ConfigData;
 using SWZRFI.ConfigData.Locales;
 using SWZRFI.DAL.Contexts;
 using SWZRFI.DAL.Models.IdentityModels;
+using SWZRFI.DAL.Repositories.Implementations;
+using SWZRFI.DAL.Repositories.Interfaces;
+using SWZRFI.DAL.Utils;
 using SWZRFI_Utils.EmailHelper;
 
 
@@ -26,8 +32,10 @@ namespace SWZRFI
         
         public void ConfigureServices(IServiceCollection services)
         {
+            AddRepositories(services);
             AddContexts(services);
             SetIdentity(services);
+            AddSingletonServices(services);
             AddScopedServices(services);
 
 
@@ -35,10 +43,16 @@ namespace SWZRFI
             services.AddRazorPages().AddRazorRuntimeCompilation();
         }
 
-        
+
+        private void AddSingletonServices(IServiceCollection services)
+        {
+            services.AddSingleton<IHostedService, AccountsCleanerScheduler>();
+        }
 
         private void AddScopedServices(IServiceCollection services)
         {
+            services.AddScoped<IBaseScheduledService, AccountsCleaner>();
+            services.AddScoped<IDbConnectionChecker, DbConnectionChecker>();
             services.AddScoped<IConfigGetter, ConfigGetter>();
             services.AddScoped<IEmailSender, EmailSender>();
         }
@@ -60,6 +74,11 @@ namespace SWZRFI
                 options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 1;
             });
+        }
+
+        private void AddRepositories(IServiceCollection services)
+        {
+            services.AddScoped<IUserRepo, UserRepo>();
         }
 
         private void AddContexts(IServiceCollection services)

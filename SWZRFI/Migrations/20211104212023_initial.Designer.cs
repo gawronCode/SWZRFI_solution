@@ -10,7 +10,7 @@ using SWZRFI.DAL.Contexts;
 namespace SWZRFI.Migrations
 {
     [DbContext(typeof(ContextAccounts))]
-    [Migration("20211026190851_initial")]
+    [Migration("20211104212023_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -231,10 +231,6 @@ namespace SWZRFI.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<DateTime?>("DateOfBirth")
-                        .IsRequired()
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -242,6 +238,10 @@ namespace SWZRFI.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RegistrationDate")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
 
                     b.HasDiscriminator().HasValue("UserAccount");
                 });
