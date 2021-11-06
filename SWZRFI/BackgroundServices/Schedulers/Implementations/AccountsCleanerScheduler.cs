@@ -16,8 +16,8 @@ namespace SWZRFI.BackgroundServices.Schedulers.Implementations
         {
         }
 
-
         public override DateTime NextScheduledOperation => DateTime.Now.AddHours(1);
+
         public override Task BaseServiceHandler(IServiceProvider scopeServiceProvider)
         {
             var service =

@@ -3,16 +3,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using SWZRFI.DAL.Models.IdentityModels;
 
 namespace SWZRFI.Areas.Identity.Pages.Account.Manage
 {
     public class PersonalDataModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<UserAccount> _userManager;
         private readonly ILogger<PersonalDataModel> _logger;
 
         public PersonalDataModel(
-            UserManager<IdentityUser> userManager,
+            UserManager<UserAccount> userManager,
             ILogger<PersonalDataModel> logger)
         {
             _userManager = userManager;
@@ -24,7 +25,7 @@ namespace SWZRFI.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Nie można wczytać użytkownika o ID '{_userManager.GetUserId(User)}'.");
             }
 
             return Page();

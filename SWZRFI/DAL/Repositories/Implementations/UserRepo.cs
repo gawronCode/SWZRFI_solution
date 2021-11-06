@@ -31,14 +31,16 @@ namespace SWZRFI.DAL.Repositories.Implementations
 
             var inactiveAccounts =
                 await context.UserAccount.Where(ua
-                        => DateTime.Now - ua.RegistrationDate > new TimeSpan(0, 24, 0, 0))
+                        => ((DateTime)ua.RegistrationDate).AddHours(24) < DateTime.Now &&
+                           !ua.EmailConfirmed)
                     .ToListAsync();
 
-            if(inactiveAccounts is null || inactiveAccounts.Count == 0) return;
+            Console.WriteLine($"Liczba nieaktywnych kont = {inactiveAccounts.Count}");
+
+            if(inactiveAccounts.Count == 0) return;
             
             context.UserAccount.RemoveRange(inactiveAccounts);
             await context.SaveChangesAsync();
-
         }
 
 

@@ -6,27 +6,33 @@ using System.Text.Encodings.Web;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using SWZRFI.ConfigData;
+using SWZRFI.DAL.Models.IdentityModels;
+using SWZRFI_Utils.EmailHelper;
+using SWZRFI_Utils.EmailHelper.Models;
 
 namespace SWZRFI.Areas.Identity.Pages.Account.Manage
 {
     public partial class EmailModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<UserAccount> _userManager;
+        private readonly SignInManager<UserAccount> _signInManager;
         private readonly IEmailSender _emailSender;
+        private readonly IConfigGetter _configGetter;
 
         public EmailModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
-            IEmailSender emailSender)
+            UserManager<UserAccount> userManager,
+            SignInManager<UserAccount> signInManager,
+            IEmailSender emailSender,
+            IConfigGetter configGetter)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _configGetter = configGetter;
         }
 
         public string Username { get; set; }
@@ -43,13 +49,13 @@ namespace SWZRFI.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Proszę podać nowy adres email")]
             [EmailAddress]
-            [Display(Name = "New email")]
+            [Display(Name = "Nowy adres email")]
             public string NewEmail { get; set; }
         }
 
-        private async Task LoadAsync(IdentityUser user)
+        private async Task LoadAsync(UserAccount user)
         {
             var email = await _userManager.GetEmailAsync(user);
             Email = email;
@@ -67,7 +73,7 @@ namespace SWZRFI.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Nie można wczytać użytkownika o ID '{_userManager.GetUserId(User)}'.");
             }
 
             await LoadAsync(user);
@@ -79,7 +85,7 @@ namespace SWZRFI.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Nie można wczytać użytkownika o ID '{_userManager.GetUserId(User)}'.");
             }
 
             if (!ModelState.IsValid)
@@ -99,16 +105,33 @@ namespace SWZRFI.Areas.Identity.Pages.Account.Manage
                     pageHandler: null,
                     values: new { userId = userId, email = Input.NewEmail, code = code },
                     protocol: Request.Scheme);
-                await _emailSender.SendEmailAsync(
-                    Input.NewEmail,
-                    "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                var identityEmail = _configGetter.GetIdentityEmail();
+                var emailCredentials = new EmailCredentials
+                {
+                    EmailAddress = identityEmail.Email,
+                    Password = identityEmail.Password,
+                    Port = identityEmail.Port,
+                    SmtpHost = identityEmail.Smtp
+                };
+
+                var emailMessage = new EmailMessage
+                {
+                    Recipients = new List<string>() { Input.NewEmail },
+                    Subject = "Potwierdzenie adresu email SWZRFI",
+                    Content =
+                        $"Aby potwierdzić podany adres email kliknij załączony link <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>kliknij tutaj</a>."
+                };
+
+
+                await _emailSender.Send(emailCredentials, emailMessage);
+
+
+                StatusMessage = "Na podany adres email został przesłany linka aktywacyjny.";
                 return RedirectToPage();
             }
 
-            StatusMessage = "Your email is unchanged.";
+            StatusMessage = "Nie udało się zmienić adresu email.";
             return RedirectToPage();
         }
 
@@ -135,12 +158,28 @@ namespace SWZRFI.Areas.Identity.Pages.Account.Manage
                 pageHandler: null,
                 values: new { area = "Identity", userId = userId, code = code },
                 protocol: Request.Scheme);
-            await _emailSender.SendEmailAsync(
-                email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-            StatusMessage = "Verification email sent. Please check your email.";
+            var identityEmail = _configGetter.GetIdentityEmail();
+            var emailCredentials = new EmailCredentials
+            {
+                EmailAddress = identityEmail.Email,
+                Password = identityEmail.Password,
+                Port = identityEmail.Port,
+                SmtpHost = identityEmail.Smtp
+            };
+
+            var emailMessage = new EmailMessage
+            {
+                Recipients = new List<string>() { email },
+                Subject = "Potwierdzenie adresu email SWZRFI",
+                Content =
+                    $"Aby potwierdzić podany adres email kliknij załączony link <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>kliknij tutaj</a>."
+            };
+
+
+            await _emailSender.Send(emailCredentials, emailMessage);
+
+            StatusMessage = "Na podany adres email został przesłany linka aktywacyjny.";
             return RedirectToPage();
         }
     }
