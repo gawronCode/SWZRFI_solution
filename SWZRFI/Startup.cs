@@ -88,9 +88,11 @@ namespace SWZRFI
         }
 
         
-        public void Configure(
+        public async void Configure(
             IApplicationBuilder app, 
-            IWebHostEnvironment env)
+            IWebHostEnvironment env,
+            UserManager<UserAccount> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             
             if (env.IsDevelopment())
@@ -111,6 +113,8 @@ namespace SWZRFI
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            await InitialDataSeed.Seed(userManager, roleManager);
 
             app.UseEndpoints(endpoints =>
             {
