@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using SWZRFI.ConfigData;
-using SWZRFI.DAL.Models.IdentityModels;
+using SWZRFI.DAL.Models;
 using SWZRFI_Utils.EmailHelper;
 using SWZRFI_Utils.EmailHelper.Models;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using SWZRFI.DAL.Models.IdentityModels;
+using SWZRFI.DAL.Models;
 
 namespace SWZRFI.ConfigData
 {
@@ -25,10 +25,11 @@ namespace SWZRFI.ConfigData
             {
                 FirstName = "Admin",
                 LastName = "Admin",
+                UserName = "fakeEmail@log.and.change",
                 Email = "fakeEmail@log.and.change",
                 EmailConfirmed = true,
             };
-            var result = await userManager.CreateAsync(user, "sqlcmc!0");
+            var result = await userManager.CreateAsync(user, "R3pasal@S");
             if (!result.Succeeded) return; 
 
             await userManager.AddToRoleAsync(user, "SystemAdmin");

@@ -1,4 +1,4 @@
-﻿@using SWZRFI.DAL.Models.IdentityModels
+﻿@using SWZRFI.DAL.Models
 @inject SignInManager<UserAccount> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();

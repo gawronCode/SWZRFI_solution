@@ -24,7 +24,7 @@ namespace SWZRFI.DAL.Repositories.Implementations
         public async Task DeleteUnverifiedAccountsAsync()
         {
             using var scope = _serviceScopeFactory.CreateScope();
-            await using var context = scope.ServiceProvider.GetRequiredService<ContextAccounts>();
+            await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
 
             if (!await _dbConnectionChecker.ValidateDbConnection(context))
                 throw new Exception("DB not responding");

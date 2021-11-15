@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using SWZRFI.DAL.Models.IdentityModels;
+using SWZRFI.DAL.Models;
 
 namespace SWZRFI.Areas.Identity.Pages.Account.Manage
 {

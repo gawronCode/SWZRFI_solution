@@ -30,7 +30,7 @@ namespace SWZRFI.BackgroundServices.Services.Implementations
             }
             catch (Exception e)
             {
-                Console.WriteLine("TODO - logger błędów");
+                Console.WriteLine($"TODO - logger błędów {e.Message}");
             }
         }
     }

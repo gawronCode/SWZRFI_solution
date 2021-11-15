@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -11,7 +12,7 @@ using SWZRFI.BackgroundServices.Services.Implementations;
 using SWZRFI.ConfigData;
 using SWZRFI.ConfigData.Locales;
 using SWZRFI.DAL.Contexts;
-using SWZRFI.DAL.Models.IdentityModels;
+using SWZRFI.DAL.Models;
 using SWZRFI.DAL.Repositories.Implementations;
 using SWZRFI.DAL.Repositories.Interfaces;
 using SWZRFI.DAL.Utils;
@@ -63,7 +64,7 @@ namespace SWZRFI
             services.AddDefaultIdentity<UserAccount>(options =>
                     options.SignIn.RequireConfirmedAccount = true).AddRoles<IdentityRole>()
                 .AddErrorDescriber<PolishIdentityLocales>()
-                .AddEntityFrameworkStores<ContextAccounts>();
+                .AddEntityFrameworkStores<ApplicationContext>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -83,18 +84,18 @@ namespace SWZRFI
 
         private void AddContexts(IServiceCollection services)
         {
-            services.AddDbContext<ContextAccounts>(options => 
+            services.AddDbContext<ApplicationContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("SWZRFI")));
         }
 
         
-        public async void Configure(
+        public void Configure(
             IApplicationBuilder app, 
             IWebHostEnvironment env,
             UserManager<UserAccount> userManager,
             RoleManager<IdentityRole> roleManager)
         {
-            
+            InitialDataSeed.Seed(userManager, roleManager).Wait();
             if (env.IsDevelopment())
             {
                 //app.UseBrowserLink();
@@ -114,7 +115,7 @@ namespace SWZRFI
             app.UseAuthentication();
             app.UseAuthorization();
 
-            await InitialDataSeed.Seed(userManager, roleManager);
+            
 
             app.UseEndpoints(endpoints =>
             {
