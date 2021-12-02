@@ -16,6 +16,7 @@ using SWZRFI.DAL.Models;
 using SWZRFI.DAL.Repositories.Implementations;
 using SWZRFI.DAL.Repositories.Interfaces;
 using SWZRFI.DAL.Utils;
+using SWZRFI.ViewServices.JobOffers;
 using SWZRFI_Utils.EmailHelper;
 
 
@@ -56,6 +57,7 @@ namespace SWZRFI
             services.AddScoped<IDbConnectionChecker, DbConnectionChecker>();
             services.AddScoped<IConfigGetter, ConfigGetter>();
             services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<IJobOffersService, JobOffersService>();
         }
 
 
@@ -80,6 +82,7 @@ namespace SWZRFI
         private void AddRepositories(IServiceCollection services)
         {
             services.AddScoped<IUserRepo, UserRepo>();
+            services.AddScoped<IJobOfferRepo, JobOfferRepo>();
         }
 
         private void AddContexts(IServiceCollection services)

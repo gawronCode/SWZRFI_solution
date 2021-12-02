@@ -15,5 +15,6 @@ namespace SWZRFI.DAL.Models
         [Required]
         public int SkillRequirementId { get; set; }
         public SkillRequirement SkillRequirement { get; set; }
+
     }
 }

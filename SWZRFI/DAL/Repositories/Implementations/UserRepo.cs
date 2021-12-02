@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SWZRFI.DAL.Contexts;
+using SWZRFI.DAL.Models;
 using SWZRFI.DAL.Repositories.Interfaces;
 using SWZRFI.DAL.Utils;
 
@@ -41,6 +42,14 @@ namespace SWZRFI.DAL.Repositories.Implementations
             
             context.UserAccount.RemoveRange(inactiveAccounts);
             await context.SaveChangesAsync();
+        }
+
+        public async Task<UserAccount> GetUserByEmailAsync(string email)
+        {
+            using var scope = _serviceScopeFactory.CreateScope();
+            await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+
+            return await context.UserAccount.FirstOrDefaultAsync(q => q.Email == email);
         }
 
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -31,5 +32,12 @@ namespace SWZRFI.DAL.Models
         
         public string UserAccountId { get; set; }
         public UserAccount UserAccount { get; set; }
+
+        public int CompanyId { get; set; }
+        public Company Company { get; set; }
+
+        public ICollection<JobOfferSkillRequirement> JobOfferSkillRequirements { get; set; }
+        public ICollection<JobOfferLocation> JobOfferLocations { get; set; }
+        
     }
 }

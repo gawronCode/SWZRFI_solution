@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
@@ -12,5 +13,11 @@ namespace SWZRFI.DAL.Models
         [Required]
         public string LastName { get; set; }
         public DateTime? RegistrationDate { get; set; }
+
+        public ICollection<JobOffer> JobOffers { get; set; }
+
+        public int CompanyId { get; set; }
+        public Company Company { get; set; }
+
     }
 }
