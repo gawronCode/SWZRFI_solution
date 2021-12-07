@@ -29,6 +29,9 @@ namespace SWZRFI.DAL.Models
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
+        public int JobOfferId { get; set; }
+        public JobOffer JobOffer { get; set; }
+
         //https://positionstack.com/documentation TODO - zrobić geokodowanie i pokazywanie mapki
     }
 }

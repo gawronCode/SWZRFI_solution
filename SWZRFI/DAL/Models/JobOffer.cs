@@ -37,7 +37,7 @@ namespace SWZRFI.DAL.Models
         public Company Company { get; set; }
 
         public ICollection<JobOfferSkillRequirement> JobOfferSkillRequirements { get; set; }
-        public ICollection<JobOfferLocation> JobOfferLocations { get; set; }
+        public ICollection<Location> Locations { get; set; }
         
     }
 }
