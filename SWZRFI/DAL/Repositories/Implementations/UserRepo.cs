@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.DependencyInjection;
 using SWZRFI.DAL.Contexts;
 using SWZRFI.DAL.Models;
@@ -11,6 +12,7 @@ using SWZRFI.DAL.Utils;
 
 namespace SWZRFI.DAL.Repositories.Implementations
 {
+
     public class UserRepo : IUserRepo
     {
         private readonly IDbConnectionChecker _dbConnectionChecker;
@@ -49,7 +51,10 @@ namespace SWZRFI.DAL.Repositories.Implementations
             using var scope = _serviceScopeFactory.CreateScope();
             await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
 
-            return await context.UserAccount.FirstOrDefaultAsync(q => q.Email == email);
+            return await context.UserAccount.AsSplitQuery()
+                .Include(q => q.Company)
+                .ThenInclude(q => q.JobOffers)
+                .FirstOrDefaultAsync(q => q.Email == email);
         }
 
 

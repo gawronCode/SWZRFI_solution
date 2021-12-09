@@ -17,6 +17,7 @@ using SWZRFI.DAL.Repositories.Implementations;
 using SWZRFI.DAL.Repositories.Interfaces;
 using SWZRFI.DAL.Utils;
 using SWZRFI.ViewServices.JobOffers;
+using SWZRFI.ViewServices.JobOffersManager;
 using SWZRFI_Utils.EmailHelper;
 
 
@@ -58,6 +59,8 @@ namespace SWZRFI
             services.AddScoped<IConfigGetter, ConfigGetter>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IJobOffersService, JobOffersService>();
+            services.AddScoped<IJobOffersManagerService, JobOffersManagerService>();
+            
         }
 
 

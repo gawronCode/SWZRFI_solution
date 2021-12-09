@@ -28,5 +28,7 @@ namespace SWZRFI.Controllers
             return View(await _jobOffersService.GetJobOfferDetailsData(id));
         }
 
+
+
     }
 }

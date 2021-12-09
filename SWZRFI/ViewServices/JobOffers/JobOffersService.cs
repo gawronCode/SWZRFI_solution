@@ -26,5 +26,7 @@ namespace SWZRFI.ViewServices.JobOffers
             return await _jobOfferRepo.GetJobOfferByIdAsync(id);
         }
 
+
+
     }
 }

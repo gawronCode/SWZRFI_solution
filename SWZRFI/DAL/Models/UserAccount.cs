@@ -16,7 +16,7 @@ namespace SWZRFI.DAL.Models
 
         public ICollection<JobOffer> JobOffers { get; set; }
 
-        public int CompanyId { get; set; }
+        public int? CompanyId { get; set; }
         public Company Company { get; set; }
 
     }
