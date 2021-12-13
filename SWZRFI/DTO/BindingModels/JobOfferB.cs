@@ -7,6 +7,7 @@ namespace SWZRFI.DTO.BindingModels
     public class JobOfferB
     {
         [Required(ErrorMessage = "Proszę podać tytuł oferty")]
+        [MinLength(6, ErrorMessage = "Minimalna długość nazwy oferty to 6 znaków")]
         [Display(Name = "Nazwa oferty")]
         public string Title { get; set; }
         [Required(ErrorMessage = "Opis jest wymagany")]

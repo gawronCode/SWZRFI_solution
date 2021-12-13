@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using SWZRFI.DAL.Repositories.Interfaces;
 using SWZRFI.DTO.BindingModels;
 using SWZRFI.ViewServices.JobOffers;
@@ -35,12 +36,25 @@ namespace SWZRFI.Controllers
 
         public async Task<IActionResult> CreateJobOffer()
         {
+
             return View();
+        }
+
+
+        public async Task<IActionResult> Create(JobOfferB jobOffer)
+        {
+            if (!ModelState.IsValid)
+                return RedirectToAction(nameof(CreateJobOffer), jobOffer);
+
+            return RedirectToAction(nameof(Index));
         }
 
         private string GetCurrentUserEmail()
         {
             return User.FindFirstValue(ClaimTypes.Email);
         }
+
+        
+
     }
 }
