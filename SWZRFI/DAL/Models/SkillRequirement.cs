@@ -19,5 +19,8 @@ namespace SWZRFI.DAL.Models
         public int Level { get; set; }
         [Required]
         public bool IsOptional { get; set; }
+
+        public int JobOfferId { get; set; }
+        public JobOffer JobOffer { get; set; }
     }
 }

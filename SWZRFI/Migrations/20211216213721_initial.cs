@@ -22,22 +22,6 @@ namespace SWZRFI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SkillRequirements",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
-                    Level = table.Column<int>(type: "int", nullable: false),
-                    IsOptional = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SkillRequirements", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -141,32 +125,6 @@ namespace SWZRFI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "JobOfferSkillRequirement",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    JobOfferId = table.Column<int>(type: "int", nullable: false),
-                    SkillRequirementId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_JobOfferSkillRequirement", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_JobOfferSkillRequirement_JobOffers_JobOfferId",
-                        column: x => x.JobOfferId,
-                        principalTable: "JobOffers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_JobOfferSkillRequirement_SkillRequirements_SkillRequirementId",
-                        column: x => x.SkillRequirementId,
-                        principalTable: "SkillRequirements",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Locations",
                 columns: table => new
                 {
@@ -186,6 +144,29 @@ namespace SWZRFI.Migrations
                     table.PrimaryKey("PK_Locations", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Locations_JobOffers_JobOfferId",
+                        column: x => x.JobOfferId,
+                        principalTable: "JobOffers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SkillRequirements",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    IsOptional = table.Column<bool>(type: "bit", nullable: false),
+                    JobOfferId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SkillRequirements", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SkillRequirements_JobOffers_JobOfferId",
                         column: x => x.JobOfferId,
                         principalTable: "JobOffers",
                         principalColumn: "Id",
@@ -312,18 +293,13 @@ namespace SWZRFI.Migrations
                 column: "UserAccountId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobOfferSkillRequirement_JobOfferId",
-                table: "JobOfferSkillRequirement",
+                name: "IX_Locations_JobOfferId",
+                table: "Locations",
                 column: "JobOfferId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobOfferSkillRequirement_SkillRequirementId",
-                table: "JobOfferSkillRequirement",
-                column: "SkillRequirementId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Locations_JobOfferId",
-                table: "Locations",
+                name: "IX_SkillRequirements_JobOfferId",
+                table: "SkillRequirements",
                 column: "JobOfferId");
 
             migrationBuilder.AddForeignKey(
@@ -401,13 +377,10 @@ namespace SWZRFI.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "JobOfferSkillRequirement");
+                name: "SkillRequirements");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "SkillRequirements");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

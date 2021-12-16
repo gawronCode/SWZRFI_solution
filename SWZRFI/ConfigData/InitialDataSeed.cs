@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using SWZRFI.DAL.Contexts;
 using SWZRFI.DAL.Models;
 
 namespace SWZRFI.ConfigData
@@ -12,11 +15,39 @@ namespace SWZRFI.ConfigData
 
         public static async Task Seed(
             UserManager<UserAccount> userManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IServiceScopeFactory serviceScopeFactory)
         {
             await SeedRoles(roleManager);
             await SeedUsers(userManager);
+
+            using var scope = serviceScopeFactory.CreateScope();
+            await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+
+            var user = await context.UserAccount
+                .FirstOrDefaultAsync(q => q.Email == "fakeEmail@log.and.change");
+            var company = await context.Companies
+                .FirstOrDefaultAsync(q => q.CorporationalEmail == "fakeEmail@log.and.change");
+
+            if(user is null || company is not null)
+                return;
+            
+
+            company = new Company
+            {
+                CorporationalEmail = "fakeEmail@log.and.change",
+                Description = "Firma admina",
+                EmailConfirmed = true,
+                EmployeeCount = 1,
+            };
+
+            await context.Companies.AddAsync(company);
+
+            await context.SaveChangesAsync();
+            user.CompanyId = company.Id;
         }
+
+
 
         private static async Task SeedUsers(UserManager<UserAccount> userManager)
         {

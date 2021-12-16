@@ -99,9 +99,10 @@ namespace SWZRFI
             IApplicationBuilder app, 
             IWebHostEnvironment env,
             UserManager<UserAccount> userManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IServiceScopeFactory serviceScopeFactory)
         {
-            InitialDataSeed.Seed(userManager, roleManager).Wait();
+            InitialDataSeed.Seed(userManager, roleManager, serviceScopeFactory).Wait();
             if (env.IsDevelopment())
             {
                 //app.UseBrowserLink();

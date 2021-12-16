@@ -47,7 +47,7 @@ namespace SWZRFI.DAL.Repositories.Implementations
             using var scope = _serviceScopeFactory.CreateScope();
             await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
 
-            return await context.JobOffers.AsSplitQuery().Include(q => q.JobOfferSkillRequirements)
+            return await context.JobOffers.AsSplitQuery().Include(q => q.SkillRequirements)
                 .Include(q => q.Locations).ToListAsync();
         }
 
@@ -56,7 +56,7 @@ namespace SWZRFI.DAL.Repositories.Implementations
             using var scope = _serviceScopeFactory.CreateScope();
             await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
 
-            return await context.JobOffers.AsSplitQuery().Include(q => q.JobOfferSkillRequirements)
+            return await context.JobOffers.AsSplitQuery().Include(q => q.SkillRequirements)
                 .Include(q => q.Locations)
                 .FirstOrDefaultAsync(q => q.Id == id);
         }
@@ -68,7 +68,7 @@ namespace SWZRFI.DAL.Repositories.Implementations
             await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
 
             return await context.JobOffers.Where(q => q.CompanyId == companyId)
-                .AsSplitQuery().Include(q => q.JobOfferSkillRequirements)
+                .AsSplitQuery().Include(q => q.SkillRequirements)
                 .Include(q => q.Locations).ToListAsync();
         }
 

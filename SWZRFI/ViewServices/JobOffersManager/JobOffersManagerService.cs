@@ -29,8 +29,23 @@ namespace SWZRFI.ViewServices.JobOffersManager
 
         public async Task<IEnumerable<JobOffer>> GetIndexPageData(string email)
         {
-            var user = await _userRepo.GetUserByEmailAsync(email);
+            var user = await GetUser(email);
             return user.Company.JobOffers;
+        }
+
+        public async Task CreateJobOffer(string email, JobOffer jobOffer)
+        {
+            var user = await GetUser(email);
+            jobOffer.CreationDate = DateTime.Now;
+            jobOffer.UserAccountId = user.Id;
+            jobOffer.CompanyId = user.CompanyId ?? throw new Exception();
+
+            await _jobOfferRepo.CreateJobOfferAsync(jobOffer);
+        }
+
+        private async Task<UserAccount> GetUser(string email)
+        {
+            return await _userRepo.GetUserByEmailAsync(email);
         }
 
 

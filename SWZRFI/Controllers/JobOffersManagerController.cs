@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SWZRFI.DAL.Models;
 using SWZRFI.DAL.Repositories.Interfaces;
 using SWZRFI.DTO.BindingModels;
 using SWZRFI.ViewServices.JobOffers;
@@ -19,8 +20,10 @@ namespace SWZRFI.Controllers
 
         private readonly IJobOffersManagerService _jobOffersManagerService;
 
-        [BindProperty]
-        public JobOfferB Input { get; set; }
+
+        public JobOffer JobOffer { get; set; }
+
+
 
 
         public JobOffersManagerController(IJobOffersManagerService jobOffersManagerService)
@@ -34,20 +37,42 @@ namespace SWZRFI.Controllers
             return View(await _jobOffersManagerService.GetIndexPageData(GetCurrentUserEmail()));
         }
 
-        public async Task<IActionResult> CreateJobOffer()
+        [HttpGet]
+        public IActionResult CreateJobOffer()
         {
-
             return View();
         }
 
-
-        public async Task<IActionResult> Create(JobOfferB jobOffer)
+        [HttpPost]
+        public async Task<IActionResult> CreateJobOffer(JobOffer jobOffer)
         {
             if (!ModelState.IsValid)
                 return RedirectToAction(nameof(CreateJobOffer), jobOffer);
 
+            await _jobOffersManagerService.CreateJobOffer(GetCurrentUserEmail(), jobOffer);
+
             return RedirectToAction(nameof(Index));
         }
+
+
+        [HttpGet]
+        public IActionResult AddSkillsToJobOffer()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddSkillsToJobOffer(SkillRequirement skillRequirement)
+        {
+            if (!ModelState.IsValid)
+                return RedirectToAction(nameof(AddSkillsToJobOffer), skillRequirement);
+
+            JobOffer.SkillRequirements.Add(skillRequirement);
+
+            return RedirectToAction(nameof(AddSkillsToJobOffer));
+        }
+
+
 
         private string GetCurrentUserEmail()
         {

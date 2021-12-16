@@ -10,7 +10,7 @@ using SWZRFI.DAL.Contexts;
 namespace SWZRFI.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20211209212226_initial")]
+    [Migration("20211216213721_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -310,28 +310,6 @@ namespace SWZRFI.Migrations
                     b.ToTable("JobOffers");
                 });
 
-            modelBuilder.Entity("SWZRFI.DAL.Models.JobOfferSkillRequirement", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("JobOfferId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SkillRequirementId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("JobOfferId");
-
-                    b.HasIndex("SkillRequirementId");
-
-                    b.ToTable("JobOfferSkillRequirement");
-                });
-
             modelBuilder.Entity("SWZRFI.DAL.Models.Location", b =>
                 {
                     b.Property<int>("Id")
@@ -395,6 +373,9 @@ namespace SWZRFI.Migrations
                     b.Property<bool>("IsOptional")
                         .HasColumnType("bit");
 
+                    b.Property<int>("JobOfferId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
@@ -404,6 +385,8 @@ namespace SWZRFI.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("JobOfferId");
 
                     b.ToTable("SkillRequirements");
                 });
@@ -511,29 +494,21 @@ namespace SWZRFI.Migrations
                     b.Navigation("UserAccount");
                 });
 
-            modelBuilder.Entity("SWZRFI.DAL.Models.JobOfferSkillRequirement", b =>
-                {
-                    b.HasOne("SWZRFI.DAL.Models.JobOffer", "JobOffer")
-                        .WithMany("JobOfferSkillRequirements")
-                        .HasForeignKey("JobOfferId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SWZRFI.DAL.Models.SkillRequirement", "SkillRequirement")
-                        .WithMany()
-                        .HasForeignKey("SkillRequirementId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("JobOffer");
-
-                    b.Navigation("SkillRequirement");
-                });
-
             modelBuilder.Entity("SWZRFI.DAL.Models.Location", b =>
                 {
                     b.HasOne("SWZRFI.DAL.Models.JobOffer", "JobOffer")
                         .WithMany("Locations")
+                        .HasForeignKey("JobOfferId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("JobOffer");
+                });
+
+            modelBuilder.Entity("SWZRFI.DAL.Models.SkillRequirement", b =>
+                {
+                    b.HasOne("SWZRFI.DAL.Models.JobOffer", "JobOffer")
+                        .WithMany("SkillRequirements")
                         .HasForeignKey("JobOfferId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -560,9 +535,9 @@ namespace SWZRFI.Migrations
 
             modelBuilder.Entity("SWZRFI.DAL.Models.JobOffer", b =>
                 {
-                    b.Navigation("JobOfferSkillRequirements");
-
                     b.Navigation("Locations");
+
+                    b.Navigation("SkillRequirements");
                 });
 
             modelBuilder.Entity("SWZRFI.DAL.Models.UserAccount", b =>

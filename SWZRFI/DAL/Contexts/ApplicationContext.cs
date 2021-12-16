@@ -11,7 +11,7 @@ namespace SWZRFI.DAL.Contexts
             : base(options)
         {
         }
-
+        
         public DbSet<UserAccount> UserAccount { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<JobOffer> JobOffers { get; set; }
