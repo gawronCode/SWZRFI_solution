@@ -101,16 +101,14 @@
     </div>
     <div style="margin-top: 20px" class="row">
         <div class="col-sm">
+            <h6>Utworzył: @Model.CreatorUserAccount.UserName o czasie: @Model.CreationDate</h6>
+            <h6>Modyfikował: @Model.EditorUserAccount.UserName o czasie: @Model.LastModified</h6>
+        </div>
+    </div>
+    <div style="margin-top: 20px" class="row">
+        <div class="col-sm">
             <div class="form-group">
-                <label asp-for="CreationDate"></label>
-                <input readonly type="datetime-local" asp-for="CreationDate" class="form-control" rows="4"/>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatorUserAccount.UserName">Utworzył</label>
-                <input readonly asp-for="CreatorUserAccount.UserName" class="form-control" rows="4"/>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Zapisz" class="btn btn-primary" />
+                <input type="submit" value="Zapisz" class="btn btn-primary"/>
                 <a asp-action="Index" value="Anuluj" class="btn btn-secondary"></a>
             </div>
         </div>

@@ -49,8 +49,13 @@ namespace SWZRFI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditJobOffer(JobOffer jobOffer)
+        public async Task<IActionResult> EditJobOffer(JobOffer incomingJobOffer)
         {
+
+            var jobOffer = await _jobOffersManagerService.GetJobOfferForEdition(incomingJobOffer.Id);
+            await TryUpdateModelAsync(jobOffer);
+
+
             if (!ModelState.IsValid)
                 return RedirectToAction(nameof(EditJobOffer), jobOffer);
 
@@ -58,6 +63,7 @@ namespace SWZRFI.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
 
     }
 }
