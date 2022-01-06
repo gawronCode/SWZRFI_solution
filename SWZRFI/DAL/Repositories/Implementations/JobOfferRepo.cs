@@ -22,7 +22,6 @@ namespace SWZRFI.DAL.Repositories.Implementations
             _serviceScopeFactory = serviceScopeFactory;
         }
 
-        
 
         public async Task CreateJobOfferAsync(JobOffer jobOffer)
         {
@@ -42,13 +41,21 @@ namespace SWZRFI.DAL.Repositories.Implementations
             await context.SaveChangesAsync();
         }
 
+        public async Task RemoveJobOfferAsync(JobOffer jobOffer)
+        {
+            using var scope = _serviceScopeFactory.CreateScope();
+            await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+
+            context.JobOffers.Remove(jobOffer);
+            await context.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<JobOffer>> GetAllJobOffers()
         {
             using var scope = _serviceScopeFactory.CreateScope();
             await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
 
-            return await context.JobOffers.AsSplitQuery().Include(q => q.SkillRequirements)
-                .Include(q => q.Locations).ToListAsync();
+            return await context.JobOffers.ToListAsync();
         }
 
         public async Task<JobOffer> GetJobOfferByIdAsync(int id)
@@ -56,8 +63,9 @@ namespace SWZRFI.DAL.Repositories.Implementations
             using var scope = _serviceScopeFactory.CreateScope();
             await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
 
-            return await context.JobOffers.AsSplitQuery().Include(q => q.SkillRequirements)
-                .Include(q => q.Locations)
+            return await context.JobOffers
+                .Include(q => q.CreatorUserAccount)
+                .Include(q => q.EditorUserAccount)
                 .FirstOrDefaultAsync(q => q.Id == id);
         }
 
@@ -67,9 +75,7 @@ namespace SWZRFI.DAL.Repositories.Implementations
             using var scope = _serviceScopeFactory.CreateScope();
             await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
 
-            return await context.JobOffers.Where(q => q.CompanyId == companyId)
-                .AsSplitQuery().Include(q => q.SkillRequirements)
-                .Include(q => q.Locations).ToListAsync();
+            return await context.JobOffers.Where(q => q.CompanyId == companyId).ToListAsync();
         }
 
     }

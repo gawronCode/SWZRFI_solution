@@ -37,11 +37,32 @@ namespace SWZRFI.ViewServices.JobOffersManager
         {
             var user = await GetUser(email);
             jobOffer.CreationDate = DateTime.Now;
-            jobOffer.UserAccountId = user.Id;
+            jobOffer.LastModified = jobOffer.CreationDate;
+            jobOffer.CreatorUserAccountId = user.Id;
+            jobOffer.EditorUserAccountId = user.Id;
             jobOffer.CompanyId = user.CompanyId ?? throw new Exception();
 
             await _jobOfferRepo.CreateJobOfferAsync(jobOffer);
         }
+
+        public async Task<JobOffer> GetJobOfferForEdition(int jobOfferId)
+        {
+            return await _jobOfferRepo.GetJobOfferByIdAsync(jobOfferId);
+        }
+
+        public async Task SaveEditedJobOffer(string email, JobOffer jobOffer)
+        {
+            var user = await GetUser(email);
+            jobOffer.LastModified = DateTime.Now;
+            jobOffer.EditorUserAccountId = user.Id;
+            await _jobOfferRepo.UpdateJobOfferAsync(jobOffer);
+        }
+
+        public async Task RemoveJobOffer(JobOffer jobOffer)
+        {
+            await _jobOfferRepo.RemoveJobOfferAsync(jobOffer);
+        }
+
 
         private async Task<UserAccount> GetUser(string email)
         {

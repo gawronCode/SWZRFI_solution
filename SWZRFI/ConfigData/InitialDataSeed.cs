@@ -20,33 +20,38 @@ namespace SWZRFI.ConfigData
         {
             await SeedRoles(roleManager);
             await SeedUsers(userManager);
+            await SeedCompanies(serviceScopeFactory);
+        }
 
+        private static async Task SeedCompanies(IServiceScopeFactory serviceScopeFactory)
+        {
             using var scope = serviceScopeFactory.CreateScope();
-            await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-
+            var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
             var user = await context.UserAccount
                 .FirstOrDefaultAsync(q => q.Email == "fakeEmail@log.and.change");
+
             var company = await context.Companies
                 .FirstOrDefaultAsync(q => q.CorporationalEmail == "fakeEmail@log.and.change");
 
-            if(user is null || company is not null)
+            if (user is null || company is not null)
                 return;
-            
 
             company = new Company
             {
                 CorporationalEmail = "fakeEmail@log.and.change",
+                Name = "Firma admina",
                 Description = "Firma admina",
                 EmailConfirmed = true,
-                EmployeeCount = 1,
             };
 
             await context.Companies.AddAsync(company);
-
             await context.SaveChangesAsync();
-            user.CompanyId = company.Id;
-        }
 
+            user.CompanyId = company.Id;
+            context.UserAccount.Update(user);
+            await context.SaveChangesAsync();
+
+        }
 
 
         private static async Task SeedUsers(UserManager<UserAccount> userManager)

@@ -1,6 +1,42 @@
-﻿@page
+﻿@using System.Linq
+@model IEnumerable<SWZRFI.DAL.Models.JobOffer>
+
+@if (Model.Any())
+{
+    <div class="container">
+        <div class="row">
+            <h2>Aktualnie jest @Model.Count().ToString() dostępnych ogłoszeń</h2>
+        </div>
+
+        @foreach (var item in Model)
+        {
+            <div class="row">
+                <div class="media">
+                    <div class="media-body">
+                        <h4 class="mt-0">@item.Title</h4>
+                        <small><a asp-action="EditJobOffer" asp-route-id="@item.Id" class="btn btn-secondary btn-sm" role="button" style="margin-top: 10px">Edytuj</a></small>
+                        <small><a asp-action="Index" asp-route-id="@item.Id" class="btn btn-danger btn-sm" role="button" style="margin-top: 10px">Usuń</a></small>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        }
+
+    
+
+    </div>
 
 
-@{
-    ViewData["Title"] = "Tworzenie ogłoszenia";
 }
+else
+{
+    <div class="container">
+
+    <h1>Brak dostępnych ogłoszeń :(</h1>
+    
+    </div>
+}
+
+<div class="container">
+    <a asp-action="CreateJobOffer" class="btn btn-primary btn" role="button" style="margin-top: 10px">Dodaj ogłoszenie</a>
+</div>

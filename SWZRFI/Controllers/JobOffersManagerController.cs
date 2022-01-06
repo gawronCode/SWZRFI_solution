@@ -1,39 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using SWZRFI.DAL.Models;
-using SWZRFI.DAL.Repositories.Interfaces;
-using SWZRFI.DTO.BindingModels;
-using SWZRFI.ViewServices.JobOffers;
 using SWZRFI.ViewServices.JobOffersManager;
+
 
 namespace SWZRFI.Controllers
 {
     [Authorize(Roles = "PersonalAccount, SystemAdmin")]
-    public class JobOffersManagerController : Controller
+    public class JobOffersManagerController : BaseController
     {
 
         private readonly IJobOffersManagerService _jobOffersManagerService;
-
-
-        public JobOffer JobOffer { get; set; }
-
-
-
 
         public JobOffersManagerController(IJobOffersManagerService jobOffersManagerService)
         {
             _jobOffersManagerService = jobOffersManagerService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            
             return View(await _jobOffersManagerService.GetIndexPageData(GetCurrentUserEmail()));
         }
 
@@ -54,32 +41,23 @@ namespace SWZRFI.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
         [HttpGet]
-        public IActionResult AddSkillsToJobOffer()
+        public async Task<IActionResult> EditJobOffer(int id)
         {
-            return View();
+            var jobOffer = await _jobOffersManagerService.GetJobOfferForEdition(id);
+            return View(jobOffer);
         }
 
         [HttpPost]
-        public IActionResult AddSkillsToJobOffer(SkillRequirement skillRequirement)
+        public async Task<IActionResult> EditJobOffer(JobOffer jobOffer)
         {
             if (!ModelState.IsValid)
-                return RedirectToAction(nameof(AddSkillsToJobOffer), skillRequirement);
+                return RedirectToAction(nameof(EditJobOffer), jobOffer);
 
-            JobOffer.SkillRequirements.Add(skillRequirement);
+            await _jobOffersManagerService.SaveEditedJobOffer(GetCurrentUserEmail(),jobOffer);
 
-            return RedirectToAction(nameof(AddSkillsToJobOffer));
+            return RedirectToAction(nameof(Index));
         }
-
-
-
-        private string GetCurrentUserEmail()
-        {
-            return User.FindFirstValue(ClaimTypes.Email);
-        }
-
-        
 
     }
 }

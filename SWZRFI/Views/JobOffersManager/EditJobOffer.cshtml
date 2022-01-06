@@ -7,7 +7,7 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<form asp-action="CreateJobOffer">
+<form asp-action="EditJobOffer">
     <div style="margin-top: 20px" class="row">
         <div class="col-sm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -99,11 +99,24 @@
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <input type="submit" value="Zapisz" class="btn btn-primary" />
+    <div style="margin-top: 20px" class="row">
+        <div class="col-sm">
+            <div class="form-group">
+                <label asp-for="CreationDate"></label>
+                <input readonly type="datetime-local" asp-for="CreationDate" class="form-control" rows="4"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatorUserAccount.UserName">Utworzył</label>
+                <input readonly asp-for="CreatorUserAccount.UserName" class="form-control" rows="4"/>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Zapisz" class="btn btn-primary" />
+                <a asp-action="Index" value="Anuluj" class="btn btn-secondary"></a>
+            </div>
+        </div>
     </div>
 </form>
-    
+
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -134,5 +147,4 @@
         -o-transform: scale(1.2); /* Opera */
         padding: 10px;
     }
-
 </style>

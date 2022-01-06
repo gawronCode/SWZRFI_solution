@@ -8,5 +8,8 @@ namespace SWZRFI.ViewServices.JobOffersManager
     {
         Task<IEnumerable<JobOffer>> GetIndexPageData(string email);
         Task CreateJobOffer(string email, JobOffer jobOffer);
+        Task<JobOffer> GetJobOfferForEdition(int jobOfferId);
+        Task SaveEditedJobOffer(string email, JobOffer jobOffer);
+        Task RemoveJobOffer(JobOffer jobOffer);
     }
 }

@@ -11,5 +11,6 @@ namespace SWZRFI.DAL.Repositories.Interfaces
         Task<IEnumerable<JobOffer>> GetAllJobOffers();
         Task<JobOffer> GetJobOfferByIdAsync(int id);
         Task<IEnumerable<JobOffer>> GetAllJobOffersByCompanyIdAsync(int companyId);
+        Task RemoveJobOfferAsync(JobOffer jobOffer);
     }
 }

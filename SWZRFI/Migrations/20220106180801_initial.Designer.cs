@@ -10,7 +10,7 @@ using SWZRFI.DAL.Contexts;
 namespace SWZRFI.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20211216213721_initial")]
+    [Migration("20220106180801_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -234,10 +234,18 @@ namespace SWZRFI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("City")
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
                     b.Property<string>("CorporationalEmail")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Country")
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -245,20 +253,20 @@ namespace SWZRFI.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int>("EmployeeCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LocationId")
-                        .HasColumnType("int");
+                    b.Property<string>("HouseNumber")
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("Street")
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
 
-                    b.HasIndex("LocationId");
+                    b.HasKey("Id");
 
                     b.ToTable("Companies");
                 });
@@ -270,125 +278,84 @@ namespace SWZRFI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("AdditionalBenefits")
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
+                    b.Property<string>("City")
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
                     b.Property<int>("CompanyId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Country")
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
 
                     b.Property<DateTime?>("CreationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CreatorUserAccountId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(450)
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
+                    b.Property<string>("EditorUserAccountId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("ExpirationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("HouseNumber")
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<decimal>("LowerBoundSallary")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LowerBoundSallary")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OptionalRequirements")
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
+                    b.Property<string>("Requirements")
+                        .IsRequired()
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
+                    b.Property<int>("SkillLevel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Street")
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<decimal>("UpperBoundSallary")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UserAccountId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("UpperBoundSallary")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
 
-                    b.HasIndex("UserAccountId");
+                    b.HasIndex("CreatorUserAccountId");
+
+                    b.HasIndex("EditorUserAccountId");
 
                     b.ToTable("JobOffers");
-                });
-
-            modelBuilder.Entity("SWZRFI.DAL.Models.Location", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("HouseNumber")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("JobOfferId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Latitude")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Longitude")
-                        .HasColumnType("float");
-
-                    b.Property<string>("PostCode")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("JobOfferId");
-
-                    b.ToTable("Locations");
-                });
-
-            modelBuilder.Entity("SWZRFI.DAL.Models.SkillRequirement", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsOptional")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("JobOfferId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("JobOfferId");
-
-                    b.ToTable("SkillRequirements");
                 });
 
             modelBuilder.Entity("SWZRFI.DAL.Models.UserAccount", b =>
@@ -465,55 +432,29 @@ namespace SWZRFI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SWZRFI.DAL.Models.Company", b =>
-                {
-                    b.HasOne("SWZRFI.DAL.Models.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Location");
-                });
-
             modelBuilder.Entity("SWZRFI.DAL.Models.JobOffer", b =>
                 {
                     b.HasOne("SWZRFI.DAL.Models.Company", "Company")
                         .WithMany("JobOffers")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("SWZRFI.DAL.Models.UserAccount", "UserAccount")
-                        .WithMany("JobOffers")
-                        .HasForeignKey("UserAccountId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                    b.HasOne("SWZRFI.DAL.Models.UserAccount", "CreatorUserAccount")
+                        .WithMany("CreatedJobOffers")
+                        .HasForeignKey("CreatorUserAccountId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("SWZRFI.DAL.Models.UserAccount", "EditorUserAccount")
+                        .WithMany("EditedJobOffers")
+                        .HasForeignKey("EditorUserAccountId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Company");
 
-                    b.Navigation("UserAccount");
-                });
+                    b.Navigation("CreatorUserAccount");
 
-            modelBuilder.Entity("SWZRFI.DAL.Models.Location", b =>
-                {
-                    b.HasOne("SWZRFI.DAL.Models.JobOffer", "JobOffer")
-                        .WithMany("Locations")
-                        .HasForeignKey("JobOfferId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("JobOffer");
-                });
-
-            modelBuilder.Entity("SWZRFI.DAL.Models.SkillRequirement", b =>
-                {
-                    b.HasOne("SWZRFI.DAL.Models.JobOffer", "JobOffer")
-                        .WithMany("SkillRequirements")
-                        .HasForeignKey("JobOfferId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("JobOffer");
+                    b.Navigation("EditorUserAccount");
                 });
 
             modelBuilder.Entity("SWZRFI.DAL.Models.UserAccount", b =>
@@ -521,7 +462,7 @@ namespace SWZRFI.Migrations
                     b.HasOne("SWZRFI.DAL.Models.Company", "Company")
                         .WithMany("UserAccounts")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Company");
                 });
@@ -533,16 +474,11 @@ namespace SWZRFI.Migrations
                     b.Navigation("UserAccounts");
                 });
 
-            modelBuilder.Entity("SWZRFI.DAL.Models.JobOffer", b =>
-                {
-                    b.Navigation("Locations");
-
-                    b.Navigation("SkillRequirements");
-                });
-
             modelBuilder.Entity("SWZRFI.DAL.Models.UserAccount", b =>
                 {
-                    b.Navigation("JobOffers");
+                    b.Navigation("CreatedJobOffers");
+
+                    b.Navigation("EditedJobOffers");
                 });
 #pragma warning restore 612, 618
         }
