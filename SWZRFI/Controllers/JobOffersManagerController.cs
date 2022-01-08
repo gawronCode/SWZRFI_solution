@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using SWZRFI.DAL.Models;
+using SWZRFI.DTO;
 using SWZRFI.ViewServices.JobOffersManager;
 
 
@@ -64,6 +65,32 @@ namespace SWZRFI.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> RemoveJobOffer(int id)
+        {
+            var jobOffer = await _jobOffersManagerService.GetJobOfferForEdition(id);
+            var confirmRemoveByName = new ConfirmRemoveByName
+            {
+                ObjectName = jobOffer.Title
+            };
+
+            return RedirectToAction(nameof(ConfirmRemove), confirmRemoveByName);
+        }
+
+        public async Task<IActionResult> ConfirmRemove(ConfirmRemoveByName confirmRemoveByName)
+        {
+            if (!ModelState.IsValid)
+                return View(confirmRemoveByName);
+
+            if (await _jobOffersManagerService.RemoveJobOffer(GetCurrentUserEmail(), confirmRemoveByName.ObjectId))
+                return RedirectToAction(nameof(Index));
+
+            return RedirectToAction(nameof(ErrorMessage));
+        }
+
+        public IActionResult ErrorMessage()
+        {
+            return View();
+        }
 
     }
 }

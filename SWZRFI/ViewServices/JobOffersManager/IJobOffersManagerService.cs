@@ -10,6 +10,6 @@ namespace SWZRFI.ViewServices.JobOffersManager
         Task CreateJobOffer(string email, JobOffer jobOffer);
         Task<JobOffer> GetJobOfferForEdition(int jobOfferId);
         Task SaveEditedJobOffer(string email, JobOffer jobOffer);
-        Task RemoveJobOffer(JobOffer jobOffer);
+        Task<bool> RemoveJobOffer(string email, int jobOfferId);
     }
 }

@@ -58,9 +58,18 @@ namespace SWZRFI.ViewServices.JobOffersManager
             await _jobOfferRepo.UpdateJobOfferAsync(jobOffer);
         }
 
-        public async Task RemoveJobOffer(JobOffer jobOffer)
+        public async Task<bool> RemoveJobOffer(string email, int jobOfferId)
         {
+            var user = await GetUser(email);
+            var company = user.Company;
+
+            var jobOffer = company?.JobOffers?.FirstOrDefault(q => q.Id == jobOfferId);
+
+            if (jobOffer == null)
+                return false;
+
             await _jobOfferRepo.RemoveJobOfferAsync(jobOffer);
+            return true;
         }
 
 
