@@ -57,6 +57,16 @@ namespace SWZRFI.DAL.Repositories.Implementations
                 .FirstOrDefaultAsync(q => q.Email == email);
         }
 
+        public async Task UpdateUser(UserAccount userAccount)
+        {
+            using var scope = _serviceScopeFactory.CreateScope();
+            await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+
+            context.UserAccount.Update(userAccount);
+
+            await context.SaveChangesAsync();
+        }
+
 
     }
 }

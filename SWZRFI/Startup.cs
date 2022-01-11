@@ -11,13 +11,13 @@ using SWZRFI.BackgroundServices.Services.Abstract;
 using SWZRFI.BackgroundServices.Services.Implementations;
 using SWZRFI.ConfigData;
 using SWZRFI.ConfigData.Locales;
+using SWZRFI.ControllersServices.JobOffers;
+using SWZRFI.ControllersServices.JobOffersManager;
 using SWZRFI.DAL.Contexts;
 using SWZRFI.DAL.Models;
 using SWZRFI.DAL.Repositories.Implementations;
 using SWZRFI.DAL.Repositories.Interfaces;
 using SWZRFI.DAL.Utils;
-using SWZRFI.ViewServices.JobOffers;
-using SWZRFI.ViewServices.JobOffersManager;
 using SWZRFI_Utils.EmailHelper;
 
 

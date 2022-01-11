@@ -1,18 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using SWZRFI.DAL.Models;
 using SWZRFI.DAL.Repositories.Interfaces;
 
-
-
-namespace SWZRFI.ViewServices.JobOffersManager
+namespace SWZRFI.ControllersServices.JobOffersManager
 {
     public class JobOffersManagerService : IJobOffersManagerService
     {

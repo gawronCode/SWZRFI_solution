@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SWZRFI.DAL.Models;
 
 namespace SWZRFI.DAL.Repositories.Interfaces
 {
-    interface ICompanyRepo
+    public interface ICompanyRepo
     {
+        Task<int> CreateCompany(Company company);
     }
 }

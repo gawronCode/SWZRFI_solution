@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SWZRFI.ControllersServices.JobOffers;
 using SWZRFI.DAL.Repositories.Interfaces;
-using SWZRFI.ViewServices.JobOffers;
 
 
 namespace SWZRFI.Controllers

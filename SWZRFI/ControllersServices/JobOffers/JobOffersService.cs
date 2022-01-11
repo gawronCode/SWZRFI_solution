@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SWZRFI.DAL.Models;
 using SWZRFI.DAL.Repositories.Interfaces;
 
-namespace SWZRFI.ViewServices.JobOffers
+namespace SWZRFI.ControllersServices.JobOffers
 {
     public class JobOffersService : IJobOffersService
     {

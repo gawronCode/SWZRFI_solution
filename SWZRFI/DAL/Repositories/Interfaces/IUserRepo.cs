@@ -7,5 +7,6 @@ namespace SWZRFI.DAL.Repositories.Interfaces
     {
         Task DeleteUnverifiedAccountsAsync();
         Task<UserAccount> GetUserByEmailAsync(string email);
+        Task UpdateUser(UserAccount userAccount);
     }
 }

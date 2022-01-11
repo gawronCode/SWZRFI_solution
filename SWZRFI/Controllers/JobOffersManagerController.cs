@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using SWZRFI.ControllersServices.JobOffersManager;
 using SWZRFI.DAL.Models;
 using SWZRFI.DTO;
-using SWZRFI.ViewServices.JobOffersManager;
 
 
 namespace SWZRFI.Controllers

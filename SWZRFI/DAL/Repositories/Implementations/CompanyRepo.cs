@@ -20,14 +20,17 @@ namespace SWZRFI.DAL.Repositories.Implementations
         }
 
 
-        public async Task CreateCompany(Company company)
+        public async Task<int> CreateCompany(Company company)
         {
             using var scope = _serviceScopeFactory.CreateScope();
             await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
 
             await context.Companies.AddAsync(company);
             await context.SaveChangesAsync();
+            return company.Id;
         }
+
+
 
     }
 }

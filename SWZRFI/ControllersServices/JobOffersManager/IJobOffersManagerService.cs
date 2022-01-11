@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using SWZRFI.DAL.Models;
 
-namespace SWZRFI.ViewServices.JobOffersManager
+namespace SWZRFI.ControllersServices.JobOffersManager
 {
     public interface IJobOffersManagerService
     {
