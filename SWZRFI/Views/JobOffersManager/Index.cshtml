@@ -1,6 +1,16 @@
 ﻿@using System.Linq
 @model IEnumerable<SWZRFI.DAL.Models.JobOffer>
 
+
+@{
+    ViewBag.Title = "Oferty pracy";
+    Layout = "_LayoutCorporational";
+}
+
+
+<h1>@ViewData["Title"]</h1>
+
+
 @if (Model.Any())
 {
     <div class="container">
@@ -22,7 +32,7 @@
             <hr>
         }
 
-    
+
 
     </div>
 
@@ -32,8 +42,8 @@ else
 {
     <div class="container">
 
-    <h1>Brak dostępnych ogłoszeń :(</h1>
-    
+        <h1>Brak dostępnych ogłoszeń :(</h1>
+
     </div>
 }
 

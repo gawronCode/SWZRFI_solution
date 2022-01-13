@@ -30,6 +30,16 @@ namespace SWZRFI.DAL.Repositories.Implementations
             return company.Id;
         }
 
+        public async Task UpdateCompany(Company company)
+        {
+            using var scope = _serviceScopeFactory.CreateScope();
+            await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+
+            context.Companies.Update(company);
+
+            await context.SaveChangesAsync();
+        }
+
 
 
     }

@@ -41,8 +41,11 @@ namespace SWZRFI.ControllersServices.CompanyManager
 
             user.CompanyId = await _companyRepo.CreateCompany(company);
             await _userRepo.UpdateUser(user);
+        }
 
-
+        public async Task SaveEditedCompany(Company company)
+        {
+            await _companyRepo.UpdateCompany(company);
         }
     }
 }

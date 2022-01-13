@@ -10,13 +10,17 @@ namespace SWZRFI.DAL.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Proszę podać nazwę")]
         [MaxLength(255)]
+        [MinLength(5, ErrorMessage = "Minimalna długość nazwy oferty to 5 znaków")]
+        [Display(Name = "Nazwa Firmy")]
         public string Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Proszę podać email")]
         [MaxLength(255)]
+        [Display(Name = "Email firmowy")]
         public string CorporationalEmail { get; set; }
         public bool EmailConfirmed { get; set; }
+        [Display(Name = "Opis")]
         public string Description { get; set; }
         [Display(Name = "Kraj")]
         [MaxLength(1024)]

@@ -25,9 +25,26 @@ namespace SWZRFI.Controllers
             return View(company);
         }
 
-        public IActionResult EditCompany()
+        [HttpGet]
+        public async Task<IActionResult> EditCompany()
         {
-            return View();
+            var company = await _companyManagerService.GetUserCompany(GetCurrentUserEmail());
+
+            return View(company);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditCompany(Company incomingCompany)
+        {
+            var company = await _companyManagerService.GetUserCompany(GetCurrentUserEmail());
+            await TryUpdateModelAsync(company);
+
+            if (!ModelState.IsValid)
+                return RedirectToAction(nameof(EditCompany), company);
+
+            await _companyManagerService.SaveEditedCompany(company);
+
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]

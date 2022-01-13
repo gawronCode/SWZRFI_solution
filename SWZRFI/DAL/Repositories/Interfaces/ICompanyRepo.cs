@@ -9,5 +9,6 @@ namespace SWZRFI.DAL.Repositories.Interfaces
     public interface ICompanyRepo
     {
         Task<int> CreateCompany(Company company);
+        Task UpdateCompany(Company company);
     }
 }

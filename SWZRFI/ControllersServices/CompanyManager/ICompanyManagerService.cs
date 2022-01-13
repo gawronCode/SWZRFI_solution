@@ -10,5 +10,6 @@ namespace SWZRFI.ControllersServices.CompanyManager
     {
         Task CreateCompany(string email, Company company);
         Task<Company> GetUserCompany(string email);
+        Task SaveEditedCompany(Company company);
     }
 }
