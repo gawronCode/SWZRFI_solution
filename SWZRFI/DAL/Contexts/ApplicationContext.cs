@@ -15,6 +15,7 @@ namespace SWZRFI.DAL.Contexts
         public DbSet<UserAccount> UserAccount { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<JobOffer> JobOffers { get; set; }
+        public DbSet<CorporationalInvitation> CorporationalInvitations { get; set; }
 
 
         //Pozwala na obejście problemu zapętlenia EF jak encje mają specyficzne relacje

@@ -68,16 +68,6 @@ namespace SWZRFI.Controllers
         {
             return View();
         }
-
-        public IActionResult ManageEmployees()
-        {
-            return View();
-        }
-
-        public IActionResult SendInvitationCodeToUser()
-        {
-            return RedirectToAction(nameof(ManageEmployees));
-        }
-
+        
     }
 }

@@ -12,6 +12,7 @@ using SWZRFI.BackgroundServices.Services.Implementations;
 using SWZRFI.ConfigData;
 using SWZRFI.ConfigData.Locales;
 using SWZRFI.ControllersServices.CompanyManager;
+using SWZRFI.ControllersServices.Employee;
 using SWZRFI.ControllersServices.JobOffers;
 using SWZRFI.ControllersServices.JobOffersManager;
 using SWZRFI.DAL.Contexts;
@@ -62,6 +63,7 @@ namespace SWZRFI
             services.AddScoped<IJobOffersService, JobOffersService>();
             services.AddScoped<IJobOffersManagerService, JobOffersManagerService>();
             services.AddScoped<ICompanyManagerService, CompanyManagerService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
             
         }
 
@@ -89,6 +91,7 @@ namespace SWZRFI
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IJobOfferRepo, JobOfferRepo>();
             services.AddScoped<ICompanyRepo, CompanyRepo>();
+            services.AddScoped<IEmployeeRepo, EmployeeRepo>();
         }
 
         private void AddContexts(IServiceCollection services)
