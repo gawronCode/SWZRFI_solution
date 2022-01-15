@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Formats.Asn1;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,15 @@ namespace SWZRFI.DAL.Repositories.Implementations
             await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
 
             await context.CorporationalInvitations.AddAsync(invitation);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task UpdateCorporationalInvitation(CorporationalInvitation invitation)
+        {
+            using var scope = _serviceScopeFactory.CreateScope();
+            await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+
+            context.CorporationalInvitations.Update(invitation);
             await context.SaveChangesAsync();
         }
 

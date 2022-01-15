@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using SWZRFI.ConfigData;
-using SWZRFI.ControllersServices.Employee;
+using SWZRFI.ControllersServices.EmployeeManager;
 using SWZRFI.DAL.Models;
 using SWZRFI_Utils.EmailHelper;
 using SWZRFI_Utils.EmailHelper.Models;
@@ -28,7 +28,7 @@ namespace SWZRFI.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterFromInvitationModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IConfigGetter _configGetter;
-        private readonly IEmployeeService _employeeService;
+        private readonly IEmployeeManagerService _employeeManagerService;
 
         public RegisterFromInvitationModel(
             UserManager<UserAccount> userManager,
@@ -36,7 +36,7 @@ namespace SWZRFI.Areas.Identity.Pages.Account
             ILogger<RegisterFromInvitationModel> logger,
             IEmailSender emailSender,
             IConfigGetter configGetter,
-            IEmployeeService employeeService)
+            IEmployeeManagerService employeeManagerService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -84,29 +84,38 @@ namespace SWZRFI.Areas.Identity.Pages.Account
             public string InvitationCode { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(string code, string returnUrl = null)
         {
+            Input = new InputModel
+            {
+                InvitationCode = Encoding.Default.GetString(WebEncoders.Base64UrlDecode(code))
+            };
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string code, string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (!ModelState.IsValid) return Page();
-            var user = new UserAccount { UserName = Input.Email, Email = Input.Email, RegistrationDate = DateTime.Now};
+            var user = new UserAccount 
+                { UserName = Input.Email, 
+                    Email = Input.Email, 
+                    RegistrationDate = DateTime.Now
+
+                };
             var result = await _userManager.CreateAsync(user, Input.Password);
             if (result.Succeeded)
             {
                     
 
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
                 var callbackUrl = Url.Page(
                     "/Account/ConfirmEmail",
                     pageHandler: null,
-                    values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                    values: new { area = "Identity", userId = user.Id, code = token, returnUrl = returnUrl },
                     protocol: Request.Scheme);
 
 

@@ -24,7 +24,7 @@ namespace SWZRFI_Utils.EmailHelper
 
                 using var smtpClient = new SmtpClient();
                 
-                smtpClient.Connect(emailCredentials.SmtpHost, emailCredentials.Port, SecureSocketOptions.StartTls);
+                smtpClient.Connect(emailCredentials.SmtpHost, emailCredentials.Port, SecureSocketOptions.Auto);
                 smtpClient.Authenticate(emailCredentials.EmailAddress, emailCredentials.Password);
                 smtpClient.Send(email);
                 smtpClient.Disconnect(true);
