@@ -29,6 +29,7 @@ namespace SWZRFI.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly IConfigGetter _configGetter;
         private readonly IEmployeeManagerService _employeeManagerService;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterFromInvitationModel(
             UserManager<UserAccount> userManager,
@@ -36,13 +37,16 @@ namespace SWZRFI.Areas.Identity.Pages.Account
             ILogger<RegisterFromInvitationModel> logger,
             IEmailSender emailSender,
             IConfigGetter configGetter,
-            IEmployeeManagerService employeeManagerService)
+            IEmployeeManagerService employeeManagerService,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _configGetter = configGetter;
+            _employeeManagerService = employeeManagerService;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -103,19 +107,36 @@ namespace SWZRFI.Areas.Identity.Pages.Account
                 { UserName = Input.Email, 
                     Email = Input.Email, 
                     RegistrationDate = DateTime.Now
-
                 };
-            var result = await _userManager.CreateAsync(user, Input.Password);
-            if (result.Succeeded)
+
+            var guid = Guid.Empty;
+
+            try
             {
-                    
+                guid = Guid.Parse(Input.InvitationCode);
+            }
+            catch (Exception e)
+            {
+                guid = Guid.Empty;
+            }
+
+            var validation = await _employeeManagerService.ValidatePreRegistration(Input.Email, guid);
+
+            if (!validation)             
+                return Page();
+            
+            var createResutl = await _userManager.CreateAsync(user, Input.Password);
+            int? rnoleResult= null;
+
+            if (createResutl.Succeeded)
+            {
 
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
                 var callbackUrl = Url.Page(
                     "/Account/ConfirmEmail",
                     pageHandler: null,
-                    values: new { area = "Identity", userId = user.Id, code = token, returnUrl = returnUrl },
+                    values: new {area = "Identity", userId = user.Id, code = token, returnUrl = returnUrl},
                     protocol: Request.Scheme);
 
 
@@ -141,18 +162,12 @@ namespace SWZRFI.Areas.Identity.Pages.Account
 
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
                 {
-                    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                    return RedirectToPage("RegisterConfirmation", new {email = Input.Email, returnUrl = returnUrl});
                 }
 
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 return LocalRedirect(returnUrl);
             }
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-
-            
             return Page();
         }
 

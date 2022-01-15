@@ -54,6 +54,11 @@ namespace SWZRFI.ControllersServices.EmployeeManager
             return true;
         }
 
+        public async Task<bool> ValidatePreRegistration(string email, Guid guid)
+        {
+            return await _employeeRepo.ValidateAgainstEmailAndGuid(email, guid);
+        }
+
         private EmailCredentials GetEmailCredentials()
         {
             var identityEmail = _configGetter.GetIdentityEmail();
