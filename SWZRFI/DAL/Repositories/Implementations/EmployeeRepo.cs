@@ -65,6 +65,14 @@ namespace SWZRFI.DAL.Repositories.Implementations
             return string.Equals(invitation.Email, email, StringComparison.CurrentCultureIgnoreCase);
         }
 
+        public async Task<CorporationalInvitation> GetCorporationalInvitation(Guid guid)
+        {
+            using var scope = _serviceScopeFactory.CreateScope();
+            await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+
+            return await context.CorporationalInvitations
+                .FirstOrDefaultAsync(q => q.Guid == guid);
+        }
 
     }
 }

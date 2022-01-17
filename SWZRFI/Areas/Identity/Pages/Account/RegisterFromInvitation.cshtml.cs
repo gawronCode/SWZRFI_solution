@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using SWZRFI.ConfigData;
 using SWZRFI.ControllersServices.EmployeeManager;
+using SWZRFI.DAL.Enums;
 using SWZRFI.DAL.Models;
 using SWZRFI_Utils.EmailHelper;
 using SWZRFI_Utils.EmailHelper.Models;
@@ -103,19 +104,14 @@ namespace SWZRFI.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (!ModelState.IsValid) return Page();
-            var user = new UserAccount 
-                { UserName = Input.Email, 
-                    Email = Input.Email, 
-                    RegistrationDate = DateTime.Now
-                };
 
-            var guid = Guid.Empty;
+            Guid guid;
 
             try
             {
                 guid = Guid.Parse(Input.InvitationCode);
             }
-            catch (Exception e)
+            catch
             {
                 guid = Guid.Empty;
             }
@@ -124,56 +120,73 @@ namespace SWZRFI.Areas.Identity.Pages.Account
 
             if (!validation)             
                 return Page();
-            
-            var createResutl = await _userManager.CreateAsync(user, Input.Password);
-            int? rnoleResult= null;
 
-            if (createResutl.Succeeded)
+            var corporationalInvitation = await _employeeManagerService.GetCorporationalInvitation(guid);
+
+            var user = new UserAccount
             {
+                UserName = Input.Email,
+                Email = Input.Email,
+                RegistrationDate = DateTime.Now,
+                CompanyId = corporationalInvitation.CompanyId
+            };
 
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-                var callbackUrl = Url.Page(
-                    "/Account/ConfirmEmail",
-                    pageHandler: null,
-                    values: new {area = "Identity", userId = user.Id, code = token, returnUrl = returnUrl},
-                    protocol: Request.Scheme);
+            var createResutl = await _userManager.CreateAsync(user, Input.Password);
 
+            if (!createResutl.Succeeded) 
+                return Page();
 
-                var identityEmail = _configGetter.GetIdentityEmail();
-                var emailCredentials = new EmailCredentials
-                {
-                    EmailAddress = identityEmail.Email,
-                    Password = identityEmail.Password,
-                    Port = identityEmail.Port,
-                    SmtpHost = identityEmail.Smtp
-                };
+            await _userManager.AddToRoleAsync(user, GetRoles(-1));
+            await _userManager.AddToRoleAsync(user, GetRoles(corporationalInvitation.AssignedRole));
 
-                var emailMessage = new EmailMessage
-                {
-                    Recipients = new List<string>() {Input.Email},
-                    Subject = "Potwierdzenie adresu email SWZRFI",
-                    Content =
-                        $"Aby potwierdzić podany adres email kliknij załączony link <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>kliknij tutaj</a>."
-                };
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+            var callbackUrl = Url.Page(
+                "/Account/ConfirmEmail",
+                pageHandler: null,
+                values: new {area = "Identity", userId = user.Id, code = token, returnUrl = returnUrl},
+                protocol: Request.Scheme);
 
 
-                await _emailSender.Send(emailCredentials, emailMessage);
+            var identityEmail = _configGetter.GetIdentityEmail();
+            var emailCredentials = new EmailCredentials
+            {
+                EmailAddress = identityEmail.Email,
+                Password = identityEmail.Password,
+                Port = identityEmail.Port,
+                SmtpHost = identityEmail.Smtp
+            };
 
-                if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                {
-                    return RedirectToPage("RegisterConfirmation", new {email = Input.Email, returnUrl = returnUrl});
-                }
+            var emailMessage = new EmailMessage
+            {
+                Recipients = new List<string>() {Input.Email},
+                Subject = "Potwierdzenie adresu email SWZRFI",
+                Content =
+                    $"Aby potwierdzić podany adres email kliknij załączony link <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>kliknij tutaj</a>."
+            };
 
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return LocalRedirect(returnUrl);
+
+            await _emailSender.Send(emailCredentials, emailMessage);
+
+            if (_userManager.Options.SignIn.RequireConfirmedAccount)
+            {
+                return RedirectToPage("RegisterConfirmation", new {email = Input.Email, returnUrl = returnUrl});
             }
-            return Page();
+
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            return LocalRedirect(returnUrl);
         }
 
-        private async Task ValidateInvitationCode()
+        private string GetRoles(int role)
         {
-
+            return role switch
+            {
+                0 => Roles.RecruitersAccount.ToString("G"),
+                1 => Roles.ManagerAccount.ToString("G"),
+                _ => Roles.PersonalAccount.ToString("G")
+            };
         }
+
+
     }
 }

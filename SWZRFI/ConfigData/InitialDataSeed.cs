@@ -71,6 +71,7 @@ namespace SWZRFI.ConfigData
             await userManager.AddToRoleAsync(user, "SystemAdmin");
             await userManager.AddToRoleAsync(user, "PersonalAccount");
             await userManager.AddToRoleAsync(user, "RecruitersAccount");
+            await userManager.AddToRoleAsync(user, "ManagerAccount");
         }
 
         private static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
@@ -78,6 +79,7 @@ namespace SWZRFI.ConfigData
             await CreateRole(roleManager, "SystemAdmin");
             await CreateRole(roleManager, "PersonalAccount");
             await CreateRole(roleManager, "RecruitersAccount");
+            await CreateRole(roleManager, "ManagerAccount");
         }
 
         private static async Task CreateRole(

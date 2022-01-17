@@ -8,5 +8,6 @@ namespace SWZRFI.ControllersServices.EmployeeManager
     {
         Task<bool> SendInvitation(string userEmail, string callBackUrl, CorporationalInvitation invitation);
         Task<bool> ValidatePreRegistration(string email, Guid guid);
+        Task<CorporationalInvitation> GetCorporationalInvitation(Guid guid);
     }
 }

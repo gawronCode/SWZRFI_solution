@@ -59,6 +59,11 @@ namespace SWZRFI.ControllersServices.EmployeeManager
             return await _employeeRepo.ValidateAgainstEmailAndGuid(email, guid);
         }
 
+        public async Task<CorporationalInvitation> GetCorporationalInvitation(Guid guid)
+        {
+            return await _employeeRepo.GetCorporationalInvitation(guid);
+        }
+
         private EmailCredentials GetEmailCredentials()
         {
             var identityEmail = _configGetter.GetIdentityEmail();

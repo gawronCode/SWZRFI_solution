@@ -10,5 +10,6 @@ namespace SWZRFI.DAL.Repositories.Interfaces
     {
         Task CreateCorporationalInvitation(CorporationalInvitation invitation);
         Task<bool> ValidateAgainstEmailAndGuid(string email, Guid guid);
+        Task<CorporationalInvitation> GetCorporationalInvitation(Guid guid);
     }
 }

@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using SWZRFI.ConfigData;
+using SWZRFI.DAL.Enums;
 using SWZRFI.DAL.Models;
 using SWZRFI_Utils.EmailHelper;
 using SWZRFI_Utils.EmailHelper.Models;
@@ -88,11 +89,16 @@ namespace SWZRFI.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (!ModelState.IsValid) return Page();
-            var user = new UserAccount { UserName = Input.Email, Email = Input.Email, RegistrationDate = DateTime.Now};
+            var user = new UserAccount
+            {
+                UserName = Input.Email, 
+                Email = Input.Email, 
+                RegistrationDate = DateTime.Now
+            };
             var result = await _userManager.CreateAsync(user, Input.Password);
             if (result.Succeeded)
             {
-                    
+                await _userManager.AddToRoleAsync(user, Roles.PersonalAccount.ToString("G"));
 
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
