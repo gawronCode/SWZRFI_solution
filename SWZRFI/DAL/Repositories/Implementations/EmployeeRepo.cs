@@ -55,7 +55,7 @@ namespace SWZRFI.DAL.Repositories.Implementations
                     => q.Guid == guid &&
                        q.ExpirationDate.CompareTo(DateTime.Now) >= 0);
 
-            if (invitation == null || invitation.Used)
+            if (invitation?.Used != false)
                 return false;
 
             invitation.Used = true;

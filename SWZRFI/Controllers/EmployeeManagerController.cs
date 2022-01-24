@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using SWZRFI.ControllersServices.EmployeeManager;
 using SWZRFI.DAL.Models;
@@ -20,9 +21,10 @@ namespace SWZRFI.Controllers
         }
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var userRoles = await _employeeManagerService.GetUserRoles(GetCurrentUserEmail());
+            return View(userRoles);
         }
 
 

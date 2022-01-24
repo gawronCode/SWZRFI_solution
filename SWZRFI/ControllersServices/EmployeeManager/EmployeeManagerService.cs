@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using SWZRFI.ConfigData;
 using SWZRFI.DAL.Models;
 using SWZRFI.DAL.Repositories.Interfaces;
+using SWZRFI.DTO;
 using SWZRFI_Utils.EmailHelper;
 using SWZRFI_Utils.EmailHelper.Models;
 
@@ -18,6 +21,7 @@ namespace SWZRFI.ControllersServices.EmployeeManager
         private readonly IEmailSender _emailSender;
         private readonly IConfigGetter _configGetter;
 
+
         public EmployeeManagerService(IUserRepo userRepo,
                                IEmployeeRepo employeeRepo,
                                IEmailSender emailSender,
@@ -29,11 +33,24 @@ namespace SWZRFI.ControllersServices.EmployeeManager
             _configGetter = configGetter;
         }
 
+        public async Task<IEnumerable<UserRole>> GetUserRoles(string userEmail)
+        {
+            var user = await _userRepo.GetUserByEmailAsync(userEmail);
+
+            if (user.CompanyId == null)
+                return null;
+
+            var userRoles = await _userRepo.GetUsersRolesForCompany((int)user.CompanyId);
+            return userRoles;
+
+        }
+        
+
         public async Task<bool> SendInvitation(string userEmail, string callBackUrl, CorporationalInvitation invitation)
         {
             var user = await _userRepo.GetUserByEmailAsync(userEmail);
 
-            if (user == null || user.CompanyId == null)
+            if (user?.CompanyId == null)
                 return false;
 
             invitation.CompanyId = (int)user.CompanyId;

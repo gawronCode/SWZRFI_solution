@@ -64,7 +64,6 @@ namespace SWZRFI
             services.AddScoped<IJobOffersManagerService, JobOffersManagerService>();
             services.AddScoped<ICompanyManagerService, CompanyManagerService>();
             services.AddScoped<IEmployeeManagerService, EmployeeManagerService>();
-            
         }
 
 

@@ -1,11 +1,59 @@
-﻿@model dynamic
+﻿@model IEnumerable<SWZRFI.DTO.UserRole>
 
 @{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
+    ViewBag.Title = "Pracownicy";
+    Layout = "_LayoutCorporational";
 }
 
 <h2>Pracownicy</h2>
 
+@if (Model.Any()) { 
 
-<a asp-action="SendInvitationCodeToUser" value="Anuluj" class="btn btn-secondary">Anuluj</a>
+    <div class="container">
+        
+
+
+        <div class="row">
+
+            <div class="col-sm-5">
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th style="text-align: center">
+                            <h4>Imię</h4>
+                        </th>
+                        <th style="text-align: center">
+                            <h4>Nazwisko</h4>
+                        </th>
+                        <th style="text-align: center">
+                            <h4>Email</h4>
+                        </th>
+                        <th style="text-align: center">
+                            <h4>role</h4>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.UserAccount.FirstName</td>
+                            <td>@item.UserAccount.LastName</td>
+                            <td>@item.UserAccount.Email</td>
+                            <td>@item.IdentityRole.Name</td>
+                        </tr>
+                    }
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+        </div>
+    </div>
+}
+

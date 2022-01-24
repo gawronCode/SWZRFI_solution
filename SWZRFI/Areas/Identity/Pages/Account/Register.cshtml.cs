@@ -53,6 +53,11 @@ namespace SWZRFI.Areas.Identity.Pages.Account
         public class InputModel
         {
 
+            [Required(ErrorMessage = "Podanie Nicku jest wymagane")]
+            [DataType(DataType.Text)]
+            [Display(Name = "Nick")]
+            public string UserName { get; set; }
+
             [Required(ErrorMessage = "Podanie imienia jest wymagane")]
             [DataType(DataType.Text)]
             [Display(Name = "Imię")]
@@ -91,7 +96,9 @@ namespace SWZRFI.Areas.Identity.Pages.Account
             if (!ModelState.IsValid) return Page();
             var user = new UserAccount
             {
-                UserName = Input.Email, 
+                UserName = Input.UserName,
+                FirstName = Input.FirstName,
+                LastName = Input.LastName,
                 Email = Input.Email, 
                 RegistrationDate = DateTime.Now
             };

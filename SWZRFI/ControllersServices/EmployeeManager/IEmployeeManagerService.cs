@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SWZRFI.DAL.Models;
+using SWZRFI.DTO;
 
 namespace SWZRFI.ControllersServices.EmployeeManager
 {
@@ -9,5 +11,6 @@ namespace SWZRFI.ControllersServices.EmployeeManager
         Task<bool> SendInvitation(string userEmail, string callBackUrl, CorporationalInvitation invitation);
         Task<bool> ValidatePreRegistration(string email, Guid guid);
         Task<CorporationalInvitation> GetCorporationalInvitation(Guid guid);
+        Task<IEnumerable<UserRole>> GetUserRoles(string userEmail);
     }
 }
