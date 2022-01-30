@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using SWZRFI.ControllersServices.EmployeeManager;
 using SWZRFI.DAL.Models;
+using SWZRFI.DTO;
 
 namespace SWZRFI.Controllers
 {
@@ -27,6 +28,12 @@ namespace SWZRFI.Controllers
             return View(userRoles);
         }
 
+
+
+        public IActionResult EditUserRoles(UserRoles userRoles)
+        {
+            return View(userRoles);
+        }
 
         [HttpGet]
         public IActionResult SendInvitationCodeToUser()

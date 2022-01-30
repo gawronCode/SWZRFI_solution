@@ -7,9 +7,9 @@ using SWZRFI.DAL.Models;
 
 namespace SWZRFI.DTO
 {
-    public class UserRole
+    public class UserRoles
     {
-        public IdentityRole IdentityRole { get; set; }
+        public IEnumerable<IdentityRole> IdentityRoles { get; set; }
         public UserAccount UserAccount { get; set; }
     }
 }

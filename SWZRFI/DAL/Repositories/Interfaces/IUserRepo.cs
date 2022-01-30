@@ -10,6 +10,6 @@ namespace SWZRFI.DAL.Repositories.Interfaces
         Task DeleteUnverifiedAccountsAsync();
         Task<UserAccount> GetUserByEmailAsync(string email);
         Task UpdateUser(UserAccount userAccount);
-        Task<IEnumerable<UserRole>> GetUsersRolesForCompany(int companyId);
+        Task<IEnumerable<UserRoles>> GetUsersRolesForCompany(int companyId);
     }
 }

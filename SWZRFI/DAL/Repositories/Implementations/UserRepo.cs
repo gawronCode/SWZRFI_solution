@@ -8,6 +8,7 @@ using SWZRFI.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SWZRFI.DAL.Repositories.Implementations
@@ -69,7 +70,7 @@ namespace SWZRFI.DAL.Repositories.Implementations
             await context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<UserRole>> GetUsersRolesForCompany(int companyId)
+        public async Task<IEnumerable<UserRoles>> GetUsersRolesForCompany(int companyId)
         {
             using var scope = _serviceScopeFactory.CreateScope();
             await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
@@ -87,20 +88,21 @@ namespace SWZRFI.DAL.Repositories.Implementations
                 .Where(u => (int)u.CompanyId == companyId)
                 .ToListAsync();
 
-            var join = users.Join(userRoles,
+            var join = users.GroupJoin(
+                userRoles.Join(roles,
+                    ur => ur.RoleId,
+                    r => r.Id,
+                    (ur, r) => new
+                    {
+                        userRole = ur,
+                        role = r
+                    }).ToList(),
                 u => u.Id,
-                ur => ur.UserId,
-                (u, ur) => new
+                ur => ur.userRole.UserId,
+                (u, ur) => new UserRoles
                 {
-                    u = u,
-                    ur = ur
-                }).Join(roles,
-                j => j.ur.RoleId,
-                r => r.Id,
-                (j, r) => new UserRole
-                {
-                    UserAccount = j.u,
-                    IdentityRole = r
+                    UserAccount = u,
+                    IdentityRoles = ur.Select(ur => ur.role).ToList()
                 }).ToList();
 
             return join;

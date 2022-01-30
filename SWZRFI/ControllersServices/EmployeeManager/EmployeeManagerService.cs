@@ -33,7 +33,7 @@ namespace SWZRFI.ControllersServices.EmployeeManager
             _configGetter = configGetter;
         }
 
-        public async Task<IEnumerable<UserRole>> GetUserRoles(string userEmail)
+        public async Task<IEnumerable<UserRoles>> GetUserRoles(string userEmail)
         {
             var user = await _userRepo.GetUserByEmailAsync(userEmail);
 

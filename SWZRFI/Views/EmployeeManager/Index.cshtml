@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SWZRFI.DTO.UserRole>
+﻿@model IEnumerable<SWZRFI.DTO.UserRoles>
 
 @{
     ViewBag.Title = "Pracownicy";
@@ -15,21 +15,24 @@
 
         <div class="row">
 
-            <div class="col-sm-5">
+            <div class="col-sm-11">
                 <table class="table">
                     <thead class="thead-dark">
                     <tr>
-                        <th style="text-align: center">
+                        <th style="text-align: right">
                             <h4>Imię</h4>
                         </th>
-                        <th style="text-align: center">
+                        <th style="text-align: right">
                             <h4>Nazwisko</h4>
                         </th>
-                        <th style="text-align: center">
+                        <th style="text-align: right">
                             <h4>Email</h4>
                         </th>
-                        <th style="text-align: center">
-                            <h4>role</h4>
+                        <th style="text-align: right; border-right: none">
+                            <h4>Przypisane role</h4>
+                        </th>
+                        <th style="border-right:none; border-left:none">
+
                         </th>
                     </tr>
                     </thead>
@@ -38,10 +41,21 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@item.UserAccount.FirstName</td>
-                            <td>@item.UserAccount.LastName</td>
-                            <td>@item.UserAccount.Email</td>
-                            <td>@item.IdentityRole.Name</td>
+                            <td style="text-align: right">@item.UserAccount.FirstName</td>
+                            <td style="text-align: right">@item.UserAccount.LastName</td>
+                            <td style="text-align: right">@item.UserAccount.Email</td>
+                            <td style="text-align: right; border-right: none">@foreach (var role in item.IdentityRoles)
+                                { 
+                                    @role.Name<br>
+                                }</td>
+                            <td style="text-align: right;
+                                border-right: none;
+                                border-left: none">
+                                <a asp-action="EditCompany" class="btn btn-sm btn-primary" role="button">Edytuj rolę</a>
+                                <a asp-action="EditCompany" class="btn btn-sm btn-secondary" role="button">Zawieś</a>
+                                <a asp-action="EditCompany" class="btn btn-sm btn-danger" role="button">Usuń</a>
+                                
+                            </td>
                         </tr>
                     }
 
@@ -57,3 +71,10 @@
     </div>
 }
 
+<style>
+    td, th {
+        border-right: solid 1px #454D55;
+        border-left: solid 1px #454D55;
+        border-bottom: solid 1px #454D55;
+    }
+</style>
