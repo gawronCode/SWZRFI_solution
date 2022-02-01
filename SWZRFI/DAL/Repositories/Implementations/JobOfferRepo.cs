@@ -55,7 +55,9 @@ namespace SWZRFI.DAL.Repositories.Implementations
             using var scope = _serviceScopeFactory.CreateScope();
             await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
 
-            return await context.JobOffers.ToListAsync();
+            return await context.JobOffers
+                .Include(j => j.Company)
+                .ToListAsync();
         }
 
         public async Task<JobOffer> GetJobOfferByIdAsync(int id)
@@ -64,6 +66,7 @@ namespace SWZRFI.DAL.Repositories.Implementations
             await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
 
             return await context.JobOffers
+                .Include(q => q.Company)
                 .Include(q => q.CreatorUserAccount)
                 .Include(q => q.EditorUserAccount)
                 .FirstOrDefaultAsync(q => q.Id == id);

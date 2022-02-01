@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SWZRFI.ControllersServices.JobOffers;
 using SWZRFI.DAL.Repositories.Interfaces;
-
+using SWZRFI.DTO.DtoMappingUtils;
 
 namespace SWZRFI.Controllers
 {
@@ -22,7 +22,8 @@ namespace SWZRFI.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Index()
         {
-            return View(await _jobOffersService.GetIndexPageData());
+            var offer = await _jobOffersService.GetIndexPageData();
+            return View(offer);
         }
 
         /// <summary>
@@ -32,7 +33,8 @@ namespace SWZRFI.Controllers
         /// <returns></returns>
         public async Task<IActionResult> JobOfferDetails(int id)
         {
-            return View(await _jobOffersService.GetJobOfferDetailsData(id));
+            var offer = await _jobOffersService.GetJobOfferDetailsData(id);
+            return View(offer.MapToDto());
         }
 
 

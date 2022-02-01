@@ -1,9 +1,107 @@
-﻿@using System.Linq
-@model SWZRFI.DAL.Models.JobOffer
+﻿@model SWZRFI.DTO.JobOfferDetails;
 
 @{
-    ViewData["Title"] = "JobDetails";
+    ViewBag.Title = Model.Title;
+    Layout = "_LayoutCorporational";
 }
 
+<h1>@ViewData["Title"]</h1>
 
-<h1>TODO xD</h1>
+<div class="row">
+    <div class="col-sm">
+        <h5>Ogólny poziom umiejętności: @Model.SkillLevel</h5>
+        <h5>Opis stanowiska</h5>
+        @foreach (var item in Model.Description)
+        {
+            <div>
+                <h6>@item</h6>
+            </div>
+
+        }
+
+        <h5>Wymagania:</h5>
+        @foreach (var item in Model.Requirements)
+        {
+            <div>
+                <h6>@item</h6>
+            </div>
+
+        }
+
+        @if (Model.OptionalRequirements.Any() && Model.OptionalRequirements != null)
+        {
+            <h5>Wymagania Opcjonalne:</h5>
+            @foreach (var item in Model.OptionalRequirements)
+            {
+                <div>
+                    <h6>@item</h6>
+                </div>
+
+            }
+        }
+
+    </div>
+    <div class="col-sm">
+
+        <h4>Wynagrodzenie:</h4>
+
+        <h5>Dolne widełki płacowe: @Model.LowerBoundSallary</h5>
+        <h5 style="margin-top:0">Górne widełki płacowe: @Model.UpperBoundSallary</h5>
+
+        @if (Model.OptionalRequirements.Any() && Model.OptionalRequirements != null)
+        {
+            <h5>Ponadto oferujemy:</h5>
+            @foreach (var item in Model.AdditionalBenefits)
+            {
+                <div>
+                    <h6>@item</h6>
+                </div>
+
+            }
+        }
+    </div>
+
+</div>
+<div class="row">
+
+    <div class="col-sm">
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        h4, h5 {
+            margin-top: 20px;
+        }
+
+        input[type=checkbox] {
+            /* Double-sized Checkboxes */
+            -ms-transform: scale(1.5); /* IE */
+            -moz-transform: scale(1.5); /* FF */
+            -webkit-transform: scale(1.5); /* Safari and Chrome */
+            -o-transform: scale(1.5); /* Opera */
+            padding: 10px;
+        }
+
+        input[type=radio] {
+            /* Double-sized Checkboxes */
+            -ms-transform: scale(1.2); /* IE */
+            -moz-transform: scale(1.2); /* FF */
+            -webkit-transform: scale(1.2); /* Safari and Chrome */
+            -o-transform: scale(1.2); /* Opera */
+            padding: 10px;
+        }
+    </style>
