@@ -2,32 +2,57 @@
 
 @{
     ViewBag.Title = Model.Title;
-    Layout = "_LayoutCorporational";
+    Layout = "_Layout";
 }
+
+@functions{
+
+    private bool DisplayJobOfferLocation()
+    {
+        return !string.IsNullOrEmpty(Model.Country) &&
+               !string.IsNullOrEmpty(Model.City) &&
+               !string.IsNullOrEmpty(Model.Street) &&
+               !string.IsNullOrEmpty(Model.HouseNumber);
+    }
+
+    private bool DisplayJobOfferCompanyLocation()
+    {
+        return !string.IsNullOrEmpty(Model.Country) &&
+               !string.IsNullOrEmpty(Model.City) &&
+               !string.IsNullOrEmpty(Model.Street) &&
+               !string.IsNullOrEmpty(Model.HouseNumber);
+    }
+
+}
+
+
 
 <h1>@ViewData["Title"]</h1>
 
 <div class="row">
+    <div class="col-sm-6">
+        <h5>Ogólny poziom preferowanych umiejętności: @Model.SkillLevel</h5>
+    </div>
+
+
+</div>
+
+<div class="row">
     <div class="col-sm">
-        <h5>Ogólny poziom umiejętności: @Model.SkillLevel</h5>
         <h5>Opis stanowiska</h5>
         @foreach (var item in Model.Description)
         {
             <div>
                 <h6>@item</h6>
             </div>
-
         }
-
         <h5>Wymagania:</h5>
         @foreach (var item in Model.Requirements)
         {
             <div>
                 <h6>@item</h6>
             </div>
-
         }
-
         @if (Model.OptionalRequirements.Any() && Model.OptionalRequirements != null)
         {
             <h5>Wymagania Opcjonalne:</h5>
@@ -36,18 +61,44 @@
                 <div>
                     <h6>@item</h6>
                 </div>
-
             }
         }
+        @if (DisplayJobOfferLocation())
+        {
+            <div>
+                <h5>Adres naszego biura:</h5>
+                <div style="overflow:hidden">
+                    <div style="width:70px; float:left">
+                        <h6>Kraj:</h6>
+                        <h6>Miasto:</h6>
+                        <h6>Ulica:</h6>
+                        <h6>Lokal:</h6>
+                    </div>
+                    <div style="width:200px; overflow:hidden">
+                        <h6>@Model.Country</h6>
+                        <h6>@Model.City</h6>
+                        <h6>@Model.Street</h6>
+                        <h6>@Model.HouseNumber</h6>
+                    </div>
+                </div>
+            </div>
+        }
 
+        <h4>
+            Kim jesteśmy
+        </h4>
+        <h6>@Model.CompanyName</h6>
+
+        @foreach (var item in Model.CompanyDescription)
+        {
+            <h6>@item</h6>
+        }
     </div>
+
     <div class="col-sm">
-
         <h4>Wynagrodzenie:</h4>
-
         <h5>Dolne widełki płacowe: @Model.LowerBoundSallary</h5>
         <h5 style="margin-top:0">Górne widełki płacowe: @Model.UpperBoundSallary</h5>
-
         @if (Model.OptionalRequirements.Any() && Model.OptionalRequirements != null)
         {
             <h5>Ponadto oferujemy:</h5>
@@ -56,18 +107,15 @@
                 <div>
                     <h6>@item</h6>
                 </div>
-
             }
         }
     </div>
-
 </div>
-<div class="row">
-
+<div class="row" style="margin-top:40px">
     <div class="col-sm">
-
+        <a asp-action="Index" style="margin-right:2px" value="Anuluj" class="btn btn-secondary">Powrót</a>
+        <a asp-action="Index" style="margin-right:2px" value="Anuluj" class="btn btn-success">Aplikuj!</a>
     </div>
-
 </div>
 
 
