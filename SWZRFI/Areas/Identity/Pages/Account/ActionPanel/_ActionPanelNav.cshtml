@@ -6,21 +6,28 @@
 }
 <ul class="nav nav-pills flex-column">
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity"
-           asp-page="/Account/Manage/Index" title="Manage">
-            Ustawienia
-        </a>
-    </li>
-    <li class="nav-item">
         <a class="nav-link @ActionPanelNavPages.IndexNavClass(ViewContext)"
            id="index" asp-page="./Index">
-            Hasło
+            Dashboard
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link @ActionPanelNavPages.MessagesNavClass(ViewContext)"
            id="messages" asp-page="./Messages">
-            Hasło
+            Wiadomości
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link @ActionPanelNavPages.ApplicationsNavClass(ViewContext)"
+           id="applications" asp-page="./Applications">
+            Aplikacje
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Identity"
+           asp-page="/Account/Manage/Index" title="Manage">
+            Ustawienia
         </a>
     </li>
 </ul>

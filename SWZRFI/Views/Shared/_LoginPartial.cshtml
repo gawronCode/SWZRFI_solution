@@ -3,11 +3,21 @@
 @inject SignInManager<UserAccount> SignInManager
 @inject UserManager<UserAccount> UserManager
 
+@functions{
+
+    private Dictionary<string, string> GetLayoutDict(string layout)
+    {
+        var tmpList = new List<string>() { layout };
+        return tmpList.ToDictionary(key => "ParentLayout");
+    }
+
+}
+
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/ActionPanel/Index" title="ActionPanel">Moje konto</a>
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/ActionPanel/Index" asp-all-route-data="@GetLayoutDict(this.Layout)" title="ActionPanel">Moje konto</a>
     </li>
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

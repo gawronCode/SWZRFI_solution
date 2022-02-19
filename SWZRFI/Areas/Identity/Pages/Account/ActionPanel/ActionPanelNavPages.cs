@@ -14,7 +14,11 @@ namespace SWZRFI.Areas.Identity.Pages.Account.ActionPanel
 
         public static string Messages => "Messages";
         public static string MessagesNavClass(ViewContext viewContext)
-            => PageNavClass(viewContext, Index);
+            => PageNavClass(viewContext, Messages);
+
+        public static string Applications => "Applications";
+        public static string ApplicationsNavClass(ViewContext viewContext)
+            => PageNavClass(viewContext, Applications);
 
         private static string PageNavClass(ViewContext viewContext, string page)
         {

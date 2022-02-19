@@ -6,6 +6,12 @@
 }
 <ul class="nav nav-pills flex-column">
     <li class="nav-item">
+        <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)"
+           id="index" asp-page="./Index">
+            Ustawienia
+        </a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)"
            id="email" asp-page="./Email">
             Adres email
@@ -24,9 +30,9 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity"
-           asp-page="/Account/Manage/Index" title="Manage">
-            Ustawienia
+        <a class="nav-link" asp-area="Identity"
+           asp-page="/Account/ActionPanel/Index" title="ActionPanel">
+            Powrót do dashboard
         </a>
     </li>
 </ul>
