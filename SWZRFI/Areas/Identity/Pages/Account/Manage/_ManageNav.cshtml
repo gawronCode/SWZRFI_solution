@@ -1,25 +1,32 @@
 ﻿@using SWZRFI.DAL.Models
+
 @inject SignInManager<UserAccount> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
 <ul class="nav nav-pills flex-column">
     <li class="nav-item">
-    <a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" 
-       id="email" asp-page="./Email">
-        Adres email
+        <a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)"
+           id="email" asp-page="./Email">
+            Adres email
         </a>
     </li>
     <li class="nav-item">
-    <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" 
-       id="change-password" asp-page="./ChangePassword">
-        Hasło
-    </a>
+        <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)"
+           id="change-password" asp-page="./ChangePassword">
+            Hasło
+        </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" 
+        <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)"
            id="personal-data" asp-page="./PersonalData">
-        Zarządzanie kontem
+            Zarządzanie kontem
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity"
+           asp-page="/Account/Manage/Index" title="Manage">
+            Ustawienia
         </a>
     </li>
 </ul>

@@ -45,7 +45,7 @@ namespace SWZRFI
 
 
             services.AddControllersWithViews();
-            services.AddRazorPages().AddRazorRuntimeCompilation();
+            //services.AddRazorPages().AddRazorRuntimeCompilation();
         }
 
 
