@@ -20,6 +20,10 @@ namespace SWZRFI.Areas.Identity.Pages.Account.ActionPanel
         public static string ApplicationsNavClass(ViewContext viewContext)
             => PageNavClass(viewContext, Applications);
 
+        public static string Cv => "Cv";
+        public static string CvNavClass(ViewContext viewContext)
+            => PageNavClass(viewContext, Cv);
+
         private static string PageNavClass(ViewContext viewContext, string page)
         {
             var activePage = viewContext.ViewData["ActivePage"] as string
