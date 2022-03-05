@@ -24,5 +24,8 @@ namespace SWZRFI.DAL.Models
         public int? CompanyId { get; set; }
         public Company Company { get; set; }
 
+        public int? CvId { get; set; }
+        public Cv Cv { get; set; }
+
     }
 }

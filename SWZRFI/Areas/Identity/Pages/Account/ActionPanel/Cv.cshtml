@@ -1,7 +1,65 @@
 ﻿@page
-@model SWZRFI.Areas.Identity.Pages.Account.ActionPanel.CvModel
+@model CvModel
 @{
+    ViewData["Title"] = "Kreator CV";
+    ViewData["ActivePage"] = ActionPanelNavPages.CvPresentation;
 }
 
+<h4>@ViewData["Title"]</h4>
+<div class="row">
+    <div class="col-md-6">
+        <form id="change-password-form" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Cv.FirstName"></label>
+                <input asp-for="Cv.FirstName" class="form-control" />
+                <span asp-validation-for="Cv.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cv.LastName"></label>
+                <input asp-for="Cv.LastName" class="form-control" />
+                <span asp-validation-for="Cv.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cv.PhoneNumber"></label>
+                <input asp-for="Cv.PhoneNumber" class="form-control" />
+                <span asp-validation-for="Cv.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cv.Skills"></label>
+                <textarea asp-for="Cv.Skills" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Cv.Skills" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cv.Expirience"></label>
+                <textarea asp-for="Cv.Expirience" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Cv.Expirience" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cv.AdditionalSkills"></label>
+                <textarea asp-for="Cv.AdditionalSkills" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Cv.AdditionalSkills" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cv.Languages"></label>
+                <textarea asp-for="Cv.Languages" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Cv.Languages" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cv.OthersWebsites"></label>
+                <textarea asp-for="Cv.OthersWebsites" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Cv.OthersWebsites" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cv.AdditionalInformation"></label>
+                <textarea asp-for="Cv.AdditionalInformation" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Cv.AdditionalInformation" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Zatwierdź zmianę</button>
+        </form>
+    </div>
+</div>
 
-CV
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>

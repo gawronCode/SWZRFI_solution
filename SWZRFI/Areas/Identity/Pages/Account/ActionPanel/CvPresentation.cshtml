@@ -1,0 +1,94 @@
+﻿@page
+@model SWZRFI.Areas.Identity.Pages.Account.ActionPanel.CvPresentationModel
+@{
+    ViewData["Title"] = "Moje CV";
+    ViewData["ActivePage"] = ActionPanelNavPages.CvPresentation;
+}
+
+@if (Model.CvViewer != null)
+{
+    <div class="row">
+        <div class="col-md-6">
+
+            <div>
+                <h5>Podstawowe informacje:</h5>
+                <div style="overflow:hidden">
+                    <div style="width:70px; float:left">
+                        <h6>Imię:</h6>
+                        <h6>Nazwisko:</h6>
+                        <h6>Telefon:</h6>
+                        <h6>Email:</h6>
+                    </div>
+                    <div style="width:200px; overflow:hidden">
+                        <h6>@Model.CvViewer.FirstName</h6>
+                        <h6>@Model.CvViewer.LastName</h6>
+                        <h6>@Model.CvViewer.PhoneNumber</h6>
+                        <h6>@Model.CvViewer.Email</h6>
+                    </div>
+                </div>
+            </div>
+
+            <h5>O mnie:</h5>
+            @foreach (var item in Model.CvViewer.AdditionalInformation)
+            {
+                <div>
+                    <h6>@item</h6>
+                </div>
+            }
+            <h5>Moje umiejętności:</h5>
+            @foreach (var item in Model.CvViewer.Skills)
+            {
+                <div>
+                    <h6> &bull @item</h6>
+                </div>
+            }
+            <h5>Dodatkowe atuty:</h5>
+            @foreach (var item in Model.CvViewer.AdditionalSkills)
+            {
+                <div>
+                    <h6> &bull @item</h6>
+                </div>
+            }
+            <h5>Dotychczasowe doświadczenie:</h5>
+            @foreach (var item in Model.CvViewer.Expirience)
+            {
+                <div>
+                    <h6> &bull @item</h6>
+                </div>
+            }
+            <h5>Znane języki:</h5>
+            @foreach (var item in Model.CvViewer.Languages)
+            {
+                <div>
+                    <h6> &bull @item</h6>
+                </div>
+            }
+            <h5>Moje linki:</h5>
+            @foreach (var item in Model.CvViewer.OthersWebsites)
+            {
+                <div>
+                    <h6> &bull @item</h6>
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Brak dostępnego CV do wyśtieltenia:</h5>
+            <div class="col-sm">
+                <a asp-page="./Index" style="margin-right:2px" value="Anuluj" class="btn btn-secondary">Powrót</a>
+                <a asp-page="./Cv" style="margin-right:2px" value="Anuluj" class="btn btn-primary">Utworz CV</a>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row" style="margin-top:40px">
+    <div class="col-sm">
+        <a asp-page="./Index" style="margin-right:2px" value="Anuluj" class="btn btn-secondary">Powrót</a>
+        <a asp-page="./Cv" style="margin-right:2px" value="Anuluj" class="btn btn-primary">Edytuj CV</a>
+    </div>
+</div>

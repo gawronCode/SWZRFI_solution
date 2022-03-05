@@ -24,6 +24,10 @@ namespace SWZRFI.Areas.Identity.Pages.Account.ActionPanel
         public static string CvNavClass(ViewContext viewContext)
             => PageNavClass(viewContext, Cv);
 
+        public static string CvPresentation => "CvPresentation";
+        public static string CvPresentationNavClass(ViewContext viewContext)
+            => PageNavClass(viewContext, CvPresentation);
+
         private static string PageNavClass(ViewContext viewContext, string page)
         {
             var activePage = viewContext.ViewData["ActivePage"] as string

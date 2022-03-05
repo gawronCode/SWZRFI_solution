@@ -8,6 +8,8 @@ namespace SWZRFI.DAL.Models
 {
     public class Cv
     {
+        [Key]
+        public int Id { get; set; }
         [Required(ErrorMessage = "Proszę podać imię")]
         [Display(Name = "Imię")]
         [MaxLength(1024)]
@@ -36,7 +38,8 @@ namespace SWZRFI.DAL.Models
         [Display(Name = "Zwetnętrzne linki")]
         [MaxLength(1024)]
         public string OthersWebsites { get; set; }
-
+        [Display(Name = "O mnie")]
+        public string AdditionalInformation { get; set; }
 
 
     }
