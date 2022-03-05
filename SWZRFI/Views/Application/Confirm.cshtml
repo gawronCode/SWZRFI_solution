@@ -1,0 +1,13 @@
+﻿@model string;
+
+@{
+    ViewBag.Title = "Potwierdzenie aplikacji";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>@Model</h4>
+        <a asp-controller="JobOffers" asp-action="Index" style="margin-right:2px" value="Anuluj" class="btn btn-primary">Powrót</a>
+    </div>
+</div>

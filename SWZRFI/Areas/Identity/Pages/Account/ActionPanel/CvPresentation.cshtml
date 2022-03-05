@@ -13,13 +13,13 @@
             <div>
                 <h5>Podstawowe informacje:</h5>
                 <div style="overflow:hidden">
-                    <div style="width:70px; float:left">
+                    <div style="width:80px; float:left">
                         <h6>Imię:</h6>
                         <h6>Nazwisko:</h6>
                         <h6>Telefon:</h6>
                         <h6>Email:</h6>
                     </div>
-                    <div style="width:200px; overflow:hidden">
+                    <div style="width:400px; overflow:hidden">
                         <h6>@Model.CvViewer.FirstName</h6>
                         <h6>@Model.CvViewer.LastName</h6>
                         <h6>@Model.CvViewer.PhoneNumber</h6>
@@ -39,35 +39,35 @@
             @foreach (var item in Model.CvViewer.Skills)
             {
                 <div>
-                    <h6> &bull @item</h6>
+                    <h6> &#8226; @item</h6>
                 </div>
             }
             <h5>Dodatkowe atuty:</h5>
             @foreach (var item in Model.CvViewer.AdditionalSkills)
             {
                 <div>
-                    <h6> &bull @item</h6>
+                    <h6> &#8226; @item</h6>
                 </div>
             }
             <h5>Dotychczasowe doświadczenie:</h5>
             @foreach (var item in Model.CvViewer.Expirience)
             {
                 <div>
-                    <h6> &bull @item</h6>
+                    <h6> &#8226; @item</h6>
                 </div>
             }
             <h5>Znane języki:</h5>
             @foreach (var item in Model.CvViewer.Languages)
             {
                 <div>
-                    <h6> &bull @item</h6>
+                    <h6> &#8226; @item</h6>
                 </div>
             }
             <h5>Moje linki:</h5>
             @foreach (var item in Model.CvViewer.OthersWebsites)
             {
                 <div>
-                    <h6> &bull @item</h6>
+                    <h6> &#8226; @item</h6>
                 </div>
             }
         </div>
@@ -92,3 +92,10 @@ else
         <a asp-page="./Cv" style="margin-right:2px" value="Anuluj" class="btn btn-primary">Edytuj CV</a>
     </div>
 </div>
+
+
+<style>
+    h5{
+        margin-top:20px;
+    }
+</style>

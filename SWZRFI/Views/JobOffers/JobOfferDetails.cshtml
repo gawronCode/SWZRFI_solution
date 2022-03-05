@@ -114,7 +114,9 @@
 <div class="row" style="margin-top:40px">
     <div class="col-sm">
         <a asp-action="Index" style="margin-right:2px" value="Anuluj" class="btn btn-secondary">Powrót</a>
-        <a asp-action="Index" style="margin-right:2px" value="Anuluj" class="btn btn-success">Aplikuj!</a>
+        <a asp-controller="Application"
+           asp-action="ApplicationConfirmation"
+           asp-route-id=@Model.JobOfferId style="margin-right:2px" value="Anuluj" class="btn btn-success">Aplikuj!</a>
     </div>
 </div>
 

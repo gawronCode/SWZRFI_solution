@@ -15,6 +15,8 @@ namespace SWZRFI.DAL.Models
         public Cv Cv { get; set; }
         public int CompanyId { get; set; }
         public Company Company { get; set; }
+        public int JobOfferId { get; set; }
+        public JobOffer JobOffer { get; set; }
         public bool Opened { get; set; }
     }
 }

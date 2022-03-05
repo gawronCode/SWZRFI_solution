@@ -1,0 +1,18 @@
+﻿@model SWZRFI.DTO.ApplicationConfirmation;
+
+@{
+    ViewBag.Title = "Potwierdzenie aplikacji";
+    Layout = "_Layout";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <h5>Czy na pewno chcesz aplikować na ofertę @Model.JobOfferName?</h5>
+        <div>
+            <a asp-action="Confirm" asp-route-id=@Model.JobOfferId value="Anuluj" class="btn btn-primary">Aplikuj!</a>
+            <a asp-controller="JobOffers" asp-action="JobOfferDetails" asp-route-id=@Model.JobOfferId value="Anuluj" class="btn btn-secondary">Anuluj</a>
+        </div>
+    </div>
+</div>
