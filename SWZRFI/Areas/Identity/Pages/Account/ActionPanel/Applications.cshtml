@@ -8,9 +8,56 @@
     Layout = "_Layout";
 }
 
-<div class="row">
-    <div class="col-md-6">
-        <h4>Moje aplikacje TODO"</h4>
-    </div>
-</div>
 
+@functions{
+    private string GetStatus(bool Status)
+    {
+        return Status == true ? "Otwarta przez rekrutera" : "Oczekuje na otwarcie przez rekrutera";
+    }
+}
+
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Moje aplikacje</h4>
+        </div>
+    </div>
+
+    @if (Model.Applications == null)
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Nie aplikowałeś jeszcze na żadną z ofert!</h4>
+            </div>
+        </div>
+    }
+    else
+    {
+
+        <div class="row">
+            <div class="col-md">
+
+                @foreach (var item in Model.Applications)
+                {
+                    <div style="overflow:hidden">
+                        <div style="width:150px; float:left">
+                            <h6>Nazwa oferty:</h6>
+                            <h6>Status:</h6>
+                            <h6>Data aplikacji:</h6>
+                            <h6>Firma:</h6>
+                        </div>
+                        <div style="width:300px; overflow:hidden">
+                            <h6>@item.JobOfferName</h6>
+                            <h6>@GetStatus(item.Status)</h6>
+                            <h6>@item.Date.ToString("yyyy-MM-dd HH:mm:ss")</h6>
+                            <h6>@item.CompanyName</h6>
+                        </div>
+                    </div>
+                    <hr />
+                }
+
+
+            </div>
+        </div>
+
+
+    }
