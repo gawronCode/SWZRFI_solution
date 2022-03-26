@@ -47,9 +47,25 @@
                                 <td style="text-align: right; border-right: none">
                                     @foreach (var role in item.IdentityRoles)
                                     {
-                                        @role.Name<br>
+                                        @if (role.Name != "PersonalAccount")
+                                        {
+                                            @if (role.Name == "RecruitersAccount")
+                                            {
+                                                <div>
+                                                    Rekruter<br>
+                                                </div>
+                                            }
+                                            else if (role.Name == "ManagerAccount")
+                                            {
+                                                <div>
+                                                    Manager<br>
+                                                </div>
+                                            }
+
+                                        }
+
                                     }
-                            </td>
+                                </td>
                             <td style="text-align: right;
                                 border-right: none;
                                 border-left: none">

@@ -118,19 +118,17 @@ namespace SWZRFI.Controllers
 
 
         public async Task<ActionResult> AddQuestionToQuestionnaire(string questionContent, int questionnaireId,
-                                                        string answer1, int val1,
-                                                        string answer2, int val2,
-                                                        string answer3, int val3,
-                                                        string answer4, int val4,
-                                                        string answer5, int val5)
+                                                        string answer1, bool val1,
+                                                        string answer2, bool val2,
+                                                        string answer3, bool val3,
+                                                        string answer4, bool val4)
         {
             
             if (string.IsNullOrEmpty(questionContent) ||
-                string.IsNullOrEmpty(answer1) || val1 == 0 ||
-                string.IsNullOrEmpty(answer2) || val2 == 0 ||
-                string.IsNullOrEmpty(answer3) || val3 == 0 ||
-                string.IsNullOrEmpty(answer4) || val4 == 0 ||
-                string.IsNullOrEmpty(answer5) || val5 == 0) return RedirectToAction("ErrorInfo", new { id = questionnaireId });
+                string.IsNullOrEmpty(answer1) ||
+                string.IsNullOrEmpty(answer2) ||
+                string.IsNullOrEmpty(answer3) ||
+                string.IsNullOrEmpty(answer4)) return RedirectToAction("ErrorInfo", new { id = questionnaireId });
             
             var newQuestion = new Question
             {
@@ -162,12 +160,6 @@ namespace SWZRFI.Controllers
             {
                 Content = answer4,
                 Value = val4,
-                QuestionId = newQuestion.Id
-            });
-            await _answerRepo.Create(new Answer
-            {
-                Content = answer5,
-                Value = val5,
                 QuestionId = newQuestion.Id
             });
 

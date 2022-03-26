@@ -44,6 +44,8 @@ namespace SWZRFI.Controllers
                     }).ToList()
                 }).ToList();
 
+            var model = jobOfferApplications.GroupBy(j => j.JobOffer.Id).ToList();
+
 
             return View(jobOfferApplications);
         }

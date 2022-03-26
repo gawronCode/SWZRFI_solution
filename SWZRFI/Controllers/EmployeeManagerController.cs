@@ -45,13 +45,13 @@ namespace SWZRFI.Controllers
             var email = GetCurrentUserEmail();
             var currentUser = await _userRepo.GetUserByEmailAsync(email);
             var companyUsers = await _userRepo.GetAllForCompany((int)currentUser.CompanyId);
-            var model = (await Task.WhenAll(companyUsers.Select(async u => new EmployeeStatusViewModel
+            var model = companyUsers.Select(u => new EmployeeStatusViewModel
             {
                 EmailAddress = u.Email,
                 FirstName = u.FirstName,
                 LastName = u.LastName,
-                IsManager = await _userManager.IsInRoleAsync(u, "RecruitersAccount")
-            }).ToList())).ToList();
+                IsManager = _userManager.IsInRoleAsync(u, "ManagerAccount").Result
+            }).ToList();
 
             return View(model);
         }
@@ -60,7 +60,7 @@ namespace SWZRFI.Controllers
         public async Task<ActionResult> AddPermissions(string id)
         {
             var user = await _userManager.FindByEmailAsync(id);
-            await _userManager.AddToRoleAsync(user, "RecruitersAccount");
+            await _userManager.AddToRoleAsync(user, "ManagerAccount");
 
             return RedirectToAction(nameof(Index));
         }
@@ -68,7 +68,7 @@ namespace SWZRFI.Controllers
         public async Task<ActionResult> RemovePermissions(string id)
         {
             var user = await _userManager.FindByEmailAsync(id);
-            await _userManager.RemoveFromRoleAsync(user, "RecruitersAccount");
+            await _userManager.RemoveFromRoleAsync(user, "ManagerAccount");
 
             return RedirectToAction(nameof(Index));
         }

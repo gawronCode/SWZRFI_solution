@@ -12,7 +12,7 @@ using SWZRFI.DAL.Models;
 
 namespace TherapyQualityController.Controllers
 {
-    public class PatientQuestionnaireController : Controller
+    public class UserQuestionnaireController : Controller
     {
 
         private readonly IQuestionnaireRepo _questionnaireRepo;
@@ -22,7 +22,7 @@ namespace TherapyQualityController.Controllers
         private readonly IUserQuestionnaireAnswerRepo _userQuestionnaireAnswerRepo;
         private readonly IPatientQuestionnaireRepo _patientQuestionnaireRepo;
 
-        public PatientQuestionnaireController(IQuestionnaireRepo questionnaireRepo,
+        public UserQuestionnaireController(IQuestionnaireRepo questionnaireRepo,
             IQuestionRepo questionRepo,
             IAnswerRepo answerRepo,
             IUserAnswerRepo userAnswerRepo,
