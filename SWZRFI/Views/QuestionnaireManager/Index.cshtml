@@ -21,7 +21,6 @@
             <div class="media">
                 <div class="media-body">
                     <h4 class="mt-0">@item.Name</h4>
-                    <small><a asp-action="ManageQuestions" asp-route-id="@item.Id" class="btn btn-primary btn-sm" role="button" style="margin-top: 10px">Dodaj do procesu rekrutacyjnego</a></small>
                     <small><a asp-action="ManageQuestions" asp-route-id="@item.Id" class="btn btn-secondary btn-sm" role="button" style="margin-top: 10px">Edytor pytań</a></small>
                     <small><a asp-action="RemoveQuestionnaire" asp-route-id="@item.Id" class="btn btn-danger btn-sm" role="button" style="margin-top: 10px">Usuń quiz</a></small>
                 </div>
@@ -30,7 +29,7 @@
         <hr>
     }
     
-    <div class="row" style="margin-top: 50px"><a href="#" id="addNewQuestionnaire" class="btn btn-dark">Dodaj nowy qyiz</a> </div>
+    <div class="row" style="margin-top: 50px"><a href="#" id="addNewQuestionnaire" class="btn btn-dark">Dodaj nowy quiz</a> </div>
 
     <div class="row">
     <div class="rounded" id="addNewQuestionnaireDiv" style="display: none; margin-top: 30px; background-color: gainsboro; width: 420px; padding: 10px">

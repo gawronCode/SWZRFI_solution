@@ -1,0 +1,52 @@
+﻿@using System.Linq
+@model SWZRFI.DTO.JobOfferQuizSelector
+
+
+@{
+    ViewBag.Title = "Wybór quizu";
+    Layout = "_LayoutCorporational";
+}
+
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model.Questionnaires.Any())
+{
+    <div class="container">
+
+
+        <form asp-action="AssignQuizToJobOffer" method="post">
+            <div class="form-group">
+                <input style="visibility:hidden" asp-for="@Model.JobOfferId" value=@Model.JobOfferId>
+
+
+                @for (int i = 0; i < Model.Questionnaires.Count; i++)
+                {
+                    <div class="custom-control-inline">
+
+                            <input style="visibility:hidden" asp-for="@Model.Questionnaires[i].QuizId" id="inlineRadio1" value=@Model.Questionnaires[i].QuizId>
+                            <input style="visibility:hidden" asp-for="@Model.Questionnaires[i].Name" id="inlineRadio1" value=@Model.Questionnaires[i].Name>
+                            <input asp-for="@Model.Questionnaires[i].Selected" class="form-check-input" type="radio" id="inlineRadio1" value=@true>
+                            <label for="inlineRadio1" >@Model.Questionnaires[i].Name</label>
+                    </div>
+                }
+
+            </div>
+            <input type="submit" value="Wybierz" button class="btn btn-dark">
+        </form>
+
+
+    </div>
+
+
+}
+else
+{
+    <div style="margin-top:40px" class="container">
+
+        <h3>Brak quizów, przejdź kliknij w poniższy przycisk aby utworzyć nowy quiz</h3>
+        <small><a asp-action="Index" asp-controller="QuestionnaireManager" class="btn btn-danger btn-sm" role="button" style="margin-top: 10px">Quizy</a></small>
+
+    </div>
+}
+

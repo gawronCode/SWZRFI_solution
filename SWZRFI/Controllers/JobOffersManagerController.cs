@@ -6,6 +6,8 @@ using SWZRFI.DTO;
 using SWZRFI.DAL.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using System;
+using System.Linq;
 
 namespace SWZRFI.Controllers
 {
@@ -52,6 +54,32 @@ namespace SWZRFI.Controllers
             return View();
         }
 
+
+        public async Task<IActionResult> AssignQuizToJobOffer(JobOfferQuizSelector value)
+        {
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        public async Task<IActionResult> SelectQuiz(int id)
+        {
+            var jobOffer = await _context.JobOffers.FirstOrDefaultAsync(q => q.Id == id);
+            var quizzes = await _context.Questionnaires.Where(q => q.CompanyId != null && q.CompanyId == jobOffer.CompanyId).ToListAsync();
+
+            var model = new JobOfferQuizSelector
+            {
+                JobOfferId = id,
+                Questionnaires = quizzes.Select(q => new QuizSelected
+                {
+                    QuizId = q.Id,
+                    Name = q.Name,
+                    Selected = false
+                }).ToList()
+            };
+            return View(model);
+
+        }
 
 
         [HttpPost]
