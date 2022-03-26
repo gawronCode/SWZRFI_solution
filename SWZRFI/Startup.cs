@@ -64,6 +64,7 @@ namespace SWZRFI
             services.AddScoped<IJobOffersManagerService, JobOffersManagerService>();
             services.AddScoped<ICompanyManagerService, CompanyManagerService>();
             services.AddScoped<IEmployeeManagerService, EmployeeManagerService>();
+
         }
 
 
@@ -91,6 +92,13 @@ namespace SWZRFI
             services.AddScoped<IJobOfferRepo, JobOfferRepo>();
             services.AddScoped<ICompanyRepo, CompanyRepo>();
             services.AddScoped<IEmployeeRepo, EmployeeRepo>();
+            services.AddScoped<IQuestionnaireRepo, QuestionnaireRepo>();
+            services.AddScoped<IQuestionRepo, QuestionRepo>();
+            services.AddScoped<IUserRepo, UserRepo>();
+            services.AddScoped<IAnswerRepo, AnswerRepo>();
+            services.AddScoped<IPatientQuestionnaireRepo, PatientQuestionnaireRepo>();
+            services.AddScoped<IUserAnswerRepo, UserAnswerRepo>();
+            services.AddScoped<IUserQuestionnaireAnswerRepo, UserQuestionnaireAnswerRepo>();
         }
 
         private void AddContexts(IServiceCollection services)

@@ -21,6 +21,12 @@ namespace SWZRFI.DAL.Models
         [InverseProperty(nameof(JobOffer.EditorUserAccount))]
         public ICollection<JobOffer> EditedJobOffers { get; set; }
 
+
+        public ICollection<Conversation> Conversations { get; set; }
+
+
+
+
         public int? CompanyId { get; set; }
         public Company Company { get; set; }
 

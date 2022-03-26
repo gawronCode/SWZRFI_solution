@@ -18,7 +18,15 @@ namespace SWZRFI.DAL.Contexts
         public DbSet<CorporationalInvitation> CorporationalInvitations { get; set; }
         public DbSet<Cv> Cvs { get; set; }
         public DbSet<Application> Applications { get; set; }
-        
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Conversation> Conversations { get; set; }
+
+        public DbSet<Questionnaire> Questionnaires { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+        public DbSet<UserAnswer> UserAnswers { get; set; }
+        public DbSet<UserQuestionnaire> UserQuestionnaires { get; set; }
+        public DbSet<UserQuestionnaireAnswer> UserQuestionnaireAnswers { get; set; }
 
 
         //Pozwala na obejście problemu zapętlenia EF jak encje mają specyficzne relacje

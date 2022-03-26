@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -61,19 +62,14 @@ namespace SWZRFI.DAL.Models
         [Display(Name = "numer budynku")]
         [MaxLength(1024)]
         public string HouseNumber { get; set; }
-
         [ForeignKey("CreatorUserAccount"), Column(Order = 0)]
         public string CreatorUserAccountId { get; set; }
         public UserAccount CreatorUserAccount { get; set; }
-
         [ForeignKey("EditorUserAccount"), Column(Order = 1)]
         public string EditorUserAccountId { get; set; }
         public UserAccount EditorUserAccount { get; set; }
-
         public int CompanyId { get; set; }
         public Company Company { get; set; }
-
-
-        
+        public ICollection<Application> Applications { get; set; }
     }
 }

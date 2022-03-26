@@ -18,5 +18,7 @@ namespace SWZRFI.DAL.Models
         public int JobOfferId { get; set; }
         public JobOffer JobOffer { get; set; }
         public bool Opened { get; set; }
+        public string UserAccountId { get; set; }
+        public UserAccount UserAccount { get; set; }
     }
 }

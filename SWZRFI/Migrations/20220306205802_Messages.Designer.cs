@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SWZRFI.DAL.Contexts;
 
 namespace SWZRFI.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220306205802_Messages")]
+    partial class Messages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -225,29 +227,6 @@ namespace SWZRFI.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("SWZRFI.DAL.Models.Answer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
-
-                    b.ToTable("Answers");
-                });
-
             modelBuilder.Entity("SWZRFI.DAL.Models.Application", b =>
                 {
                     b.Property<int>("Id")
@@ -270,9 +249,6 @@ namespace SWZRFI.Migrations
                     b.Property<bool>("Opened")
                         .HasColumnType("bit");
 
-                    b.Property<string>("UserAccountId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
@@ -280,8 +256,6 @@ namespace SWZRFI.Migrations
                     b.HasIndex("CvId");
 
                     b.HasIndex("JobOfferId");
-
-                    b.HasIndex("UserAccountId");
 
                     b.ToTable("Applications");
                 });
@@ -328,32 +302,6 @@ namespace SWZRFI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Companies");
-                });
-
-            modelBuilder.Entity("SWZRFI.DAL.Models.Conversation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("FirstInterOcutorId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SecondInterOcutorId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserAccountId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserAccountId");
-
-                    b.ToTable("Conversations");
                 });
 
             modelBuilder.Entity("SWZRFI.DAL.Models.CorporationalInvitation", b =>
@@ -527,145 +475,6 @@ namespace SWZRFI.Migrations
                     b.ToTable("JobOffers");
                 });
 
-            modelBuilder.Entity("SWZRFI.DAL.Models.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ConversationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RecieverId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("SendDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("SenderId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConversationId");
-
-                    b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("SWZRFI.DAL.Models.Question", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Contents")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("QuestionnaireId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionnaireId");
-
-                    b.ToTable("Questions");
-                });
-
-            modelBuilder.Entity("SWZRFI.DAL.Models.Questionnaire", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime?>("CreationDate")
-                        .IsRequired()
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Questionnaires");
-                });
-
-            modelBuilder.Entity("SWZRFI.DAL.Models.UserAnswer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserQuestionnaireAnswerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
-
-                    b.HasIndex("UserQuestionnaireAnswerId");
-
-                    b.ToTable("UserAnswers");
-                });
-
-            modelBuilder.Entity("SWZRFI.DAL.Models.UserQuestionnaire", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("PatientEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("QuestionnaireId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserQuestionnaires");
-                });
-
-            modelBuilder.Entity("SWZRFI.DAL.Models.UserQuestionnaireAnswer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime?>("AnswerDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("QuestionnaireId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionnaireId");
-
-                    b.ToTable("UserQuestionnaireAnswers");
-                });
-
             modelBuilder.Entity("SWZRFI.DAL.Models.UserAccount", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -745,17 +554,6 @@ namespace SWZRFI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SWZRFI.DAL.Models.Answer", b =>
-                {
-                    b.HasOne("SWZRFI.DAL.Models.Question", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Question");
-                });
-
             modelBuilder.Entity("SWZRFI.DAL.Models.Application", b =>
                 {
                     b.HasOne("SWZRFI.DAL.Models.Company", "Company")
@@ -771,31 +569,16 @@ namespace SWZRFI.Migrations
                         .IsRequired();
 
                     b.HasOne("SWZRFI.DAL.Models.JobOffer", "JobOffer")
-                        .WithMany("Applications")
+                        .WithMany()
                         .HasForeignKey("JobOfferId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.HasOne("SWZRFI.DAL.Models.UserAccount", "UserAccount")
-                        .WithMany()
-                        .HasForeignKey("UserAccountId")
-                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Company");
 
                     b.Navigation("Cv");
 
                     b.Navigation("JobOffer");
-
-                    b.Navigation("UserAccount");
-                });
-
-            modelBuilder.Entity("SWZRFI.DAL.Models.Conversation", b =>
-                {
-                    b.HasOne("SWZRFI.DAL.Models.UserAccount", null)
-                        .WithMany("Conversations")
-                        .HasForeignKey("UserAccountId")
-                        .OnDelete(DeleteBehavior.NoAction);
                 });
 
             modelBuilder.Entity("SWZRFI.DAL.Models.CorporationalInvitation", b =>
@@ -834,58 +617,6 @@ namespace SWZRFI.Migrations
                     b.Navigation("EditorUserAccount");
                 });
 
-            modelBuilder.Entity("SWZRFI.DAL.Models.Message", b =>
-                {
-                    b.HasOne("SWZRFI.DAL.Models.Conversation", "Conversation")
-                        .WithMany("Messages")
-                        .HasForeignKey("ConversationId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Conversation");
-                });
-
-            modelBuilder.Entity("SWZRFI.DAL.Models.Question", b =>
-                {
-                    b.HasOne("SWZRFI.DAL.Models.Questionnaire", "Questionnaire")
-                        .WithMany()
-                        .HasForeignKey("QuestionnaireId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Questionnaire");
-                });
-
-            modelBuilder.Entity("SWZRFI.DAL.Models.UserAnswer", b =>
-                {
-                    b.HasOne("SWZRFI.DAL.Models.Question", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("SWZRFI.DAL.Models.UserQuestionnaireAnswer", "UserQuestionnaireAnswer")
-                        .WithMany()
-                        .HasForeignKey("UserQuestionnaireAnswerId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Question");
-
-                    b.Navigation("UserQuestionnaireAnswer");
-                });
-
-            modelBuilder.Entity("SWZRFI.DAL.Models.UserQuestionnaireAnswer", b =>
-                {
-                    b.HasOne("SWZRFI.DAL.Models.Questionnaire", "Questionnaire")
-                        .WithMany()
-                        .HasForeignKey("QuestionnaireId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Questionnaire");
-                });
-
             modelBuilder.Entity("SWZRFI.DAL.Models.UserAccount", b =>
                 {
                     b.HasOne("SWZRFI.DAL.Models.Company", "Company")
@@ -910,20 +641,8 @@ namespace SWZRFI.Migrations
                     b.Navigation("UserAccounts");
                 });
 
-            modelBuilder.Entity("SWZRFI.DAL.Models.Conversation", b =>
-                {
-                    b.Navigation("Messages");
-                });
-
-            modelBuilder.Entity("SWZRFI.DAL.Models.JobOffer", b =>
-                {
-                    b.Navigation("Applications");
-                });
-
             modelBuilder.Entity("SWZRFI.DAL.Models.UserAccount", b =>
                 {
-                    b.Navigation("Conversations");
-
                     b.Navigation("CreatedJobOffers");
 
                     b.Navigation("EditedJobOffers");

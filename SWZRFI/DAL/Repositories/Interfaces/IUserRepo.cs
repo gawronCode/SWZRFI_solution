@@ -11,5 +11,6 @@ namespace SWZRFI.DAL.Repositories.Interfaces
         Task<UserAccount> GetUserByEmailAsync(string email);
         Task UpdateUser(UserAccount userAccount);
         Task<IEnumerable<UserRoles>> GetUsersRolesForCompany(int companyId);
+        Task<IEnumerable<UserAccount>> GetAll();
     }
 }

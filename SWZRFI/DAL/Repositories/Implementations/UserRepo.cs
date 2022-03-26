@@ -108,6 +108,12 @@ namespace SWZRFI.DAL.Repositories.Implementations
             return join;
         }
 
+        public async Task<IEnumerable<UserAccount>> GetAll()
+        {
+            using var scope = _serviceScopeFactory.CreateScope();
+            await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+            return await context.UserAccount.ToListAsync();
 
+        }
     }
 }

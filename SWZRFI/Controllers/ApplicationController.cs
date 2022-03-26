@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SWZRFI.ConfigData;
 using SWZRFI.DAL.Contexts;
 using SWZRFI.DAL.Models;
 using SWZRFI.DTO;
+using SWZRFI_Utils.EmailHelper;
+using SWZRFI_Utils.EmailHelper.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SWZRFI.Controllers
@@ -12,10 +16,16 @@ namespace SWZRFI.Controllers
     {
 
         private readonly ApplicationContext _context;
+        private readonly IEmailSender _emailSender;
+        private readonly IConfigGetter _configGetter;
 
-        public ApplicationController(ApplicationContext context)
+        public ApplicationController(ApplicationContext context,
+            IEmailSender emailSender,
+            IConfigGetter configGetter)
         {
             _context = context;
+            _emailSender = emailSender;
+            _configGetter = configGetter;
         }
 
 
@@ -40,13 +50,39 @@ namespace SWZRFI.Controllers
                 CvId = (int)user.CvId,
                 CompanyId = jobOffer.CompanyId,
                 Opened = false,
-                JobOfferId = jobOffer.Id
+                JobOfferId = jobOffer.Id,
+                UserAccountId = user.Id                
             };
 
             _context.Applications.Add(application);
             await _context.SaveChangesAsync();
 
+            await SendEmail(user.Email, jobOffer.Title);
+
             return View("Confirm", $"Pomyślnie aplikowano na ofertę {jobOffer.Title}!");
+        }
+
+        private async Task SendEmail(string email, string jobOffer)
+        {
+            var identityEmail = _configGetter.GetIdentityEmail();
+            var emailCredentials = new EmailCredentials
+            {
+                EmailAddress = identityEmail.Email,
+                Password = identityEmail.Password,
+                Port = identityEmail.Port,
+                SmtpHost = identityEmail.Smtp
+            };
+
+            var emailMessage = new EmailMessage
+            {
+                Recipients = new List<string>() { email },
+                Subject = $"Potwierdzenie złożenia aplikacji SWZRFI",
+                Content =
+                    $"Własnie aplikowałeś na ofertę {jobOffer}! Status aplikacji możesz śledzić na swoim koncie, otrzymasz również powiadomienie email gdy status aplikacji ulegnie zmianie."
+            };
+
+
+            await _emailSender.Send(emailCredentials, emailMessage);
         }
 
         public async Task<IActionResult> ApplicationConfirmation(int id)

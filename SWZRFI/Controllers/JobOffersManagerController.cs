@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using SWZRFI.ControllersServices.JobOffersManager;
 using SWZRFI.DAL.Models;
 using SWZRFI.DTO;
-
+using SWZRFI.DAL.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace SWZRFI.Controllers
 {
@@ -13,10 +14,14 @@ namespace SWZRFI.Controllers
     {
 
         private readonly IJobOffersManagerService _jobOffersManagerService;
+        private readonly ApplicationContext _context;
 
-        public JobOffersManagerController(IJobOffersManagerService jobOffersManagerService)
+        public JobOffersManagerController(
+            IJobOffersManagerService jobOffersManagerService,
+            ApplicationContext context)
         {
             _jobOffersManagerService = jobOffersManagerService;
+            _context = context;
         }
 
         [HttpGet]
@@ -30,6 +35,24 @@ namespace SWZRFI.Controllers
         {
             return View();
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Applications(int id)
+        {
+            var application = await _context.Applications.Include(a => a.Cv).FirstOrDefaultAsync(a => a.JobOfferId == id);
+            var userThatApplied = await _context.UserAccount.FirstOrDefaultAsync(u => u.CvId == application.CvId);
+
+            application.Opened = true;
+            _context.Applications.Update(application);
+            await _context.SaveChangesAsync();
+
+
+
+            return View();
+        }
+
+
 
         [HttpPost]
         public async Task<IActionResult> CreateJobOffer(JobOffer jobOffer)
