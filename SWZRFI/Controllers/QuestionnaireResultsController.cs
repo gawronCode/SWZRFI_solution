@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace SWZRFI.Controllers
 {
     [Authorize(Roles = "SystemAdmin,RecruitersAccount,ManagerAccount")]
-    public class QuestionnaireResultsController : Controller
+    public class QuestionnaireResultsController : BaseController
     {
         private readonly IQuestionnaireRepo _questionnaireRepo;
         private readonly IQuestionRepo _questionRepo;
@@ -41,7 +41,10 @@ namespace SWZRFI.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var patients = await _userRepo.GetAll();
+            var email = GetCurrentUserEmail();
+            var currentUser = await _userRepo.GetUserByEmailAsync(email);
+
+            var patients = await _userRepo.GetAllForCompany((int)currentUser.CompanyId);
             var model = (from patient in patients
                          where _userManager.IsInRoleAsync(patient, "Patient").Result
                          select new PatientViewModel

@@ -1,7 +1,7 @@
 ﻿
 namespace SWZRFI.DTO.ViewModels
 {
-    public class DoctorViewModel
+    public class EmployeeStatusViewModel
     {
 
         public string FirstName { get; set; }
@@ -10,11 +10,7 @@ namespace SWZRFI.DTO.ViewModels
 
         public string EmailAddress { get; set; }
 
-        public string PESEL { get; set; }
-
-        public string PWZ { get; set; }
-
-        public bool IsConfirmed { get; set; }
+        public bool IsManager { get; set; }
 
     }
 }

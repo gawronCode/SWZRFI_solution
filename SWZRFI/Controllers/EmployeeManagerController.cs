@@ -10,6 +10,8 @@ using SWZRFI.ControllersServices.EmployeeManager;
 using SWZRFI.DAL.Models;
 using SWZRFI.DTO;
 using Microsoft.AspNetCore.Authorization;
+using SWZRFI.DAL.Repositories.Interfaces;
+using SWZRFI.DTO.ViewModels;
 
 namespace SWZRFI.Controllers
 {
@@ -17,10 +19,16 @@ namespace SWZRFI.Controllers
     public class EmployeeManagerController : BaseController
     {
         private readonly IEmployeeManagerService _employeeManagerService;
+        private readonly IUserRepo _userRepo;
+        private readonly UserManager<UserAccount> _userManager;
 
-        public EmployeeManagerController(IEmployeeManagerService employeeManagerService)
+        public EmployeeManagerController(IEmployeeManagerService employeeManagerService, 
+            IUserRepo userRepo,
+            UserManager<UserAccount> userManager)
         {
             _employeeManagerService = employeeManagerService;
+            _userRepo = userRepo;
+            _userManager = userManager;
         }
 
 
@@ -32,10 +40,40 @@ namespace SWZRFI.Controllers
 
 
 
-        public IActionResult EditUserRoles(UserRoles userRoles)
+        public async Task<IActionResult> EditUserRoles()
         {
-            return View(userRoles);
+            var email = GetCurrentUserEmail();
+            var currentUser = await _userRepo.GetUserByEmailAsync(email);
+            var companyUsers = await _userRepo.GetAllForCompany((int)currentUser.CompanyId);
+            var model = (await Task.WhenAll(companyUsers.Select(async u => new EmployeeStatusViewModel
+            {
+                EmailAddress = u.Email,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                IsManager = await _userManager.IsInRoleAsync(u, "RecruitersAccount")
+            }).ToList())).ToList();
+
+            return View(model);
         }
+
+
+        public async Task<ActionResult> AddPermissions(string id)
+        {
+            var user = await _userManager.FindByEmailAsync(id);
+            await _userManager.AddToRoleAsync(user, "RecruitersAccount");
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<ActionResult> RemovePermissions(string id)
+        {
+            var user = await _userManager.FindByEmailAsync(id);
+            await _userManager.RemoveFromRoleAsync(user, "RecruitersAccount");
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
 
         [HttpGet]
         public IActionResult SendInvitationCodeToUser()

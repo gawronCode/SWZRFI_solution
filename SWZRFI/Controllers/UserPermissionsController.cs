@@ -6,11 +6,12 @@ using SWZRFI.DTO.ViewModels;
 using SWZRFI.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using SWZRFI.DAL.Models;
+using System.Linq;
 
 namespace SWZRFI.Controllers
 {
     [Authorize(Roles = "SystemAdmin,RecruitersAccount,ManagerAccount")]
-    public class UserPermissionsController : Controller
+    public class UserPermissionsController : BaseController
     {
 
         private readonly IUserRepo _userRepo;
@@ -26,20 +27,17 @@ namespace SWZRFI.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var patients = await _userRepo.GetAll();
-            var model = new List<DoctorViewModel>();
 
-            foreach (var patient in patients)
+            var email = GetCurrentUserEmail();
+            var currentUser = await _userRepo.GetUserByEmailAsync(email);
+            var companyUsers = await _userRepo.GetAllForCompany((int)currentUser.CompanyId);
+            var model = companyUsers.Select(async u => new EmployeeStatusViewModel
             {
-                
-                    model.Add(new DoctorViewModel
-                    {
-                        EmailAddress = patient.Email,
-                        FirstName = patient.FirstName,
-                        LastName = patient.LastName,
-                        IsConfirmed = (await _userManager.IsInRoleAsync(patient, "Doctor"))
-                    });
-            }
+                EmailAddress = u.Email,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                IsManager = await _userManager.IsInRoleAsync(u, "RecruitersAccount")
+            }).ToList();
 
             return View(model);
         }
@@ -47,8 +45,7 @@ namespace SWZRFI.Controllers
         public async Task<ActionResult> AddPermissions(string id)
         {
             var user = await _userManager.FindByEmailAsync(id);
-            await _userManager.RemoveFromRoleAsync(user, "Patient");
-            await _userManager.AddToRoleAsync(user, "Doctor");
+            await _userManager.AddToRoleAsync(user, "RecruitersAccount");
 
             return RedirectToAction(nameof(Index));
         }
@@ -56,8 +53,7 @@ namespace SWZRFI.Controllers
         public async Task<ActionResult> RemovePermissions(string id)
         {
             var user = await _userManager.FindByEmailAsync(id);
-            await _userManager.RemoveFromRoleAsync(user, "Doctor");
-            await _userManager.AddToRoleAsync(user, "Patient");
+            await _userManager.RemoveFromRoleAsync(user, "RecruitersAccount");
 
             return RedirectToAction(nameof(Index));
         }

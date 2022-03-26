@@ -108,11 +108,11 @@ namespace SWZRFI.DAL.Repositories.Implementations
             return join;
         }
 
-        public async Task<IEnumerable<UserAccount>> GetAll()
+        public async Task<IEnumerable<UserAccount>> GetAllForCompany(int companyId)
         {
             using var scope = _serviceScopeFactory.CreateScope();
             await using var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-            return await context.UserAccount.ToListAsync();
+            return await context.UserAccount.Where(u => u.CompanyId == companyId).ToListAsync();
 
         }
     }
