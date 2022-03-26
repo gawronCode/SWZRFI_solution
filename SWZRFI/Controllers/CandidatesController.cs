@@ -2,13 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using SWZRFI.DAL.Contexts;
 using SWZRFI.DTO;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SWZRFI.Controllers
 {
+    [Authorize(Roles = "SystemAdmin,RecruitersAccount,ManagerAccount")]
     public class CandidatesController : BaseController
     {
         private readonly ApplicationContext _context;
@@ -22,10 +22,13 @@ namespace SWZRFI.Controllers
         public async Task<IActionResult> Index()
         {
             var userEmail = GetCurrentUserEmail();
-            var company = await _context.Companies.AsSplitQuery()
+            var currentUser = await _context.UserAccount.FirstOrDefaultAsync(u => u.Email == userEmail);
+
+            var company = await _context.Companies.Where(c => c.Id == currentUser.CompanyId).AsSplitQuery()
                 .Include(c => c.JobOffers)
                 .ThenInclude(j => j.Applications)
-                .ThenInclude(a => a.UserAccount).ToListAsync();
+                .ThenInclude(a => a.UserAccount)
+                .ThenInclude(u => u.Cv).ToListAsync();
 
 
             var jobOfferApplications = company
@@ -36,7 +39,7 @@ namespace SWZRFI.Controllers
                     CandidateApplications = j.Applications.Select(a => new CandidateApplication
                     {
                         Application = a,
-                        Cv = a.Cv,
+                        Cv = a.UserAccount.Cv,
                         UserAccount = a.UserAccount
                     }).ToList()
                 }).ToList();

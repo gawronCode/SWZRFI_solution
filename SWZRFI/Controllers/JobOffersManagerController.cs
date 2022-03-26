@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using SWZRFI.ControllersServices.JobOffersManager;
 using SWZRFI.DAL.Models;
 using SWZRFI.DTO;
 using SWZRFI.DAL.Contexts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SWZRFI.Controllers
 {
-    [Authorize(Roles = "PersonalAccount, SystemAdmin")]
+    [Authorize(Roles = "SystemAdmin,RecruitersAccount,ManagerAccount")]
     public class JobOffersManagerController : BaseController
     {
 

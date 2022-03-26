@@ -9,9 +9,11 @@ using Microsoft.AspNetCore.WebUtilities;
 using SWZRFI.ControllersServices.EmployeeManager;
 using SWZRFI.DAL.Models;
 using SWZRFI.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SWZRFI.Controllers
 {
+    [Authorize(Roles = "SystemAdmin,RecruitersAccount,ManagerAccount")]
     public class EmployeeManagerController : BaseController
     {
         private readonly IEmployeeManagerService _employeeManagerService;

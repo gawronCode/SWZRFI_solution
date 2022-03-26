@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SWZRFI.DAL.Models;
 using SWZRFI.DAL.Repositories.Interfaces;
@@ -8,11 +7,11 @@ using SWZRFI.DTO.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
-
-namespace TherapyQualityController.Controllers
+namespace SWZRFI.Controllers
 {
-    [Authorize(Roles = "Administrator,Doctor")]
+    [Authorize(Roles = "SystemAdmin,RecruitersAccount,ManagerAccount")]
     public class QuestionnaireResultsController : Controller
     {
         private readonly IQuestionnaireRepo _questionnaireRepo;

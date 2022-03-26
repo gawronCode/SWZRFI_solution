@@ -5,9 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using SWZRFI.ControllersServices.CompanyManager;
 using SWZRFI.DAL.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SWZRFI.Controllers
 {
+    [Authorize(Roles = "SystemAdmin,RecruitersAccount,ManagerAccount")]
     public class CompanyManagerController : BaseController
     {
 

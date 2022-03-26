@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using SWZRFI.DAL.Models
+@inject SignInManager<UserAccount> SignInManager
+@inject UserManager<UserAccount> UserManager
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -19,15 +25,22 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Strona główna</a>
-                        </li>*@
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Strona główna</a>
+                            </li>*@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="JobOffers" asp-action="Index">Oferty pracy</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="CompanyManager" asp-action="Index">Panel korporacyjny</a>
-                        </li>
-
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            if (User.IsInRole("SystemAdmin") || 
+                                User.IsInRole("RecruitersAccount") ||
+                                User.IsInRole("ManagerAccount"))
+                            {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="CompanyManager" asp-action="Index">Panel korporacyjny</a>
+                            </li>
+                            }
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

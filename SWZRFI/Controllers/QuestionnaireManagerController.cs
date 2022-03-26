@@ -3,14 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using SWZRFI.DAL.Repositories.Interfaces;
 using SWZRFI.DTO.ViewModels;
 using SWZRFI.DAL.Models;
+using Microsoft.AspNetCore.Authorization;
 
-namespace TherapyQualityController.Controllers
+namespace SWZRFI.Controllers
 {
-    [Authorize(Roles = "Administrator,Doctor")]
+    [Authorize(Roles = "SystemAdmin,RecruitersAccount,ManagerAccount")]
     public class QuestionnaireManagerController : Controller
     {
 
