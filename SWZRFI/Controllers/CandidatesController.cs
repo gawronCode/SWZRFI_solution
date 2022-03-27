@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using SWZRFI.DTO.DtoMappingUtils;
+using SWZRFI.DAL.Models;
 
 namespace SWZRFI.Controllers
 {
@@ -60,6 +61,8 @@ namespace SWZRFI.Controllers
 
             var cvViewModel = application.Cv.MapToDto();
             cvViewModel.Email = application.UserAccount.Email;
+            cvViewModel.JobOfferId = application.JobOfferId;
+            cvViewModel.UserId = application.UserAccountId;
 
             application.Opened = true;
             _context.Applications.Update(application);
@@ -69,6 +72,29 @@ namespace SWZRFI.Controllers
             return View(cvViewModel);
         }
 
+        public async Task<IActionResult> SendQuestionnaireInvitation(string id)
+        {
+            var data = id.Split(',');
+            var user = await _context.UserAccount.FirstOrDefaultAsync(q => q.Id == data[0]);
+            var jobOffer = await _context.JobOffers.Include(q => q.Questionnaire).FirstOrDefaultAsync(q => q.Id == int.Parse(data[1]));
+
+            if(jobOffer.QuestionnaireId == null)
+                return RedirectToAction(nameof(Index));
+
+
+            var invitation = new QuestionnaireAccess
+            {
+                Expired = false,
+                QuestionnaireId = (int)jobOffer.QuestionnaireId,
+                UserId = user.Id
+            };
+
+            _context.QuestionnaireAccesses.Add(invitation);
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToAction(nameof(Index));
+        }
 
     }
 }
