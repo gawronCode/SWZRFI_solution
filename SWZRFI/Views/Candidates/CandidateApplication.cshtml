@@ -1,0 +1,82 @@
+﻿@model SWZRFI.DTO.CvViewer;
+
+@{
+    ViewBag.Title = "Szczegóły aplikacji";
+    Layout = "_LayoutCorporational";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+
+            <div>
+                <h5>Podstawowe informacje:</h5>
+                <div style="overflow:hidden">
+                    <div style="width:80px; float:left">
+                        <h6>Imię:</h6>
+                        <h6>Nazwisko:</h6>
+                        <h6>Telefon:</h6>
+                        <h6>Email:</h6>
+                    </div>
+                    <div style="width:400px; overflow:hidden">
+                        <h6>@Model.FirstName</h6>
+                        <h6>@Model.LastName</h6>
+                        <h6>@Model.PhoneNumber</h6>
+                        <h6>@Model.Email</h6>
+                    </div>
+                </div>
+            </div>
+
+            <h5>O mnie:</h5>
+            @foreach (var item in Model.AdditionalInformation)
+            {
+                <div>
+                    <h6>@item</h6>
+                </div>
+            }
+            <h5>Moje umiejętności:</h5>
+            @foreach (var item in Model.Skills)
+            {
+                <div>
+                    <h6> &#8226; @item</h6>
+                </div>
+            }
+            <h5>Dodatkowe atuty:</h5>
+            @foreach (var item in Model.AdditionalSkills)
+            {
+                <div>
+                    <h6> &#8226; @item</h6>
+                </div>
+            }
+            <h5>Dotychczasowe doświadczenie:</h5>
+            @foreach (var item in Model.Expirience)
+            {
+                <div>
+                    <h6> &#8226; @item</h6>
+                </div>
+            }
+            <h5>Znane języki:</h5>
+            @foreach (var item in Model.Languages)
+            {
+                <div>
+                    <h6> &#8226; @item</h6>
+                </div>
+            }
+            <h5>Moje linki:</h5>
+            @foreach (var item in Model.OthersWebsites)
+            {
+                <div>
+                    <h6> &#8226; @item</h6>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="row" style="margin-top:40px">
+        <div class="col-sm">
+            <a asp-action="Index" style="margin-right:2px" value="Anuluj" class="btn btn-secondary">Powrót</a>
+        </div>
+    </div>
+</div>

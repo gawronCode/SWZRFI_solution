@@ -5,6 +5,7 @@ using SWZRFI.DTO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using SWZRFI.DTO.DtoMappingUtils;
 
 namespace SWZRFI.Controllers
 {
@@ -49,5 +50,25 @@ namespace SWZRFI.Controllers
 
             return View(jobOfferApplications);
         }
+
+        public async Task<IActionResult> CandidateApplication(int id)
+        {
+            var application = await _context.Applications
+                .Include(q => q.Cv)
+                .Include(q => q.UserAccount)
+                .FirstOrDefaultAsync(q => q.Id == id);
+
+            var cvViewModel = application.Cv.MapToDto();
+            cvViewModel.Email = application.UserAccount.Email;
+
+            application.Opened = true;
+            _context.Applications.Update(application);
+            await _context.SaveChangesAsync();
+
+
+            return View(cvViewModel);
+        }
+
+
     }
 }

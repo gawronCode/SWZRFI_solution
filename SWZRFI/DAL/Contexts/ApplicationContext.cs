@@ -20,6 +20,7 @@ namespace SWZRFI.DAL.Contexts
         public DbSet<Application> Applications { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Conversation> Conversations { get; set; }
+        public DbSet<QuestionnaireAccess> QuestionnaireAccesses { get; set; }
 
         public DbSet<Questionnaire> Questionnaires { get; set; }
         public DbSet<Question> Questions { get; set; }
