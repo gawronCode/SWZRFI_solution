@@ -14,7 +14,7 @@
 @if (Model.Any())
 {
     <div class="container">
-        <div class="row">
+        <div style="margin-bottom:30px" class="row">
             <h2>Aktualnie jest @Model.Count().ToString() dostępnych ogłoszeń</h2>
         </div>
 
@@ -24,6 +24,16 @@
                 <div class="media">
                     <div class="media-body">
                         <h4 class="mt-0">@item.Title</h4>
+                        <h6 class="mt-0">@item.LowerBoundSallary pln - @item.UpperBoundSallary pln</h6>
+                        <h6 class="mt-0">Utworzono: @item.CreationDate?.ToString("yyyy-MM-dd")</h6>
+                        @if(item.Questionnaire != null)
+                        {
+                        <h6>przypisany quiz: @item.Questionnaire.Name</h6>
+                        }
+                        else
+                        {
+                        <h6>Do oferty nie przypisano żadnego quizu!</h6>
+                        }
                         <small><a asp-action="SelectQuiz" asp-route-id="@item.Id" class="btn btn-primary btn-sm" role="button" style="margin-top: 10px">Przypisz quiz</a></small>
                         <small><a asp-action="EditJobOffer" asp-route-id="@item.Id" class="btn btn-secondary btn-sm" role="button" style="margin-top: 10px">Edytuj</a></small>
                         <small><a asp-action="RemoveJobOffer" asp-route-id="@item.Id" class="btn btn-danger btn-sm" role="button" style="margin-top: 10px">Usuń</a></small>

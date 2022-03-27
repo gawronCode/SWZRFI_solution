@@ -1,15 +1,80 @@
 ﻿@model IEnumerable<SWZRFI.DTO.JobOfferApplication>;
 
 @{
-    ViewBag.Title = "Potwierdzenie aplikacji";
-    Layout = "_Layout";
+    ViewBag.Title = "Aplikacje kandydatów";
+    Layout = "_LayoutCorporational";
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<div class="row">
-    <div class="col-md-6">
-        
-    </div>
-</div>
+@if (Model.Any())
+{
+    <div class="container">
+        <div style="margin-bottom:30px" class="row">
+            <h2>Widok ogólny</h2>
+        </div>
 
+        @foreach (var item in Model)
+        {
+            <div class="row">
+                <div class="media">
+                    <div class="media-body">
+                        <h4 class="mt-0">@item.JobOffer.Title</h4>
+                        <h6 class="mt-0">Ilość aplikacji na tą ofertę: @item.CandidateApplications.Count()</h6>
+                        @if (item.CandidateApplications.Any())
+                        {
+                            <button onclick="myFunction(@item.JobOffer.Id)" href="#" id="applications" class="btn btn-dark" style="margin-right: 20px">Lista aplikacji</button>
+                            <div class="col-sm" id="@item.JobOffer.Id" style="display:none">
+
+                                @foreach (var application in item.CandidateApplications)
+                                {
+                                    <div style="margin-top:15px">
+                                        <h6>Imię: @application.Cv.FirstName</h6>
+                                        <h6>Nazwisko: @application.Cv.LastName</h6>
+                                        <h6>Data przesłania: @application.Application.Date</h6>
+                                        <h6>Wyświetlono: @application.Application.Opened</h6>
+                                        <small><a asp-action="SelectQuiz" asp-route-id="@application.Application.Id" class="btn btn-primary btn-sm" role="button" style="margin-top: 10px">Zobacz szczegóły</a></small>
+                                    </div>
+                                }
+
+
+                            </div>
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+            <hr>
+        }
+
+
+
+    </div>
+
+
+}
+else
+{
+    <div style="margin-top:40px" class="container">
+
+        <h3>Brak danych do wyświetlenia</h3>
+
+    </div>
+}
+
+
+
+<script>
+
+
+    function myFunction(x) {
+        var x = document.getElementById(x);
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+
+</script>

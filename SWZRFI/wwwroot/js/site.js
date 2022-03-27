@@ -11,4 +11,3 @@ $(document).on('click', '#addNewQuestion', function () {
     $('#addNewQuestionDiv').toggle();
 });
 
-

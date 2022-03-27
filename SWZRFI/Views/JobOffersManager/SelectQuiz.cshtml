@@ -16,21 +16,26 @@
 
 
         <form asp-action="AssignQuizToJobOffer" method="post">
-            <div class="form-group">
-                <input style="visibility:hidden" asp-for="@Model.JobOfferId" value=@Model.JobOfferId>
+            <div style="margin-top: 20px" class="row">
+                <div class="form-group">
+                    <input style="display:none" asp-for="@Model.JobOfferId" value=@Model.JobOfferId>
 
 
-                @for (int i = 0; i < Model.Questionnaires.Count; i++)
-                {
-                    <div class="custom-control-inline">
+                    @for (int i = 0; i < Model.Questionnaires.Count; i++)
+                    {
+                        <div class="col-sm">
+                            <div class="form-check-inline">
+                                <div class="custom-control-inline">
+                                    <input style="display:none" asp-for="@Model.Questionnaires[i].QuizId" id="inlineRadio1" value=@Model.Questionnaires[i].QuizId>
+                                    <input style="display:none" asp-for="@Model.Questionnaires[i].Name" id="inlineRadio1" value=@Model.Questionnaires[i].Name>
+                                    <input style="margin-top:6px" asp-for="@Model.Questionnaires[i].Selected" class="form-check-input" type="radio" id="inlineRadio1" value=@true>
+                                    <label for="inlineRadio1">@Model.Questionnaires[i].Name</label>
+                                </div>
+                            </div>
+                        </div>
+                    }
 
-                            <input style="visibility:hidden" asp-for="@Model.Questionnaires[i].QuizId" id="inlineRadio1" value=@Model.Questionnaires[i].QuizId>
-                            <input style="visibility:hidden" asp-for="@Model.Questionnaires[i].Name" id="inlineRadio1" value=@Model.Questionnaires[i].Name>
-                            <input asp-for="@Model.Questionnaires[i].Selected" class="form-check-input" type="radio" id="inlineRadio1" value=@true>
-                            <label for="inlineRadio1" >@Model.Questionnaires[i].Name</label>
-                    </div>
-                }
-
+                </div>
             </div>
             <input type="submit" value="Wybierz" button class="btn btn-dark">
         </form>

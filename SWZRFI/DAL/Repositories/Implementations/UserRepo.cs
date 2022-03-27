@@ -55,6 +55,7 @@ namespace SWZRFI.DAL.Repositories.Implementations
             return await context.UserAccount.AsSplitQuery()
                 .Include(q => q.Company)
                 .ThenInclude(q => q.JobOffers)
+                .ThenInclude(q => q.Questionnaire)
                 .Include(q => q.Company)
                 .ThenInclude(c => c.UserAccounts)
                 .FirstOrDefaultAsync(q => q.Email == email);

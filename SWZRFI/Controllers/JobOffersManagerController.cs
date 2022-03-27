@@ -57,6 +57,13 @@ namespace SWZRFI.Controllers
 
         public async Task<IActionResult> AssignQuizToJobOffer(JobOfferQuizSelector value)
         {
+            if(value == null || value.Questionnaires == null || value.Questionnaires.Count == 0 || value.Questionnaires.All(q => !q.Selected))
+                return RedirectToAction(nameof(Index));
+
+            var jobOffer = await _context.JobOffers.FirstOrDefaultAsync(q => q.Id == value.JobOfferId);
+            jobOffer.QuestionnaireId = value.Questionnaires.FirstOrDefault(q => q.Selected).QuizId;
+            _context.JobOffers.Update(jobOffer);
+            await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
