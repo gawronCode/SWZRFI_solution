@@ -11,6 +11,8 @@ namespace SWZRFI.DAL.Models
         [Key]
         public int Id { get; set; }
         public string UserId { get; set; }
+        public int JobOfferId { get; set; }
+        public string QuestionnaireTitle { get; set; }
         public int QuestionnaireId { get; set; }
         public bool Expired { get; set; }
     }

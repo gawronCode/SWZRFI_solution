@@ -86,10 +86,19 @@ namespace SWZRFI.Controllers
             {
                 Expired = false,
                 QuestionnaireId = (int)jobOffer.QuestionnaireId,
+                JobOfferId = jobOffer.Id,
+                QuestionnaireTitle = jobOffer.Questionnaire.Name,
                 UserId = user.Id
             };
 
             _context.QuestionnaireAccesses.Add(invitation);
+            _context.UserQuestionnaires.Add(new UserQuestionnaire 
+            { 
+                PatientEmail = user.Email, 
+                QuestionnaireId = jobOffer.Questionnaire.Id 
+            });
+
+
             await _context.SaveChangesAsync();
 
 

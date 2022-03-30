@@ -17,7 +17,7 @@ namespace SWZRFI.Controllers
         private readonly IQuestionnaireRepo _questionnaireRepo;
         private readonly IQuestionRepo _questionRepo;
         private readonly IUserRepo _userRepo;
-        private readonly IPatientQuestionnaireRepo _patientQuestionnaireRepo;
+        private readonly IUserQuestionnaireRepo _patientQuestionnaireRepo;
         private readonly UserManager<UserAccount> _userManager;
         private readonly IUserAnswerRepo _userAnswerRepo;
         private readonly IUserQuestionnaireAnswerRepo _userQuestionnaireAnswerRepo;
@@ -25,7 +25,7 @@ namespace SWZRFI.Controllers
         public QuestionnaireResultsController(IQuestionnaireRepo questionnaireRepo,
             IQuestionRepo questionRepo,
             IUserRepo userRepo,
-            IPatientQuestionnaireRepo patientQuestionnaireRepo,
+            IUserQuestionnaireRepo patientQuestionnaireRepo,
             UserManager<UserAccount> userManager,
             IUserAnswerRepo userAnswerRepo,
             IUserQuestionnaireAnswerRepo userQuestionnaireAnswerRepo)
@@ -60,7 +60,7 @@ namespace SWZRFI.Controllers
 
         public async Task<ActionResult> PatientQuestionnaires(string id)
         {
-            var patientQuestionnaires = await _patientQuestionnaireRepo.GetPatientQuestionnairesByEmail(id);
+            var patientQuestionnaires = await _patientQuestionnaireRepo.GetUserQuestionnairesByEmail(id);
             var patientQuestionnaireViewModels = patientQuestionnaires.Select(patientQuestionnaire =>
                 new PatientQuestionnaireViewModel
                 {

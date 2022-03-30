@@ -96,7 +96,7 @@ namespace SWZRFI
             services.AddScoped<IQuestionRepo, QuestionRepo>();
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IAnswerRepo, AnswerRepo>();
-            services.AddScoped<IPatientQuestionnaireRepo, PatientQuestionnaireRepo>();
+            services.AddScoped<IUserQuestionnaireRepo, UserQuestionnaireRepo>();
             services.AddScoped<IUserAnswerRepo, UserAnswerRepo>();
             services.AddScoped<IUserQuestionnaireAnswerRepo, UserQuestionnaireAnswerRepo>();
         }

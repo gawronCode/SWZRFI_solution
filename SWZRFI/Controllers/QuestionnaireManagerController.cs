@@ -17,12 +17,12 @@ namespace SWZRFI.Controllers
         private readonly IQuestionnaireRepo _questionnaireRepo;
         private readonly IQuestionRepo _questionRepo;
         private readonly IAnswerRepo _answerRepo;
-        private readonly IPatientQuestionnaireRepo _patientQuestionnaireRepo;
+        private readonly IUserQuestionnaireRepo _patientQuestionnaireRepo;
 
         public QuestionnaireManagerController(IQuestionnaireRepo questionnaireRepo,
             IQuestionRepo questionRepo,
             IAnswerRepo answerRepo,
-            IPatientQuestionnaireRepo patientQuestionnaireRepo)
+            IUserQuestionnaireRepo patientQuestionnaireRepo)
         {
             _questionnaireRepo = questionnaireRepo;
             _questionRepo = questionRepo;
@@ -104,7 +104,7 @@ namespace SWZRFI.Controllers
                 await _questionRepo.Delete(question);
             }
 
-            var patientsQuestionnaires = _patientQuestionnaireRepo.GetPatientQuestionnairesByQuestionnaireId(id).Result;
+            var patientsQuestionnaires = _patientQuestionnaireRepo.GetUserQuestionnairesByQuestionnaireId(id).Result;
 
             foreach (var patientQuestionnaire in patientsQuestionnaires)
             {

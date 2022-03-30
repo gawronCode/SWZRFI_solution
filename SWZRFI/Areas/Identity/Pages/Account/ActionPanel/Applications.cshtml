@@ -52,6 +52,15 @@
                             <h6>@item.CompanyName</h6>
                         </div>
                     </div>
+                    @if (item.QuestionnaireAccess != null)
+                    {
+                        <div>
+                            <h6>Otrzymałeś zaproszenie do quizu:</h6>
+                            <h5>@item.QuestionnaireAccess.QuestionnaireTitle</h5>
+                            <small><a asp-action="FillQuestionnaire" asp-controller="UserQuestionnaire" asp-route-id="@item.QuestionnaireAccess.QuestionnaireId" class="btn btn-danger btn-sm" role="button" style="margin-top: 10px">Weź udział!</a></small>
+                        </div>
+                    }
+
                     <hr />
                 }
 

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using SWZRFI.DAL.Repositories.Interfaces;
 using SWZRFI.DTO.ViewModels;
 using SWZRFI.DAL.Models;
+using SWZRFI.DAL.Contexts;
 
 namespace TherapyQualityController.Controllers
 {
@@ -20,14 +21,16 @@ namespace TherapyQualityController.Controllers
         private readonly IAnswerRepo _answerRepo;
         private readonly IUserAnswerRepo _userAnswerRepo;
         private readonly IUserQuestionnaireAnswerRepo _userQuestionnaireAnswerRepo;
-        private readonly IPatientQuestionnaireRepo _patientQuestionnaireRepo;
+        private readonly IUserQuestionnaireRepo _patientQuestionnaireRepo;
+        private readonly ApplicationContext _context;
 
         public UserQuestionnaireController(IQuestionnaireRepo questionnaireRepo,
             IQuestionRepo questionRepo,
             IAnswerRepo answerRepo,
             IUserAnswerRepo userAnswerRepo,
             IUserQuestionnaireAnswerRepo userQuestionnaireAnswerRepo,
-            IPatientQuestionnaireRepo patientQuestionnaireRepo)
+            IUserQuestionnaireRepo patientQuestionnaireRepo,
+            ApplicationContext context)
         {
             _questionnaireRepo = questionnaireRepo;
             _questionRepo = questionRepo;
@@ -35,6 +38,7 @@ namespace TherapyQualityController.Controllers
             _userAnswerRepo = userAnswerRepo;
             _userQuestionnaireAnswerRepo = userQuestionnaireAnswerRepo;
             _patientQuestionnaireRepo = patientQuestionnaireRepo;
+            _context = context;
         }
 
 
@@ -67,8 +71,9 @@ namespace TherapyQualityController.Controllers
         public async Task<ActionResult> FillQuestionnaire(int id)
         {
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
-            var patientQuestionnairesIds = await _patientQuestionnaireRepo.GetUserQuestionnairesIdByEmail(userEmail);
-            if (!patientQuestionnairesIds.Contains(id)) return RedirectToAction(nameof(Index));
+            var userQuestionnairesIds = await _patientQuestionnaireRepo.GetUserQuestionnairesIdByEmail(userEmail);
+            //var userQuestionnaireInvitation = await _context.QuestionnaireAccesses.FirstOrDefault(q => q)
+            if (!userQuestionnairesIds.Contains(id)) return RedirectToAction(nameof(Index));
 
             var answeredQuestionnaires = await _userQuestionnaireAnswerRepo.GetByUserEmail(userEmail);
             if (answeredQuestionnaires.Where(q => q.AnswerDate.Value.Date == DateTime.Today && q.QuestionnaireId == id).ToList().Count >= 5) return RedirectToAction(nameof(Index));

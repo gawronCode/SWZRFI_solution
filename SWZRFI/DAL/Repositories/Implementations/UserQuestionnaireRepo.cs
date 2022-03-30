@@ -9,12 +9,12 @@ using SWZRFI.DAL.Repositories.Interfaces;
 
 namespace SWZRFI.DAL.Repositories.Implementations
 {
-    public class PatientQuestionnaireRepo : IPatientQuestionnaireRepo
+    public class UserQuestionnaireRepo : IUserQuestionnaireRepo
     {
 
         private readonly ApplicationContext _context;
 
-        public PatientQuestionnaireRepo(ApplicationContext context)
+        public UserQuestionnaireRepo(ApplicationContext context)
         {
             _context = context;
         }
@@ -54,14 +54,14 @@ namespace SWZRFI.DAL.Repositories.Implementations
             return userQuestionnaire;
         }
 
-        public async Task<ICollection<UserQuestionnaire>> GetPatientQuestionnairesByEmail(string email)
+        public async Task<ICollection<UserQuestionnaire>> GetUserQuestionnairesByEmail(string email)
         {
-            var patientQuestionnaires = await _context.UserQuestionnaires.Where(q => q.PatientEmail == email).ToListAsync();
-            return patientQuestionnaires;
+            var userQuestionnaires = await _context.UserQuestionnaires.Where(q => q.PatientEmail == email).ToListAsync();
+            return userQuestionnaires;
 
         }
 
-        public async Task<ICollection<UserQuestionnaire>> GetPatientQuestionnairesByQuestionnaireId(int id)
+        public async Task<ICollection<UserQuestionnaire>> GetUserQuestionnairesByQuestionnaireId(int id)
         {
             var patientsQuestionnaires = await _context.UserQuestionnaires.Where(q => q.QuestionnaireId == id).ToListAsync();
             return patientsQuestionnaires;

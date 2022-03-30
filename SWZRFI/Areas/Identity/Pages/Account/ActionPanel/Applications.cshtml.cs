@@ -50,6 +50,9 @@ namespace SWZRFI.Areas.Identity.Pages.Account.ActionPanel
                 .Include(a => a.JobOffer)
                 .ToListAsync();
 
+            var questionnaireAccess = await _context.QuestionnaireAccesses
+                .Where(q => q.UserId == user.Id).ToListAsync();
+
             if (applications.Any())
                 Applications = applications.Select(a => new MyApplication
                 {
@@ -58,10 +61,24 @@ namespace SWZRFI.Areas.Identity.Pages.Account.ActionPanel
                     JobOfferId = a.JobOffer.Id,
                     CompanyName = a.Company.Name,
                     Status = a.Opened,
-                    Date = a.Date
+                    Date = a.Date,
                 });
             else
                 Applications = null;
+
+            if (Applications != null && questionnaireAccess != null)
+            {
+                Applications = Applications.GroupJoin(
+                    questionnaireAccess.OrderByDescending(q => q.JobOfferId),
+                    a => a.JobOfferId,
+                    q => q.JobOfferId,
+                    (a, q) =>
+                    {
+                        a.QuestionnaireAccess = q.FirstOrDefault();
+                        return a;
+                    }
+                    ).ToList();
+            }
 
 
             return Page();
