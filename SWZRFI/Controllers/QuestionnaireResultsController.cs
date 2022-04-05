@@ -111,7 +111,7 @@ namespace SWZRFI.Controllers
                 foreach (var answer in answersToSelectedQuestionnaire.Where(answer => answer.UserQuestionnaireAnswerId == questionnaireAnswer.Id))
                 {
                     questionnaireDetails.AnswerCount++;
-                    questionnaireDetails.AnswerSum += answer.Value;
+                    //questionnaireDetails.AnswerSum += answer.Value;
                 }
                 questionnaireAnswerDetails.Add(questionnaireDetails);
             }

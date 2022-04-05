@@ -8,7 +8,7 @@ namespace SWZRFI.DAL.Models
         [Required]
         public int Id { get; set; }
         [Required]
-        public int Value { get; set; }
+        public bool Value { get; set; }
         [Required]
         public int QuestionId { get; set; }
         public Question Question { get; set; }

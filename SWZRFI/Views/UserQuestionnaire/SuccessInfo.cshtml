@@ -1,10 +1,27 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using SWZRFI.DAL.Models
+@inject SignInManager<UserAccount> SignInManager
+@inject UserManager<UserAccount> UserManager
+
+@functions{
+
+    private Dictionary<string, string> GetLayoutDict(string layout)
+    {
+        var tmpList = new List<string>() { layout };
+        return tmpList.ToDictionary(key => "ParentLayout");
+    }
+
+}
+
+
+@{
     ViewData["Title"] = "SuccessInfo";
 }
 
 <div class="d-flex justify-content-center" style="margin-top: 50px">
-    <h2>Dziękujemy za wypełnienie ankiety :)</h2>
+    <h2 style="text-align:center">Dziękujemy za udział w teście, osoba prowadząca rekrutację powiadomi Cię wkróctce o wynikach.</h2>
 </div>
 <div class="d-flex justify-content-center" style="margin-top: 10px">
-    <a asp-action="Index" class="btn btn-secondary" style="margin-top: 10px; margin-left: 10px; width: 200px">Powrót</a>
+    <a asp-area="Identity" asp-page="/Account/ActionPanel/Applications" asp-all-route-data="@GetLayoutDict(this.Layout)" title="ActionPanel"
+       class="btn btn-secondary" style="margin-top: 10px; margin-left: 10px; width: 200px">Powrót</a>
 </div>

@@ -41,7 +41,7 @@ namespace TherapyQualityController.Controllers
             _context = context;
         }
 
-
+        //do wywwalenia
         public async Task<ActionResult> Index()
         {
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
@@ -114,15 +114,23 @@ namespace TherapyQualityController.Controllers
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
             var answers = new List<UserAnswer>();
 
+            var a = form.Take(count)
+                .SelectMany(f => f.Value)
+                .Select(f => f.Split(','))
+                .ToList();
+
+           
             for (var i = 0; i < count; i++)
             {
                 string data = form[$"opt{i.ToString()}"];
                 if(string.IsNullOrEmpty(data)) return RedirectToAction(nameof(ErrorInfo));
                 var dataParsed = data.Split(',');
+                var isCorrect = dataParsed.Where(q => q.Equals("True")).Count() == dataParsed.Length / 2;
+
                 answers.Add(new UserAnswer
                 {
                     QuestionId = Convert.ToInt32(dataParsed[0]),
-                    Value = Convert.ToInt32(dataParsed[1]),
+                    Value = isCorrect,
                     UserEmail = userEmail
                 });
             }

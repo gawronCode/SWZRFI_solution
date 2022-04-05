@@ -44,7 +44,7 @@ namespace SWZRFI.Areas.Identity.Pages.Account.ActionPanel
                 .FirstOrDefaultAsync(u => u.Id == user.Id);
 
             var applications = await _context
-                .Applications
+                .Applications.Where(a => a.UserAccountId == user.Id)
                 .AsSplitQuery()
                 .Include(a => a.Company)
                 .Include(a => a.JobOffer)
