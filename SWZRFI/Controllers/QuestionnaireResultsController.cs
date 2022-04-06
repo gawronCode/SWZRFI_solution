@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using SWZRFI.DAL.Contexts;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace SWZRFI.Controllers
 {
@@ -21,6 +24,7 @@ namespace SWZRFI.Controllers
         private readonly UserManager<UserAccount> _userManager;
         private readonly IUserAnswerRepo _userAnswerRepo;
         private readonly IUserQuestionnaireAnswerRepo _userQuestionnaireAnswerRepo;
+        private readonly ApplicationContext _context;
 
         public QuestionnaireResultsController(IQuestionnaireRepo questionnaireRepo,
             IQuestionRepo questionRepo,
@@ -28,7 +32,8 @@ namespace SWZRFI.Controllers
             IUserQuestionnaireRepo patientQuestionnaireRepo,
             UserManager<UserAccount> userManager,
             IUserAnswerRepo userAnswerRepo,
-            IUserQuestionnaireAnswerRepo userQuestionnaireAnswerRepo)
+            IUserQuestionnaireAnswerRepo userQuestionnaireAnswerRepo,
+            ApplicationContext context)
         {
             _questionnaireRepo = questionnaireRepo;
             _questionRepo = questionRepo;
@@ -37,6 +42,7 @@ namespace SWZRFI.Controllers
             _userManager = userManager;
             _userAnswerRepo = userAnswerRepo;
             _userQuestionnaireAnswerRepo = userQuestionnaireAnswerRepo;
+            _context = context;
         }
 
         public async Task<ActionResult> Index()
@@ -78,55 +84,60 @@ namespace SWZRFI.Controllers
             return View(model);
         }
 
-        public async Task<ActionResult> PatientQuestionnaireResults(int id, string email)
+        public async Task<ActionResult> JobOfferQuestionnaireResults(int Id)
         {
-            var userAnswers = await _userAnswerRepo.GetUserAnswersByUserEmail(email);
-            
-            var answersToSelectedQuestionnaire = userAnswers.Where(answer =>
-                _questionRepo.GetById(answer.QuestionId).Result.QuestionnaireId == id).ToList();
+            var questionaire = (await _context
+                .JobOffers
+                .Include(q => q.Questionnaire)
+                .ThenInclude(q => q.Questions)
+                .ThenInclude(q => q.Answers)
+                .Include(q => q.Questionnaire)
+                .ThenInclude(q => q.UserQuestionnaireAnswers)
+                .ThenInclude(q => q.UserAnswers)
+                .FirstOrDefaultAsync(q => q.Id == Id)
+                )?.Questionnaire;
 
-            var user = await _userManager.FindByEmailAsync(email);
+            var users = await _context.UserAccount
+                .Where(u => questionaire
+                            .UserQuestionnaireAnswers
+                            .Select(q => q.UserEmail)
+                            .ToList().Contains(u.Email))
+                .ToListAsync();
+
+
+
+            var questionnaireAnswerDetails = questionaire.UserQuestionnaireAnswers.Select(q => new QuestionnaireAnswerDetails
+            {
+                CandidateEmail = q.UserEmail,
+                AnswerDate = q.AnswerDate,
+                AnswerCount = q.UserAnswers.Count(),
+                AnswerSum = q.UserAnswers.Where(u => u.Value).Count()
+            }).ToList();
+
+            questionnaireAnswerDetails = questionnaireAnswerDetails.Join(
+                users,
+                q => q.CandidateEmail,
+                u => u.Email,
+                (q, u) =>
+                {
+                    q.CandidateName = u.FirstName + " " + u.LastName;
+                    return q;
+                }).OrderByDescending(q => q.AnswerSum).ToList();
+
 
             var model = new ResultViewModel
             {
-                NumberOfSolvedQuestionnaires = 0,
-                PatientEmail = email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
+                QuestionnaireName = questionaire.Name,
+                NumberOfSolvedQuestionnaires = questionaire.UserQuestionnaireAnswers.Count,
+                StudyStart = questionnaireAnswerDetails.OrderBy(q => q.AnswerDate).FirstOrDefault()?.AnswerDate,
+                LastQuestionnaireDate = questionnaireAnswerDetails.OrderByDescending(q => q.AnswerDate).FirstOrDefault()?.AnswerDate,
+                QuestionnaireAnswerDetails = questionnaireAnswerDetails,
+                PatientEmail = "tmp",
+                FirstName = "tmp",
+                LastName = "tmp",
+                PESEL = "tmp",
+
             };
-
-            if (answersToSelectedQuestionnaire.Count==0) return View(model);
-
-            var questionnaireAnswered = await _userQuestionnaireAnswerRepo.GetByUserEmailAndQuestionnaireId(email, id);
-            var questionnaireAnswerDetails = new List<QuestionnaireAnswerDetails>();
-
-            foreach (var questionnaireAnswer in questionnaireAnswered)
-            {
-                var questionnaireDetails = new QuestionnaireAnswerDetails
-                {
-                    AnswerDate = questionnaireAnswer.AnswerDate,
-                    AnswerCount = 0,
-                    AnswerSum = 0
-                };
-                foreach (var answer in answersToSelectedQuestionnaire.Where(answer => answer.UserQuestionnaireAnswerId == questionnaireAnswer.Id))
-                {
-                    questionnaireDetails.AnswerCount++;
-                    //questionnaireDetails.AnswerSum += answer.Value;
-                }
-                questionnaireAnswerDetails.Add(questionnaireDetails);
-            }
-
-            questionnaireAnswerDetails = questionnaireAnswerDetails.Where(q => 
-                q.AnswerDate.HasValue).OrderBy(q => 
-                q.AnswerDate.Value).ToList();
-
-            var averageScorePerQuestionnaire = questionnaireAnswerDetails.Select(answerDetail => answerDetail.GetAverageScore()).ToList();
-
-            model.AverageQuestionnaireScore = averageScorePerQuestionnaire.ToArray();
-            model.LastQuestionnaireDate = questionnaireAnswerDetails.LastOrDefault().AnswerDate;
-            model.NumberOfSolvedQuestionnaires = questionnaireAnswerDetails.Count;
-            model.QuestionnaireName = (await _questionnaireRepo.GetById(id)).Name;
-            model.StudyStart = questionnaireAnswerDetails.FirstOrDefault().AnswerDate;
 
             return View(model);
         }

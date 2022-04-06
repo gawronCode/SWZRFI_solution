@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SWZRFI.DAL.Models
@@ -17,6 +19,10 @@ namespace SWZRFI.DAL.Models
         public Company Company { get; set; }
 
         public int? SolvedCounter { get; set; }
+
+        public List<Question> Questions { get; set; }
+        public List<UserQuestionnaireAnswer> UserQuestionnaireAnswers { get; set; }
+
 
     }
 }

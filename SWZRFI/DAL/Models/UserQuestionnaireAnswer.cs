@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SWZRFI.DAL.Models
 {
@@ -9,5 +10,6 @@ namespace SWZRFI.DAL.Models
         public int QuestionnaireId { get; set; }
         public Questionnaire Questionnaire { get; set; }
         public DateTime? AnswerDate { get; set; }
+        public List<UserAnswer> UserAnswers { get; set; }
     }
 }

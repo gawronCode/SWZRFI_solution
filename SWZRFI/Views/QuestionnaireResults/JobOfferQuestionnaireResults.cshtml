@@ -2,8 +2,8 @@
 
 @{
 
-    double[] data = Model.AverageQuestionnaireScore;
-
+    int[] data = Model.QuestionnaireAnswerDetails.Select(q => q.AnswerSum).ToArray();
+    string[] candidateNames = Model.QuestionnaireAnswerDetails.Select(q => q.CandidateName).ToArray();
 }
 
 @{
@@ -15,31 +15,23 @@
 
 <div class="container">
     <div class="row">
-        <h1>Podsumowanie wyników ankiety "@Model.QuestionnaireName" </h1>
+        <h2 style="text-align:center">Zbiorcze podsumowanie testu do oferty:</h2>
+        <h2 style="text-align:center">"@Model.QuestionnaireName"</h2>
     </div>
     <div class="row" style="margin-top: 40px">
-        <h3>Dane pacjenta:</h3>
+        <h3>Podsumowanie:</h3>
     </div>
     <div class="row" style="margin-top: 10px">
-        <h5>Imię: @Model.FirstName</h5>
+        <h5>Liczba pytań: @Model.FirstName</h5>
     </div>
     <div class="row" style="margin-top: 10px">
-        <h5>Nazwisko: @Model.LastName</h5>
+        <h5>Średni wynik: @Model.LastName</h5>
     </div>
     <div class="row" style="margin-top: 10px">
-        <h5>PESEL: @Model.PESEL</h5>
-    </div>
-    <div class="row" style="margin-top: 20px">
-        <h3>Szczegóły badania:</h3>
+        <h5>Data pierwszego rozwiązania testu: @Model.StudyStart.Value.ToShortDateString()</h5>
     </div>
     <div class="row" style="margin-top: 10px">
-        <h5>Data rozpoczecia badania: @Model.StudyStart.Value.ToShortDateString()</h5>
-    </div>
-    <div class="row" style="margin-top: 10px">
-        <h5>Liczba wypełnionych przez pacjenta ankiet: @Model.NumberOfSolvedQuestionnaires</h5>
-    </div>
-    <div class="row" style="margin-top: 10px; margin-bottom: 60px">
-        <h5>Ostatniej odpowiedzi udzielono: @Model.LastQuestionnaireDate.Value.ToShortDateString()</h5>
+        <h5>Liczba kandydatów biorących udział: @Model.NumberOfSolvedQuestionnaires</h5>
     </div>
 </div>
 
@@ -53,11 +45,12 @@
     <script>
 
         var dataJS = @Html.Raw(Json.Serialize(data));
+        var candidateNamesJS = @Html.Raw(Json.Serialize(candidateNames));
 
         Highcharts.chart('container',
             {
                 title: {
-                    text: 'Podsumowanie graficzne badania'
+                    text: ' '
                 },
 
                 subtitle: {
@@ -66,17 +59,18 @@
 
                 yAxis: {
                     title: {
-                        text: 'Średni wynik z ankiety'
+                        text: 'Wynik punktowy kandydata'
                     }
                 },
 
                 xAxis: {
                     title: {
-                        text: 'Numer przesłanej ankiety'
+                        text: 'Kandydat'
                     },
                     accessibility: {
-                        rangeDescription: 'Numer przesłanej ankiety'
-                    }
+                        rangeDescription: 'Kandydat'
+                    },
+                    categories: candidateNamesJS,
                 },
 
                 legend: {
@@ -90,13 +84,13 @@
                         label: {
                             connectorAllowed: false
                         },
-                        pointStart: 1
+                        //pointStart: 0
                     }
                 },
 
                 series: [
                     {
-                        name: 'Średni wynik z ankiety',
+                        name: 'Skala punktowa',
                         data: dataJS
                     }
                 ],

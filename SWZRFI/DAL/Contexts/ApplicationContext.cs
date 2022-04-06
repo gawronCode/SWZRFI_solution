@@ -33,7 +33,12 @@ namespace SWZRFI.DAL.Contexts
         //Pozwala na obejście problemu zapętlenia EF jak encje mają specyficzne relacje
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
-            
+
+            modelbuilder.Entity<Question>().HasOne(q => q.Questionnaire).WithMany(q => q.Questions);
+            modelbuilder.Entity<Answer>().HasOne(q => q.Question).WithMany(q => q.Answers);
+            modelbuilder.Entity<UserQuestionnaireAnswer>().HasOne(q => q.Questionnaire).WithMany(q => q.UserQuestionnaireAnswers);
+            modelbuilder.Entity<UserAnswer>().HasOne(q => q.UserQuestionnaireAnswer).WithMany(q => q.UserAnswers);
+
             foreach (var relationship in modelbuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.NoAction;

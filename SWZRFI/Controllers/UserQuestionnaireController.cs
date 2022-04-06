@@ -10,6 +10,7 @@ using SWZRFI.DAL.Repositories.Interfaces;
 using SWZRFI.DTO.ViewModels;
 using SWZRFI.DAL.Models;
 using SWZRFI.DAL.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace TherapyQualityController.Controllers
 {
@@ -68,15 +69,20 @@ namespace TherapyQualityController.Controllers
         }
 
 
+
         public async Task<ActionResult> FillQuestionnaire(int id)
         {
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
             var userQuestionnairesIds = await _patientQuestionnaireRepo.GetUserQuestionnairesIdByEmail(userEmail);
-            //var userQuestionnaireInvitation = await _context.QuestionnaireAccesses.FirstOrDefault(q => q)
-            if (!userQuestionnairesIds.Contains(id)) return RedirectToAction(nameof(Index));
+            var userQuestionnaireInvitation = await _context.QuestionnaireAccesses.FirstOrDefaultAsync(q => q.QuestionnaireId == id);
+
+            if (userQuestionnaireInvitation == null || userQuestionnaireInvitation.Expired)
+                return RedirectToAction(nameof(ErrorInfo));
+
+            if (!userQuestionnairesIds.Contains(id)) 
+                return RedirectToAction(nameof(ErrorInfo));
 
             var answeredQuestionnaires = await _userQuestionnaireAnswerRepo.GetByUserEmail(userEmail);
-            if (answeredQuestionnaires.Where(q => q.AnswerDate.Value.Date == DateTime.Today && q.QuestionnaireId == id).ToList().Count >= 5) return RedirectToAction(nameof(Index));
 
             var questionnaire = await _questionnaireRepo.GetById(id);
             var questions = await _questionRepo.GetQuestionsByQuestionnaireId(id);
@@ -102,6 +108,10 @@ namespace TherapyQualityController.Controllers
                 });
                 i++;
             }
+
+            userQuestionnaireInvitation.Expired = true;
+            _context.QuestionnaireAccesses.Update(userQuestionnaireInvitation);
+            await _context.SaveChangesAsync();
 
             return View(model);
         }
