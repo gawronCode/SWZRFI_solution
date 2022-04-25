@@ -22,8 +22,14 @@ namespace SWZRFI.DAL.Models
         public ICollection<JobOffer> EditedJobOffers { get; set; }
 
 
-        public ICollection<Conversation> Conversations { get; set; }
+        public Conversation Conversation { get; set; }
+        public int? ConversationId { get; set; }
 
+
+        public List<UserConversation> UserConversations { get; set; }
+
+        public List<Conversation> Conversations { get; set; }
+        public List<Message> Messages { get; set; }
 
 
 

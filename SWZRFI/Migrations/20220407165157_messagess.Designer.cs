@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SWZRFI.DAL.Contexts;
 
 namespace SWZRFI.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220407165157_messagess")]
+    partial class messagess
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -526,39 +528,6 @@ namespace SWZRFI.Migrations
                     b.ToTable("JobOffers");
                 });
 
-            modelBuilder.Entity("SWZRFI.DAL.Models.JobOfferUserMeeting", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ApplicationId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsMeetingConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("JobOfferId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("MeetingDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserAccountId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationId");
-
-                    b.HasIndex("JobOfferId");
-
-                    b.HasIndex("UserAccountId");
-
-                    b.ToTable("JobOfferUserMeetings");
-                });
-
             modelBuilder.Entity("SWZRFI.DAL.Models.Message", b =>
                 {
                     b.Property<int>("Id")
@@ -932,32 +901,6 @@ namespace SWZRFI.Migrations
                     b.Navigation("EditorUserAccount");
 
                     b.Navigation("Questionnaire");
-                });
-
-            modelBuilder.Entity("SWZRFI.DAL.Models.JobOfferUserMeeting", b =>
-                {
-                    b.HasOne("SWZRFI.DAL.Models.Application", "Application")
-                        .WithMany()
-                        .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("SWZRFI.DAL.Models.JobOffer", "JobOffer")
-                        .WithMany()
-                        .HasForeignKey("JobOfferId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("SWZRFI.DAL.Models.UserAccount", "UserAccount")
-                        .WithMany()
-                        .HasForeignKey("UserAccountId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Application");
-
-                    b.Navigation("JobOffer");
-
-                    b.Navigation("UserAccount");
                 });
 
             modelBuilder.Entity("SWZRFI.DAL.Models.Message", b =>

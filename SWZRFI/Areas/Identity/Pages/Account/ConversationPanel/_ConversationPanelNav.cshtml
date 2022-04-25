@@ -1,0 +1,39 @@
+﻿@using SWZRFI.DAL.Models
+
+@inject SignInManager<UserAccount> SignInManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+<ul class="nav nav-pills flex-column">
+    <li class="nav-item">
+        <a class="nav-link @ConversationPanelNavPages.IndexNavClass(ViewContext)"
+           id="index" asp-page="./Index">
+            Konwersacje
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @ConversationPanelNavPages.EmployeesNavClass(ViewContext)"
+           id="Employees" asp-page="./Employees">
+            Współpracownicy
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @ConversationPanelNavPages.CandidatesNavClass(ViewContext)"
+           id="Candidates" asp-page="./Candidates">
+            Kandydaci
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @ConversationPanelNavPages.RecruitersNavClass(ViewContext)"
+           id="Recruiters" asp-page="./Recruiters">
+            Rekruterzy
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Identity"
+           asp-page="/Account/ActionPanel/Index" title="ActionPanel">
+            Powrót do dashboard
+        </a>
+    </li>
+</ul>

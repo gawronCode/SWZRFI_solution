@@ -22,10 +22,10 @@
         <h3>Podsumowanie:</h3>
     </div>
     <div class="row" style="margin-top: 10px">
-        <h5>Liczba pytań: @Model.FirstName</h5>
+        <h5>Liczba pytań: @Model.QuestionCount</h5>
     </div>
     <div class="row" style="margin-top: 10px">
-        <h5>Średni wynik: @Model.LastName</h5>
+        <h5>Średni wynik: @Model.AverageScore.ToString("0.00")</h5>
     </div>
     <div class="row" style="margin-top: 10px">
         <h5>Data pierwszego rozwiązania testu: @Model.StudyStart.Value.ToShortDateString()</h5>
@@ -124,11 +124,11 @@
 }
 else
 {
-    <h1>Pacjent nie udzielił jeszcze żadnej odpowiedzi na tą ankietę</h1>
+    <h1>Brak statystyk do załadowania.</h1>
 }
 
 
 
 <div class="row">
-    <a asp-action="PatientQuestionnaires" asp-route-id="@Model.PatientEmail" class="btn btn-dark" style="margin-top: 40px; width: 200px">Powrót</a>
+    <a asp-action="Index" asp-controller="Candidates" class="btn btn-dark" style="margin-top: 40px; width: 200px">Powrót</a>
 </div>

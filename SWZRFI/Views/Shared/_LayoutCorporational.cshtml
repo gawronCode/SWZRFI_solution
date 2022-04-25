@@ -3,7 +3,15 @@
 @inject SignInManager<UserAccount> SignInManager
 @inject UserManager<UserAccount> UserManager
 
+@functions{
 
+    private Dictionary<string, string> GetLayoutDict(string layout)
+    {
+        var tmpList = new List<string>() { layout };
+        return tmpList.ToDictionary(key => "ParentLayout");
+    }
+
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -34,6 +42,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Strona główna</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/ConversationPanel/Index" asp-all-route-data="@GetLayoutDict(this.Layout)" title="ActionPanel">Konwersacje</a>
+                                </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Zarządzanie organizacją
@@ -51,15 +62,17 @@
                                         <a class="nav-link text-dark" asp-area="" asp-controller="QuestionnaireManager" asp-action="Index">Quizy rekrutacyjne</a>
                                         <a class="nav-link text-dark" asp-area="" asp-controller="JobOffersManager" asp-action="Index">Manager ofert</a>
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Candidates" asp-action="Index">Aplikacje kandydatów</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Meetings" asp-action="Index">Spotkania rekrutacyjne</a>
                                     </div>
                                 </li>
+
                             </ul>
                             <partial name="_LoginPartial" />
                         </div>
-                        }
                     }
-                </div>
-            </nav>
+                }
+            </div>
+        </nav>
     </header>
     <div class="container">
         <main role="main" class="pb-3">

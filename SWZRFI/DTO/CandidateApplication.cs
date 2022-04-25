@@ -10,6 +10,9 @@ namespace SWZRFI.DTO
     {
         public UserAccount UserAccount { get; set; }
         public Application Application { get; set; }
+        public bool QuestionnaireInvitation { get; set; }
+        public bool SolvedQuestionnaire { get; set; }
+        public bool InvitedForReview { get; set; }
         public Cv Cv { get; set; }
     }
 }

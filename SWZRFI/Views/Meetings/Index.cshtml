@@ -1,0 +1,78 @@
+﻿@model IEnumerable<SWZRFI.DTO.RecruitmentMeeting>
+
+@{
+    ViewBag.Title = "Pracownicy";
+    Layout = "_LayoutCorporational";
+}
+
+
+@if (Model.Any())
+{
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-11">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th style="text-align: right">
+                                <h4>Imię</h4>
+                            </th>
+                            <th style="text-align: right">
+                                <h4>Nazwisko</h4>
+                            </th>
+                            <th style="text-align: right">
+                                <h4>Oferta</h4>
+                            </th>
+                            <th style="text-align: right">
+                                <h4>Potwierdzenie</h4>
+                            </th>
+                            <th style="text-align: right; border-right: none">
+                                <h4>Data spotkania</h4>
+                            </th>
+                            <th style="border-right:none; border-left:none">
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td style="text-align: right">@item.Candidate.FirstName</td>
+                                <td style="text-align: right">@item.Candidate.LastName</td>
+                                <td style="text-align: right">@item.JobOffer.Title</td>
+                                <td style="text-align: right">
+                                    @if (item.JobOfferApplication.IsMeetingConfirmed)
+                                    {
+                                        <input disabled type="checkbox" checked />
+                                    }
+                                    else
+                                    {
+                                        <input disabled  type="checkbox" />
+                                    }
+                                </td>
+                                <td style="text-align: right">@item.JobOfferApplication.MeetingDateTime.ToString("yyyy-MM-dd HH:mm")</td>
+                                
+                                <td style="text-align: right;
+                                border-right: none;
+                                border-left: none">
+                                    <a asp-action="EditCompany" class="btn btn-sm btn-danger" role="button">Odwołaj</a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+            <a asp-action="EditUserRoles" class="btn btn-sm btn-primary" role="button">Edytuj role pracowników</a>
+            <a style="margin-left:10px" asp-action="SendInvitationCodeToUser" class="btn btn-sm btn-primary" role="button">Zaproś nowego pracownika</a>
+        </div>
+
+    </div>
+}

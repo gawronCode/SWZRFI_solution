@@ -20,6 +20,7 @@ namespace SWZRFI.DAL.Contexts
         public DbSet<Application> Applications { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Conversation> Conversations { get; set; }
+        public DbSet<UserConversation> UserConversations { get; set; }
         public DbSet<QuestionnaireAccess> QuestionnaireAccesses { get; set; }
 
         public DbSet<Questionnaire> Questionnaires { get; set; }
@@ -28,11 +29,14 @@ namespace SWZRFI.DAL.Contexts
         public DbSet<UserAnswer> UserAnswers { get; set; }
         public DbSet<UserQuestionnaire> UserQuestionnaires { get; set; }
         public DbSet<UserQuestionnaireAnswer> UserQuestionnaireAnswers { get; set; }
+        public DbSet<JobOfferUserMeeting> JobOfferUserMeetings { get; set; }
 
 
         //Pozwala na obejście problemu zapętlenia EF jak encje mają specyficzne relacje
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
+
+
 
             modelbuilder.Entity<Question>().HasOne(q => q.Questionnaire).WithMany(q => q.Questions);
             modelbuilder.Entity<Answer>().HasOne(q => q.Question).WithMany(q => q.Answers);

@@ -87,7 +87,7 @@ namespace SWZRFI.Controllers
         public async Task<ActionResult> JobOfferQuestionnaireResults(int Id)
         {
             var questionaire = (await _context
-                .JobOffers
+                .JobOffers.AsSplitQuery()
                 .Include(q => q.Questionnaire)
                 .ThenInclude(q => q.Questions)
                 .ThenInclude(q => q.Answers)
@@ -132,6 +132,8 @@ namespace SWZRFI.Controllers
                 StudyStart = questionnaireAnswerDetails.OrderBy(q => q.AnswerDate).FirstOrDefault()?.AnswerDate,
                 LastQuestionnaireDate = questionnaireAnswerDetails.OrderByDescending(q => q.AnswerDate).FirstOrDefault()?.AnswerDate,
                 QuestionnaireAnswerDetails = questionnaireAnswerDetails,
+                QuestionCount = questionnaireAnswerDetails.Count,
+                AverageScore = (double)questionnaireAnswerDetails.Sum(q => (double)q.AnswerSum) / (double)questionnaireAnswerDetails.Count,
                 PatientEmail = "tmp",
                 FirstName = "tmp",
                 LastName = "tmp",

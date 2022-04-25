@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace SWZRFI.DAL.Models
 {
-    public class Conversation
+    public class UserConversation
     {
         [Key]
         public int Id { get; set; }
-
-        public string Title { get; set; }
-        public ICollection<Message> Messages { get; set; }
-
+        public Conversation Conversation { get; set; }
+        public int ConversationId { get; set; }
+        public UserAccount UserAccount { get; set; }
+        public string UserAccountId { get; set; }
     }
 }

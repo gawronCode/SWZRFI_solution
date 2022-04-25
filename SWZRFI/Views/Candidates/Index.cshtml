@@ -23,8 +23,8 @@
                         <h6 class="mt-0">Ilość aplikacji na tą ofertę: @item.CandidateApplications.Count()</h6>
                         @if (item.CandidateApplications.Any())
                         {
-                            <button onclick="myFunction(@item.JobOffer.Id)" href="#" id="applications" class="btn btn-dark">Lista aplikacji</button>
                             <a asp-controller="QuestionnaireResults" asp-action="JobOfferQuestionnaireResults" asp-route-id="@item.JobOffer.Id" class="btn btn-primary">Statystyki testów</a>
+                            <button onclick="myFunction(@item.JobOffer.Id)" href="#" id="applications" class="btn btn-dark">Lista aplikacji</button>
                             <div class="col-sm" id="@item.JobOffer.Id" style="display:none">
 
                                 @foreach (var application in item.CandidateApplications)
@@ -34,6 +34,8 @@
                                         <h6>Nazwisko: @application.Cv.LastName</h6>
                                         <h6>Data przesłania: @application.Application.Date</h6>
                                         <h6>Wyświetlono: @application.Application.Opened</h6>
+                                        <h6>Zaproszono do testu: @application.QuestionnaireInvitation</h6>
+                                        <h6>Rozwiązał test: @application.SolvedQuestionnaire</h6>
                                         <small><a asp-action="CandidateApplication" asp-route-id="@application.Application.Id" class="btn btn-secondary btn-sm" role="button" style="margin-top: 10px">Zobacz szczegóły</a></small>
                                     </div>
                                 }

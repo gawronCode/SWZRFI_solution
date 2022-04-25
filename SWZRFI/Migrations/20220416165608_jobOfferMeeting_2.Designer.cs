@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SWZRFI.DAL.Contexts;
 
 namespace SWZRFI.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220416165608_jobOfferMeeting_2")]
+    partial class jobOfferMeeting_2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -535,9 +537,6 @@ namespace SWZRFI.Migrations
 
                     b.Property<int>("ApplicationId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsMeetingConfirmed")
-                        .HasColumnType("bit");
 
                     b.Property<int>("JobOfferId")
                         .HasColumnType("int");

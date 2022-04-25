@@ -3,6 +3,15 @@
 @inject SignInManager<UserAccount> SignInManager
 @inject UserManager<UserAccount> UserManager
 
+@functions{
+
+    private Dictionary<string, string> GetLayoutDict(string layout)
+    {
+        var tmpList = new List<string>() { layout };
+        return tmpList.ToDictionary(key => "ParentLayout");
+    }
+
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,13 +41,16 @@
                         </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            if (User.IsInRole("SystemAdmin") || 
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/ConversationPanel/Index" asp-all-route-data="@GetLayoutDict(this.Layout)" title="ActionPanel">Konwersacje</a>
+                            </li>
+                            if (User.IsInRole("SystemAdmin") ||
                                 User.IsInRole("RecruitersAccount") ||
                                 User.IsInRole("ManagerAccount"))
                             {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="CompanyManager" asp-action="Index">Panel korporacyjny</a>
-                            </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="CompanyManager" asp-action="Index">Panel korporacyjny</a>
+                                </li>
                             }
                         }
                     </ul>

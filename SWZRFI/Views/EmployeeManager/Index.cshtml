@@ -66,15 +66,14 @@
 
                                     }
                                 </td>
-                            <td style="text-align: right;
+                                <td style="text-align: right;
                                 border-right: none;
                                 border-left: none">
-                                <a asp-action="EditCompany" class="btn btn-sm btn-secondary" role="button">Zawieś</a>
-                                <a asp-action="EditCompany" class="btn btn-sm btn-danger" role="button">Usuń</a>
-
-                            </td>
-                        </tr>
-                    }
+                                    <a asp-action="EditCompany" class="btn btn-sm btn-secondary" role="button">Zawieś</a>
+                                    <a asp-action="EditCompany" class="btn btn-sm btn-danger" role="button">Usuń</a>
+                                </td>
+                            </tr>
+                        }
 
                     </tbody>
 
@@ -84,6 +83,7 @@
 
             </div>
             <a asp-action="EditUserRoles" class="btn btn-sm btn-primary" role="button">Edytuj role pracowników</a>
+            <a style="margin-left:10px" asp-action="SendInvitationCodeToUser" class="btn btn-sm btn-primary" role="button">Zaproś nowego pracownika</a>
         </div>
     </div>
 }
